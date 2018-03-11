@@ -1,0 +1,104 @@
+<p>{{ form.value | json}}</p>
+<p>{{ calculatorForm | json}}</p>
+
+<form [formGroup]="form">
+  <!-- География начало -->
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-group">
+        <label for="geography" 
+          data-toggle="tooltip"   
+          data-placement="right" 
+          title="Tooltip on right">
+          <h2>География</h2>
+        </label>
+        <select 
+          id="inputGeography" 
+          class="form-control"          
+          formControlName="geography"
+          (change)="onGeographyChange()">
+          <option value="">Выберите город из списка ...</option>
+          <option 
+            *ngFor="let g of geographies" 
+            value="{{ g.id }}"> {{ g.name }}
+          </option>
+        </select>
+        <!-- <div  class="alert alert-danger">Выберите город</div> -->
+        <!-- Предупреждение в случае ошибки заполнения данных -->
+        <div *ngIf="geography.touched && geography.invalid" 
+          class="alert alert-danger alert-dismissible fade show" 
+          role="alert">
+          <strong>Ошибка заполнения данных!</strong> Выберите город.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>      
+    </div>
+    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+  </div>
+  <!-- География конец -->
+
+  <!-- Типы зданий  начало -->
+  <div class="row">
+    <div class="col-sm-5">
+      <div class="form-group">        
+        <h2>Здания</h2> 
+          <div 
+            class="btn-group btn-group-toggle" 
+            data-toggle="buttons">            
+              <label 
+                class="btn btn-secondary"
+                *ngFor="let building of buildingTypes"
+                (click)="buildingTypeSelect(building.id)">
+                <input 
+                  type="radio" 
+                  name="buildingType"
+                  id= "{{ building.id }}" 
+                  autocomplete="off"
+                  formControlName="buildingType"                                        
+                  > {{ building.name }}
+              </label>   
+          </div> 
+      </div>
+    </div>
+  </div>
+  <!-- Типы зданий конец -->
+
+  <!-- Виды зданий начало -->
+  <div *ngIf="selectedBuildingType !== 0">
+    <div class="row">
+      <div class="col-sm-5">
+        <div 
+          class="form-check"
+          *ngFor="let kind of buildingKinds; let i=index">
+          <input 
+            class="form-check-input" 
+            type="radio" 
+            name="buildingKind" 
+            id="kindRadio {{ kind.id }}" 
+            value="kind.id"
+            formControlName="buildingKind"
+            (change)="onBuildKindChange(kind.id, i)"
+            [checked]="isCheckedBuildKind(i)">
+          <label 
+            class="form-check-label" 
+            for="kindRadio {{ kind.id }}">
+            {{ kind.name }}
+          </label>
+        </div>
+        <div 
+          *ngIf="buildKind.touched && buildKind.invalid" 
+          class="alert alert-danger alert-dismissible fade show" 
+          role="alert">
+          <strong>Ошибка заполнения данных!</strong> Выберите вид здания.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>  
+      </div>
+    </div>
+  </div>
+  <!-- Виды зданий конец -->
+
+</form>
