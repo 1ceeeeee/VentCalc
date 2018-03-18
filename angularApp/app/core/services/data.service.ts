@@ -1,4 +1,3 @@
-import { BuildingKind } from './../../models/buildingKind';
 import { Geography } from './../../models/geography';
 import 'rxjs/add/operator/map';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -6,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 // import { Injectable } from '@angular/core';
 
 import 'rxjs/add/observable/of';
+import { BuildingType } from '../../models/buildingType';
 
 
 // @Injectable()
@@ -51,9 +51,9 @@ export class DataService {
   }
 
   getById(id: number){
-    let buildKinds: BuildingKind[] = [];
+    let buildTypes: BuildingType[] = [];
     if(id == 2){
-      buildKinds = [
+      buildTypes = [
         {
           id: 1,
           name: "Производственные здания"
@@ -96,7 +96,7 @@ export class DataService {
         }
       ];      
     }    
-    return Observable.of(buildKinds);
+    return Observable.of(buildTypes);
   }
 
 }

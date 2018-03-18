@@ -1,10 +1,10 @@
-import { BuildingKindService } from './services/building-kind.service';
 import { GeographyService } from './services/geography.service';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { Configuration } from '../app.constants';
 import { ThingService } from './services/thing-data.service';
+import { BuildingTypeService } from './services/building-type.service';
 // import { DataService } from './services/data.service';
 
 @NgModule({
@@ -21,7 +21,7 @@ export class CoreModule {
                 ThingService,                
                 GeographyService,
                 // DataService,
-                BuildingKindService,
+                BuildingTypeService,
                 Configuration
             ]
         };

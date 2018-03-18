@@ -23,7 +23,7 @@ namespace Angular2WebpackVisualStudio.Controller
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] Thing thing)
+        public IActionResult Add([FromBody] Thing thing) 
         {
             if (thing == null)
             {

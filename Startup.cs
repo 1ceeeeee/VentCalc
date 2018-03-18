@@ -56,7 +56,7 @@ namespace Angular2WebpackVisualStudio
 
             var angularRoutes = new[] {
                  "/home",
-                 "/about"
+                 "/about"                 
              };
 
             app.Use(async (context, next) =>
