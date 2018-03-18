@@ -6,11 +6,11 @@ namespace VentCalc.Models
     public class Region
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<City> Citys { get; set; }
+        public string RegionName { get; set; }
+        public ICollection<City> Cities { get; set; }
         public Region()
         {
-            Citys = new Collection<City>(); 
+            Cities = new Collection<City>(); 
         }
     }
 }
