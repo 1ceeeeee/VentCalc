@@ -1,4 +1,3 @@
-import { Geography } from './../../models/geography';
 import 'rxjs/add/operator/map';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 
 import 'rxjs/add/observable/of';
 import { BuildingType } from '../../models/buildingType';
+import { City } from '../../models/сity';
 
 
 // @Injectable()
@@ -21,31 +21,39 @@ export class DataService {
   }
 
   getAll() {
-     let geog: Geography[] = [];     
+     let cities: City[] = [];     
 
     if(this.url.includes('testGeography')){      
-      geog = [
+      cities = [
         {
           id: 1,
-          name: "Москва"
+          cityName: "Москва",
+          tempOutSummer: 25,
+          tempOutWinter: -25
         },
         {
           id: 2,
-          name: "Петербург"
+          cityName: "Петербург",
+          tempOutSummer: 25,
+          tempOutWinter: -25
         },
         {
           id: 3,
-          name: "Ярославль"
+          cityName: "Ярославль",
+          tempOutSummer: 25,
+          tempOutWinter: -25
         },
         {
           id: 4,
-          name: "Клин"
+          cityName: "Клин",
+          tempOutSummer: 25,
+          tempOutWinter: -25
         }
       ];
-      return Observable.of(geog);
+      return Observable.of(cities);
     }    
     else {
-      return this.http.get<Geography[]>(this.url, { headers: this.headers });
+      return this.http.get<City[]>(this.url, { headers: this.headers });
     }   
 
   }

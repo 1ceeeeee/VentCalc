@@ -1,10 +1,11 @@
-import { GeographyService } from './services/geography.service';
+
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { Configuration } from '../app.constants';
 import { ThingService } from './services/thing-data.service';
 import { BuildingTypeService } from './services/building-type.service';
+import { CityService } from './services/city.service';
 // import { DataService } from './services/data.service';
 
 @NgModule({
@@ -19,7 +20,7 @@ export class CoreModule {
             ngModule: CoreModule,
             providers: [
                 ThingService,                
-                GeographyService,
+                CityService,
                 // DataService,
                 BuildingTypeService,
                 Configuration
