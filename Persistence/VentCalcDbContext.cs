@@ -11,6 +11,6 @@ namespace VentCalc.Persistence
             
         }
         public DbSet<Region> Regions { get; set; }
-        //public DbSet<City> Cities { get; set; }
+        public DbSet<City> Cities { get; set; }
     }
 }

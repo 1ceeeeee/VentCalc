@@ -9,6 +9,7 @@ using VentCalc.Persistence;
 
 namespace VentCalc.Controllers
 {
+    [Route("api/[controller]")]
     public class RegionsController : Controller
     {
         private readonly VentCalcDbContext context;
@@ -19,8 +20,8 @@ namespace VentCalc.Controllers
             this.context = context;
 
         }
-        [HttpGet("api/regions")]
-        public async Task<IEnumerable<RegionResource>> GetRegions()
+        [HttpGet]
+        public async Task<IEnumerable<RegionResource>> GetAll()
         {
             var regions = await context.Regions.Include(m => m.Cities).ToListAsync();
             
