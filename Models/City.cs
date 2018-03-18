@@ -1,11 +1,16 @@
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace VentCalc.Models
 {
+    [Table("Cities")]
     public class City
     {
         [Description("ИД города")]
         public int Id { get; set; }
+        [Required]
+        [StringLength(255)]
         public string CityName { get; set; }
         public double TempOutWinter { get; set; }
         public double TempOutSummer { get; set; }

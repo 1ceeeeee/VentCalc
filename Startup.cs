@@ -30,7 +30,7 @@ namespace Angular2WebpackVisualStudio
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<VentCalcDbContext>(options => options.UseSqlServer("..."));
+            services.AddDbContext<VentCalcDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAllOrigins",
