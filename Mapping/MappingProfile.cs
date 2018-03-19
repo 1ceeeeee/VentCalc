@@ -10,6 +10,9 @@ namespace VentCalc.Mapping
         {
             CreateMap<Region, RegionResource>();
             CreateMap<City, CityResource>();
+            CreateMap<BuildingKind, BuildingKindResource>();
+            CreateMap<BuildingPurpose, BuildingPurposeResource>();
+            CreateMap<BuildingType, BuildingTypeResource>();
         }
     }
 }

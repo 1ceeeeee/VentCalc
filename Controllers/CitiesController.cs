@@ -27,12 +27,6 @@ namespace VentCalc.Controllers
             var cities = await context.Cities.ToListAsync();
             
             return mapper.Map<List<City>, List<CityResource>>(cities);
-            // var model = new List<City>();
-            // model.Add(new City() {Id = 1, CityName = "Москва", TempOutWinter = 20, TempOutSummer =  30});
-            // model.Add(new City() {Id = 2, CityName = "Екатеринбург", TempOutWinter = 15.5 , TempOutSummer =  20.5} );
-            // model.Add(new City() {Id = 3, CityName = "Владивосток", TempOutWinter = 10.2, TempOutSummer =  12.2} );
-            // //var modelJson = JsonConvert.SerializeObject(model); 
-            // return Ok(model);
         }
     }
 }
