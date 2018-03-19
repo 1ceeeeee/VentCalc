@@ -12,5 +12,8 @@ namespace VentCalc.Persistence
         }
         public DbSet<Region> Regions { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<BuildingKind> BuildingKinds { get; set; }
+        public DbSet<BuildingPurpose> BuildingPurposes { get; set; }
+        public DbSet<BuildingType> BuildingTypes { get; set; }
     }
 }
