@@ -19,8 +19,8 @@
           (change)="onGeographyChange()">
           <option value="">Выберите город из списка ...</option>
           <option 
-            *ngFor="let g of geographies" 
-            value="{{ g.id }}"> {{ g.name}}
+            *ngFor="let c of cities" 
+            value="{{ c.id }}"> {{ c.cityName}}
           </option>
         </select>
         <!-- <div  class="alert alert-danger">Выберите город</div> -->

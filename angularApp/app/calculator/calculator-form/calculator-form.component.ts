@@ -1,18 +1,18 @@
 import { BuildingKind } from './../../models/buildingKind';
 import { CalculatorForm } from './../../models/calculatorForm';
 import { BuildingType } from './../../models/buildingType';
-import { Geography } from './../../models/geography';
-import { GeographyService } from './../../core/services/geography.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BuildingTypeService } from '../../core/services/building-type.service';
+import { City } from '../../models/сity';
+import { CityService } from '../../core/services/city.service';
 
 @Component({
   selector: 'app-calculator-form',
   templateUrl: './calculator-form.component.html'
 })
 export class CalculatorFormComponent implements OnInit {
-  geographies: Geography[] = [];
+  cities: City[] = [];
   buildingTypes: BuildingType[] = [];
   calculatorForm: CalculatorForm = new CalculatorForm();
   buildingKinds: BuildingKind[] = [];
@@ -26,7 +26,7 @@ export class CalculatorFormComponent implements OnInit {
   });
 
   constructor(
-    private serviceGeography: GeographyService,
+    private cityService: CityService,
     private serviceBuildingType: BuildingTypeService) { }
 
   // Возвращает значение контрола географии
@@ -75,11 +75,11 @@ export class CalculatorFormComponent implements OnInit {
 
   ngOnInit() {
     // Возвращает все географии городов из бд
-    this.serviceGeography.getAll()
+    this.cityService.getAll()
       .subscribe(
-        data => this.geographies = data,
+        data => this.cities = data,
         () => { },
-        () => { console.log(this.geographies) }
+        () => { console.log(this.cities) }
       );
     // Возвращает все виды зданий из бд
     this.buildingKinds = [
