@@ -100,5 +100,120 @@
     </div>
   </div>
   <!-- Типы зданий конец -->
+  <!-- Добавить помещение начало -->
+  <div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+      Добавить
+    </button>
+
+    <!-- Modal -->
+    <div 
+      class="modal fade" 
+      id="exampleModalCenter" 
+      tabindex="-1" 
+      role="dialog" 
+      aria-labelledby="exampleModalCenterTitle" 
+      aria-hidden="true">
+      <div 
+        class="modal-dialog modal-dialog-centered" 
+        role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Добавить помещение</h5>
+            <button 
+              type="button" 
+              class="close" 
+              data-dismiss="modal" 
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputRoomNumber">№ помещения</label>
+              <input 
+                type="number" 
+                min="0"
+                class="form-control" 
+                id="inputRoomNumber" 
+                placeholder="0">
+            </div>
+          </div>
+          <div class="modal-body">        
+            <div class="form-group">
+              <label for="roomSelect">Помещение</label>
+              <select class="form-control" id="roomSelect">
+                <option>Выберите помещение ...</option>
+                <option>Тепловой пункт</option>
+                <option>Насосная масла</option>
+                <option>Техническое помещение</option>
+                <option>Станция газового пожартоушения</option>
+              </select>
+            </div>            
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputSquare">Площадь, м2</label>
+              <input 
+                type="number" 
+                step="10"
+                min="0"
+                class="form-control" 
+                id="inputSquare" 
+                placeholder="0">
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputSquare">Высота, мм</label>
+              <input 
+                type="number" 
+                step="10"
+                min="0"
+                class="form-control" 
+                id="inputSquare" 
+                placeholder="0">
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputSquare">Этаж</label>
+              <input 
+                type="number"               
+                class="form-control" 
+                id="inputSquare" 
+                placeholder="0">
+            </div>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="inputSquare">Кол-во людей</label>
+              <input 
+                type="number"    
+                min="0"           
+                class="form-control" 
+                id="inputSquare" 
+                placeholder="0">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button 
+              type="button" 
+              class="btn btn-secondary" 
+              data-dismiss="modal">
+              Отмена
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-primary">
+              Сохранить
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Добавить помещение конец -->
 
 </form>

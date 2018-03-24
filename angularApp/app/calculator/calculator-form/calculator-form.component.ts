@@ -23,7 +23,8 @@ export class CalculatorFormComponent implements OnInit {
   form = new FormGroup({
     geography: new FormControl('', Validators.required),
     buildingType: new FormControl('', Validators.required),
-    buildingKind: new FormControl('', Validators.required)
+    buildingKind: new FormControl('', Validators.required),
+    room: new FormControl('', Validators.required)
   });
 
   constructor(
@@ -92,20 +93,7 @@ export class CalculatorFormComponent implements OnInit {
         () => { console.log(this.buildingKinds) }
       );
 
-    // this.buildingKinds = [
-    //   {
-    //     id: 1,
-    //     name: "Гражданские"
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "Промышленные"
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "Сельскохозяйственные"
-    //   },
-    // ];
+
   }
 
 }
