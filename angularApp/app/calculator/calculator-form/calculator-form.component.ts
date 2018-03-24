@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BuildingTypeService } from '../../core/services/building-type.service';
 import { CityService } from '../../core/services/city.service';
 import { City } from '../../models/city';
+import { Room } from '../../models/room';
 
 @Component({
   selector: 'app-calculator-form',
@@ -17,14 +18,15 @@ export class CalculatorFormComponent implements OnInit {
   buildingTypes: BuildingType[] = [];
   calculatorForm: CalculatorForm = new CalculatorForm();
   buildingKinds: BuildingKind[] = [];
+  room: Room = new Room();
   buildTypeChecked: number = -1;
 
 
   form = new FormGroup({
-    geography: new FormControl('', Validators.required),
+    cityControl: new FormControl('', Validators.required),
     buildingType: new FormControl('', Validators.required),
     buildingKind: new FormControl('', Validators.required),
-    room: new FormControl('', Validators.required)
+    roomAdd: new FormControl('', Validators.required)
   });
 
   constructor(
@@ -33,8 +35,8 @@ export class CalculatorFormComponent implements OnInit {
     public buildingTypeService: BuildingTypeService) { }
 
   // Возвращает значение контрола географии
-  get geography() {
-    return this.form.get('geography')!;
+  get cityControl() {
+    return this.form.get('cityControl')!;
   }
 
   get buildType() {
@@ -47,8 +49,8 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Возвращает выбранный ид географии объекта
-  onGeographyChange() {
-    this.calculatorForm.idGeography = this.geography.value;
+  onCityChange() {
+    this.calculatorForm.idCity = this.cityControl.value;
   }
 
   onBuildTypeChange(id: number, i: number) {

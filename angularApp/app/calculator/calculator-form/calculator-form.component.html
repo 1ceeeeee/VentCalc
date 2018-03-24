@@ -13,10 +13,10 @@
           <h2>География</h2>
         </label>
         <select 
-          id="inputGeography" 
+          id="inputCity" 
           class="form-control"          
-          formControlName="geography"
-          (change)="onGeographyChange()">
+          formControlName="cityControl"
+          (change)="onCityChange()">
           <option value="">Выберите город из списка ...</option>
           <option 
             *ngFor="let c of cities" 
@@ -25,7 +25,7 @@
         </select>
         <!-- <div  class="alert alert-danger">Выберите город</div> -->
         <!-- Предупреждение в случае ошибки заполнения данных -->
-        <div *ngIf="geography.touched && geography.invalid" 
+        <div *ngIf="cityControl.touched && cityControl.invalid" 
           class="alert alert-danger alert-dismissible fade show" 
           role="alert">
           <strong>Ошибка заполнения данных!</strong> Выберите город.
@@ -206,7 +206,8 @@
             </button>
             <button 
               type="button" 
-              class="btn btn-primary">
+              data-dismiss="modal"
+              class="btn btn-primary">              
               Сохранить
             </button>
           </div>

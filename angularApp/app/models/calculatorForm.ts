@@ -1,5 +1,8 @@
+import { Room } from './room';
+
 export class CalculatorForm {
-    idGeography = 0;
-    idBuildingType = 0;   
+    public idCity: number = 0;
+    public idBuildingType: number = 0;
     public idBuildKind: number = 0;
+    public rooms: Room[] = [];
 }
