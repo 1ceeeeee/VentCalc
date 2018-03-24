@@ -1,7 +1,6 @@
-
+import { BuildingKindService } from './services/building-kind.service';
 import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
-
 import { Configuration } from '../app.constants';
 import { ThingService } from './services/thing-data.service';
 import { BuildingTypeService } from './services/building-type.service';
@@ -23,6 +22,7 @@ export class CoreModule {
                 CityService,
                 // DataService,
                 BuildingTypeService,
+                BuildingKindService,
                 Configuration
             ]
         };

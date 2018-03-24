@@ -1,11 +1,12 @@
+import { BuildingKindService } from './../../core/services/building-kind.service';
 import { BuildingKind } from './../../models/buildingKind';
 import { CalculatorForm } from './../../models/calculatorForm';
 import { BuildingType } from './../../models/buildingType';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BuildingTypeService } from '../../core/services/building-type.service';
-import { City } from '../../models/сity';
 import { CityService } from '../../core/services/city.service';
+import { City } from '../../models/city';
 
 @Component({
   selector: 'app-calculator-form',
@@ -22,22 +23,23 @@ export class CalculatorFormComponent implements OnInit {
   form = new FormGroup({
     geography: new FormControl('', Validators.required),
     buildingType: new FormControl('', Validators.required),
-    buildingKind: new FormControl('',Validators.required)
+    buildingKind: new FormControl('', Validators.required)
   });
 
   constructor(
-    private cityService: CityService,
-    private serviceBuildingType: BuildingTypeService) { }
+    public cityService: CityService,
+    public buildinKindService: BuildingKindService,
+    public buildingTypeService: BuildingTypeService) { }
 
   // Возвращает значение контрола географии
   get geography() {
     return this.form.get('geography')!;
   }
 
-  get buildType(){
+  get buildType() {
     return this.form.get('buildingType')!;
   }
-  
+
   // Возвращает ид выбранного вида зданий
   get selectedBuildingKind() {
     return this.calculatorForm.idBuildKind!;
@@ -48,14 +50,14 @@ export class CalculatorFormComponent implements OnInit {
     this.calculatorForm.idGeography = this.geography.value;
   }
 
-  onBuildTypeChange(id: number, i: number){
+  onBuildTypeChange(id: number, i: number) {
     console.log('onBuildingTypeChanged: ${id} selected index: ${i}');
     this.buildTypeChecked = i;
     this.calculatorForm.idBuildingType = id;
   }
 
-  isCheckedBuildType(i: number){
-    if(this.buildTypeChecked == i){
+  isCheckedBuildType(i: number) {
+    if (this.buildTypeChecked == i) {
       console.log('isCheckedBuildType: ${this.buildTypeChecked}  selected index: ${i}');
       return true;
     }
@@ -65,7 +67,7 @@ export class CalculatorFormComponent implements OnInit {
   // Возвращает выбранный из UI ид типа здания
   buildingKindSelect(id: number) {
     this.calculatorForm.idBuildKind = id;
-    this.serviceBuildingType.getById(id)
+    this.buildingTypeService.getByIdKind(id)
       .subscribe(
         data => this.buildingTypes = data,
         () => { },
@@ -81,21 +83,29 @@ export class CalculatorFormComponent implements OnInit {
         () => { },
         () => { console.log(this.cities) }
       );
+
     // Возвращает все виды зданий из бд
-    this.buildingKinds = [
-      {
-        id: 1,
-        name: "Гражданские"
-      },
-      {
-        id: 2,
-        name: "Промышленные"
-      },
-      {
-        id: 3,
-        name: "Сельскохозяйственные"
-      },
-    ];
+    this.buildinKindService.getAll()
+      .subscribe(
+        data => this.buildingKinds = data,
+        () => { },
+        () => { console.log(this.buildingKinds) }
+      );
+
+    // this.buildingKinds = [
+    //   {
+    //     id: 1,
+    //     name: "Гражданские"
+    //   },
+    //   {
+    //     id: 2,
+    //     name: "Промышленные"
+    //   },
+    //   {
+    //     id: 3,
+    //     name: "Сельскохозяйственные"
+    //   },
+    // ];
   }
 
 }
