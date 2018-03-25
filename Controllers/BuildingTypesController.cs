@@ -33,7 +33,8 @@ namespace VentCalc.Controllers
         }
 
         [HttpGet]
-        [Route("{buildingKindId}")]
+       // [Route("{buildingKindId}")]
+       [Route("~/api/BuildingKinds/{buildingKindId:int}/BuildingTypes")]
         public async Task<IEnumerable<BuildingTypeResource>> GetBuildingTypesByBuildingKind(int buildingKindId)
         {
             var buildingTypes = await _repository.GetBuildingTypesByBuildingKindint(buildingKindId);
