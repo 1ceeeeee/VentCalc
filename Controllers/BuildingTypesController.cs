@@ -14,32 +14,31 @@ namespace VentCalc.Controllers
     [Route("api/[controller]")]
     public class BuildingTypesController : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly IBuildingTypeRepository _repository;
-        private readonly VentCalcDbContext _context;
+        private readonly IMapper mapper;
+        private readonly IBuildingTypeRepository repository;
+        private readonly VentCalcDbContext context;
         public BuildingTypesController(IMapper mapper, VentCalcDbContext context, IBuildingTypeRepository repository)
         {
-            this._mapper = mapper;
-            this._context = context;
-            this._repository = repository;
+            this.mapper = mapper;
+            this.context = context;
+            this.repository = repository;
         }
 
         [HttpGet]
         public async Task<IEnumerable<BuildingTypeResource>> Get()
         {
-            var buildingTypes = await _repository.GetAll();
+            var buildingTypes = await repository.GetAll();
 
-            return _mapper.Map<List<BuildingType>, List<BuildingTypeResource>>(buildingTypes);
+            return mapper.Map<List<BuildingType>, List<BuildingTypeResource>>(buildingTypes);
         }
 
         [HttpGet]
-       // [Route("{buildingKindId}")]
-       [Route("~/api/BuildingKinds/{buildingKindId:int}/BuildingTypes")]
+        [Route("~/api/BuildingKinds/{buildingKindId:int}/BuildingTypes")]
         public async Task<IEnumerable<BuildingTypeResource>> GetBuildingTypesByBuildingKind(int buildingKindId)
         {
-            var buildingTypes = await _repository.GetBuildingTypesByBuildingKindint(buildingKindId);
+            var buildingTypes = await repository.GetBuildingTypesByBuildingKindint(buildingKindId);
 
-            return _mapper.Map<List<BuildingType>, List<BuildingTypeResource>>(buildingTypes);
+            return mapper.Map<List<BuildingType>, List<BuildingTypeResource>>(buildingTypes);
         }
 
     }
