@@ -15,6 +15,7 @@ export class CityService {
   constructor(private http: HttpClient, configuration: Configuration) {    
 
     this.actionUrl = configuration.Server + 'api/cities/';
+    console.log(this.actionUrl);
 
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');

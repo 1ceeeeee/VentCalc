@@ -13,9 +13,9 @@
           <h2>География</h2>
         </label>
         <select 
+          formControlName="city"
           id="inputCity" 
-          class="form-control"          
-          formControlName="cityControl"
+          class="form-control"       
           (change)="onCityChange()">
           <option value="">Выберите город из списка ...</option>
           <option 
@@ -25,7 +25,7 @@
         </select>
         <!-- <div  class="alert alert-danger">Выберите город</div> -->
         <!-- Предупреждение в случае ошибки заполнения данных -->
-        <div *ngIf="cityControl.touched && cityControl.invalid" 
+        <div *ngIf="city.touched && city.invalid" 
           class="alert alert-danger alert-dismissible fade show" 
           role="alert">
           <strong>Ошибка заполнения данных!</strong> Выберите город.
@@ -52,11 +52,11 @@
                 *ngFor="let kind of buildingKinds"
                 (click)="buildingKindSelect(kind.id)">
                 <input 
+                  formControlName="buildingKind" 
                   type="radio" 
                   name="buildingKind"
                   id= "{{ kind.id }}" 
-                  autocomplete="off"
-                  formControlName="buildingKind"                                        
+                  autocomplete="off"                                                         
                   > {{ kind.buildingKindName }}
               </label>   
           </div> 
@@ -73,12 +73,12 @@
           class="form-check"
           *ngFor="let type of buildingTypes; let i=index">
           <input 
+            formControlName="buildingType"
             class="form-check-input" 
             type="radio" 
             name="buildingType" 
             id="typeRadio {{ type.id }}" 
-            value="type.id"
-            formControlName="buildingType"
+            value="type.id"            
             (change)="onBuildTypeChange(type.id, i)"
             [checked]="isCheckedBuildType(i)">
           <label 
@@ -92,7 +92,11 @@
           class="alert alert-danger alert-dismissible fade show" 
           role="alert">
           <strong>Ошибка заполнения данных!</strong> Выберите вид здания.
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <button 
+            type="button" 
+            class="close" 
+            data-dismiss="alert" 
+            aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>  
@@ -100,27 +104,31 @@
     </div>
   </div>
   <!-- Типы зданий конец -->
+
   <!-- Добавить помещение начало -->
   <div>
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
       Добавить
     </button>
 
     <!-- Modal -->
     <div 
       class="modal fade" 
-      id="exampleModalCenter" 
+      id="roomAdd" 
       tabindex="-1" 
       role="dialog" 
-      aria-labelledby="exampleModalCenterTitle" 
+      aria-labelledby="roomAddTitle" 
       aria-hidden="true">
       <div 
         class="modal-dialog modal-dialog-centered" 
         role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Добавить помещение</h5>
+            <h5 class="modal-title" 
+              id="exampleModalLongTitle">
+              Добавить помещение
+            </h5>
             <button 
               type="button" 
               class="close" 
@@ -129,87 +137,98 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="inputRoomNumber">№ помещения</label>
-              <input 
-                type="number" 
-                min="0"
-                class="form-control" 
-                id="inputRoomNumber" 
-                placeholder="0">
+          <div formGroupName="room">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputRoomNumber">№ помещения</label>
+                <input 
+                  formControlName="roomNumber"
+                  type="number" 
+                  min="0"
+                  class="form-control" 
+                  id="inputRoomNumber" 
+                  placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="modal-body">        
-            <div class="form-group">
-              <label for="roomSelect">Помещение</label>
-              <select class="form-control" id="roomSelect">
-                <option>Выберите помещение ...</option>
-                <option>Тепловой пункт</option>
-                <option>Насосная масла</option>
-                <option>Техническое помещение</option>
-                <option>Станция газового пожартоушения</option>
-              </select>
-            </div>            
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="inputSquare">Площадь, м2</label>
-              <input 
-                type="number" 
-                step="10"
-                min="0"
-                class="form-control" 
-                id="inputSquare" 
-                placeholder="0">
+            <div class="modal-body">        
+              <div class="form-group">
+                <label for="roomSelect">Помещение</label>
+                <select 
+                  formControlName="roomName"
+                  class="form-control" 
+                  id="roomSelect">
+                  <option value="1">Выберите помещение ...</option>
+                  <option value="2">Тепловой пункт</option>
+                  <option value="3">Насосная масла</option>
+                  <option value="4">Техническое помещение</option>
+                  <option value="5">Станция газового пожарaтоушения</option>
+                </select>
+              </div>            
             </div>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="inputSquare">Высота, мм</label>
-              <input 
-                type="number" 
-                step="10"
-                min="0"
-                class="form-control" 
-                id="inputSquare" 
-                placeholder="0">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputSquare">Площадь, м2</label>
+                <input 
+                formControlName="roomArea"
+                  type="number" 
+                  step="10"
+                  min="0"
+                  class="form-control" 
+                  id="inputSquare" 
+                  placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="inputSquare">Этаж</label>
-              <input 
-                type="number"               
-                class="form-control" 
-                id="inputSquare" 
-                placeholder="0">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputSquare">Высота, мм</label>
+                <input 
+                  formControlName="roomHeight"
+                  type="number" 
+                  step="10"
+                  min="0"
+                  class="form-control" 
+                  id="inputSquare" 
+                  placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="inputSquare">Кол-во людей</label>
-              <input 
-                type="number"    
-                min="0"           
-                class="form-control" 
-                id="inputSquare" 
-                placeholder="0">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputSquare">Этаж</label>
+                <input 
+                  formControlName="roomFloor"
+                  type="number"               
+                  class="form-control" 
+                  id="inputSquare" 
+                  placeholder="0">
+              </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button 
-              type="button" 
-              class="btn btn-secondary" 
-              data-dismiss="modal">
-              Отмена
-            </button>
-            <button 
-              type="button" 
-              data-dismiss="modal"
-              class="btn btn-primary">              
-              Сохранить
-            </button>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="inputSquare">Кол-во людей</label>
+                <input 
+                  formControlName="roomPeopleAmount"
+                  type="number"    
+                  min="0"           
+                  class="form-control" 
+                  id="inputSquare" 
+                  placeholder="0">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button 
+                type="button" 
+                class="btn btn-secondary" 
+                data-dismiss="modal">
+                Отмена
+              </button>
+              <button 
+                type="button" 
+                data-dismiss="modal"
+                (click)="onSaveRoomClick()"
+                class="btn btn-primary">                            
+                Сохранить
+              </button>
+            </div>
           </div>
         </div>
       </div>
