@@ -16,10 +16,9 @@ namespace VentCalc.Controllers
         private readonly IMapper mapper;
         private readonly IRoomRepository repository;
         private readonly VentCalcDbContext context;
-        public RoomsController(IMapper mapper, VentCalcDbContext context, IRoomRepository repository)
+        public RoomsController(IMapper mapper, IRoomRepository repository)
         {
             this.mapper = mapper;
-            this.context = context;
             this.repository = repository;
         }
 
