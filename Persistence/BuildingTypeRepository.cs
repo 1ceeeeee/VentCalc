@@ -13,7 +13,6 @@ namespace VentCalc.Persistence
         public BuildingTypeRepository(VentCalcDbContext context)
         {
             this.context = context;
-
         }
 
         public async Task<List<BuildingType>> GetAll() 
