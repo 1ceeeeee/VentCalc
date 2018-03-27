@@ -59,21 +59,59 @@ export class CalculatorFormComponent implements OnInit {
     return this.calculatorForm.buildKindId!;
   }
 
+  // Возвращает номер выбранной комнаты
+  get roomNumber() {
+    return this.form.get('room.roomNumber')!;
+  }
+
+  // Возвращает наименование комнаты
+  get roomName() {
+    return this.form.get('room.roomName');
+  }
+
+  // Возвращает длину комнаты
+  get roomLength() {
+    return this.form.get('room.roomLength')!;
+  }
+
+  // Возвращает ширину комнаты
+  get roomWidth() {
+    return this.form.get('room.roomWidth')!;
+  }
+
+  // Возвращает площадь команты
+  get roomArea() {
+    return this.form.get('room.roomArea')!;
+  }
+
+  // Возвращает высоту выбранной комнаты
+  get roomHeight() {
+    return this.form.get('room.roomHeight')!;
+  }
+
+  // Возвращает этаж выбранной комнаты
+  get roomFloor() {
+    return this.form.get('room.roomFloor')!;
+  }
+
+  // Возвращает количество людей в комнате
+  get roomPeopleAmount(){
+    return this.form.get('room.roomPeopleAmount')!;
+  }
+
   // Возвращает выбранный ид географии объекта
   onCityChange() {
     this.calculatorForm.cityId = this.city.value;
   }
 
   
-  onBuildTypeChange(id: number, i: number) {
-    console.log('onBuildingTypeChanged: ${id} selected index: ${i}');
+  onBuildTypeChange(id: number, i: number) {    
     this.buildTypeChecked = i;
     this.calculatorForm.buildingTypeId = id;
   }
 
   isCheckedBuildType(i: number) {
-    if (this.buildTypeChecked == i) {
-      console.log('isCheckedBuildType: ${this.buildTypeChecked}  selected index: ${i}');
+    if (this.buildTypeChecked == i) {      
       return true;
     }
     return false;
