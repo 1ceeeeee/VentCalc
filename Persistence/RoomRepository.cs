@@ -24,9 +24,7 @@ namespace VentCalc.Persistence
         {
             return await context.Rooms
                 .Include(r => r.City)
-                    //.ThenInclude(vf => vf.BuildingType)
                 .Include(r => r.BuildingType)
-                    //.ThenInclude(m => m.Make)
                 .Include(r => r.RoomType)
                 .SingleOrDefaultAsync(r => r.Id == id);
         }        

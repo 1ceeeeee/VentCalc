@@ -41,7 +41,6 @@ namespace VentCalc.Controllers
             var SaveRoomResource = mapper.Map<Room, RoomResource>(room);
 
             return Ok(SaveRoomResource);
-
         }
 
     }

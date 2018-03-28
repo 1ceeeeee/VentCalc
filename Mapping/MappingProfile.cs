@@ -14,6 +14,7 @@ namespace VentCalc.Mapping
             CreateMap<BuildingPurpose, BuildingPurposeResource>();
             CreateMap<BuildingType, BuildingTypeResource>();
             CreateMap<Room, RoomResource>();
+            CreateMap<Project, ProjectResource>();
         }
     }
 }

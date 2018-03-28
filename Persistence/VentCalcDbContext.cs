@@ -17,5 +17,6 @@ namespace VentCalc.Persistence
         public DbSet<BuildingType> BuildingTypes { get; set; }
         public DbSet<RoomType> RoomTypes { get; set; }
         public DbSet<Room> Rooms { get; set; }
+        public DbSet<Project> Projects { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace VentCalc.Models
         public int RoomNumber { get; set; }
         [Required]
         [StringLength(255)]
-        [Description("Наименование")]
+        [Description("Помещение")]
         public string RoomName { get; set; }
         [Description("Длина")]
         public double Length { get; set; }
