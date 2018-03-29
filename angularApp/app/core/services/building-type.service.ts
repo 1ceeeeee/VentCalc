@@ -10,9 +10,11 @@ export class BuildingTypeService {
 
   private headers: HttpHeaders;
   private actionUrl: string;
+  private actionUrlById: string;
 
   constructor(private http: HttpClient, configuration: Configuration) { 
     this.actionUrl = configuration.Server + 'api/buildingtypes/';
+    this.actionUrlById = configuration.Server + 'api/buildingkinds/';
 
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
@@ -26,7 +28,8 @@ export class BuildingTypeService {
   }
 
   getByIdKind(id: number): Observable<BuildingType[]>{
-    return this.http.get<BuildingType[]>(this.actionUrl + id, { headers: this.headers });  
+    this.actionUrlById 
+    return this.http.get<BuildingType[]>(this.actionUrlById + id + '/buildingtypes', { headers: this.headers });  
   }
 
 }
