@@ -15,11 +15,23 @@ namespace VentCalc.Controllers
     {
         private readonly IMapper mapper;
         private readonly IProjectRepository repository;
-        private readonly VentCalcDbContext context;
         public ProjectsController(IMapper mapper, IProjectRepository repository)
         {
             this.mapper = mapper;
             this.repository = repository;
         }
+
+        [HttpPost]
+         public IActionResult GetAirExchangeReport([FromBody] ProjectResource projectResource) 
+         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            var project =  mapper.Map<ProjectResource, Project>(projectResource);
+            // var projectReport = GetAirExchangeReport(project);
+            var result =  mapper.Map<Project, ProjectResource>(project);
+            return Ok(result);
+         }
+
     }
 }

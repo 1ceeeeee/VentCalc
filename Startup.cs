@@ -33,6 +33,9 @@ namespace Angular2WebpackVisualStudio
         {
             services.AddScoped<IBuildingTypeRepository, BuildingTypeRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+
+
             services.AddAutoMapper();
             services.AddDbContext<VentCalcDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddCors(options =>

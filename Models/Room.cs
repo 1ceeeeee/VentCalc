@@ -46,7 +46,10 @@ namespace VentCalc.Models
         public int PeopleAmount { get; set; }
         [Description("ИД пользователя")]
         public int UserId { get; set; }
-       
+        [Description("ИД проекта")]
+        public int ProjectId { get; set; }
+        [Description("Объем")]
+        public double Volume { get; set; }
     }
 
 }

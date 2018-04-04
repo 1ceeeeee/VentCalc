@@ -8,6 +8,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceRoot}\\bin\\Debug\\netcoreapp1.1\\Angular2WebpackVisualStudio.dll",
+            //"program": "${workspaceRoot}\\bin\\Debug\\netcoreapp2.0\\VentCalc.dll",
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
