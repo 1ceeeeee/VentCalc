@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace VentCalc.Controllers.Resources
 {
     public class CityResource
@@ -6,5 +9,6 @@ namespace VentCalc.Controllers.Resources
         public string CityName { get; set; }
         public double TempOutWinter { get; set; }
         public double TempOutSummer { get; set; }
+    
     }
 }

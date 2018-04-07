@@ -16,13 +16,8 @@ namespace VentCalc.Models
         public string CityName { get; set; }
         public double TempOutWinter { get; set; }
         public double TempOutSummer { get; set; }
-        public Region Region { get; set; }
         public int RegionId { get; set; }
-        public ICollection<Room> Rooms { get; set; }
-        public City()
-        {
-            Rooms = new Collection<Room>(); 
-        }
+        public Region Region { get; set; }
 
     }
 }

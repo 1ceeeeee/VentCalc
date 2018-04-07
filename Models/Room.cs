@@ -27,29 +27,34 @@ namespace VentCalc.Models
         public int RoomTypeId { get; set; }
         public RoomType RoomType { get; set; }
         [Description("Номер помещения")]
-        public int RoomNumber { get; set; }
+        public int? RoomNumber { get; set; }
         [Required]
         [StringLength(255)]
         [Description("Помещение")]
         public string RoomName { get; set; }
         [Description("Длина")]
-        public double Length { get; set; }
+        public double? Length { get; set; }
         [Description("Ширина")]
-        public double Width { get; set; }
+        public double? Width { get; set; }
         [Description("Площадь")]
-        public double Area { get; set; }
+        public double? Area { get; set; }
         [Description("Высота")]
-        public double Height { get; set; }
+        public double? Height { get; set; }
         [Description("Этаж")]
-        public int Floor { get; set; }
+        public int? Floor { get; set; }
         [Description("Кол-во людей")]
-        public int PeopleAmount { get; set; }
+        public int? PeopleAmount { get; set; }
         [Description("ИД пользователя")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         [Description("ИД проекта")]
         public int ProjectId { get; set; }
+        public Project Project { get; set; }
         [Description("Объем")]
-        public double Volume { get; set; }
+        public double? Volume { get; set; }
+        [Description("Приток (расчёт)")]
+        public double? InflowCalc { get; set; } 
+        [Description("Вытяжка (расчёт)")]
+        public double? ExhaustCalc { get; set; } 
     }
 
 }

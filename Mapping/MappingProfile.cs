@@ -8,6 +8,7 @@ namespace VentCalc.Mapping
     {
         public MappingProfile()
         {
+            // Domain to API Resource
             CreateMap<Region, RegionResource>();
             CreateMap<City, CityResource>();
             CreateMap<BuildingKind, BuildingKindResource>();

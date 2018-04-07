@@ -22,16 +22,39 @@ namespace VentCalc.Controllers
         }
 
         [HttpPost]
-         public IActionResult GetAirExchangeReport([FromBody] ProjectResource projectResource) 
+         public IActionResult CreateProject ([FromBody] ProjectResource projectResource) 
          {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
             var project =  mapper.Map<ProjectResource, Project>(projectResource);
-            // var projectReport = GetAirExchangeReport(project);
-            var result =  mapper.Map<Project, ProjectResource>(project);
-            return Ok(result);
+            repository.CreateProject(project);
+            return Ok(project);
          }
+        
+        [HttpPost("{id}")]
+         public IActionResult CalculateProject (int id) 
+         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            repository.CalculateProject(id);
+            return Ok();
+         }
+        
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
+        {
+            var project = await repository.GetSingle(id);
+
+            if (project == null)
+                return NotFound();
+
+            var projectResource = mapper.Map<Project, ProjectResource>(project);
+
+            return Ok(projectResource);
+        }
+
 
     }
 }

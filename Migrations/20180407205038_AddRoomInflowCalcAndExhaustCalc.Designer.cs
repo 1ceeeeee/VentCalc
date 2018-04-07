@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180407205038_AddRoomInflowCalcAndExhaustCalc")]
+    partial class AddRoomInflowCalcAndExhaustCalc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,23 +126,23 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double?>("Area");
+                    b.Property<double>("Area");
 
                     b.Property<int>("BuildingTypeId");
 
                     b.Property<int>("CityId");
 
-                    b.Property<double?>("ExhaustCalc");
+                    b.Property<double>("ExhaustCalc");
 
-                    b.Property<int?>("Floor");
+                    b.Property<int>("Floor");
 
-                    b.Property<double?>("Height");
+                    b.Property<double>("Height");
 
-                    b.Property<double?>("InflowCalc");
+                    b.Property<double>("InflowCalc");
 
-                    b.Property<double?>("Length");
+                    b.Property<double>("Length");
 
-                    b.Property<int?>("PeopleAmount");
+                    b.Property<int>("PeopleAmount");
 
                     b.Property<int>("ProjectId");
 
@@ -149,15 +150,15 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<int?>("RoomNumber");
+                    b.Property<int>("RoomNumber");
 
                     b.Property<int>("RoomTypeId");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
-                    b.Property<double?>("Volume");
+                    b.Property<double>("Volume");
 
-                    b.Property<double?>("Width");
+                    b.Property<double>("Width");
 
                     b.HasKey("Id");
 
