@@ -1,3 +1,5 @@
+import { RoomType } from './../../models/roomType';
+import { RoomService } from './../../core/services/room.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { BuildingKindService } from './../../core/services/building-kind.service';
@@ -8,6 +10,7 @@ import { City } from '../../models/city';
 import { Room } from '../../models/room';
 import { BuildingTypeService } from '../../core/services/building-type.service';
 import { CityService } from '../../core/services/city.service';
+import { RoomTypeService } from '../../core/services/room-type.service';
 
 
 @Component({
@@ -19,7 +22,9 @@ export class CalculatorFormComponent implements OnInit {
   buildingTypes: BuildingType[] = [];
   calculatorForm: CalculatorForm = new CalculatorForm();
   buildingKinds: BuildingKind[] = [];
-  room: Room = new Room();
+  //room: Room = new Room();
+  rooms: Room[] = [];
+  roomTypes: RoomType[] = [];
   buildTypeChecked: number = -1;
 
 
@@ -42,7 +47,9 @@ export class CalculatorFormComponent implements OnInit {
   constructor(
     public cityService: CityService,
     public buildinKindService: BuildingKindService,
-    public buildingTypeService: BuildingTypeService) { }
+    public buildingTypeService: BuildingTypeService,
+    public roomService: RoomService,
+    public roomTypeService: RoomTypeService) { }
 
   // Возвращает значение контрола географии
   get city() {
@@ -66,7 +73,7 @@ export class CalculatorFormComponent implements OnInit {
 
   // Возвращает наименование комнаты
   get roomName() {
-    return this.form.get('room.roomName');
+    return this.form.get('room.roomName')!;
   }
 
   // Возвращает длину комнаты
@@ -95,7 +102,7 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Возвращает количество людей в комнате
-  get roomPeopleAmount(){
+  get roomPeopleAmount() {
     return this.form.get('room.roomPeopleAmount')!;
   }
 
@@ -104,14 +111,14 @@ export class CalculatorFormComponent implements OnInit {
     this.calculatorForm.cityId = this.city.value;
   }
 
-  
-  onBuildTypeChange(id: number, i: number) {    
+
+  onBuildTypeChange(id: number, i: number) {
     this.buildTypeChecked = i;
     this.calculatorForm.buildingTypeId = id;
   }
 
   isCheckedBuildType(i: number) {
-    if (this.buildTypeChecked == i) {      
+    if (this.buildTypeChecked == i) {
       return true;
     }
     return false;
@@ -129,9 +136,24 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Добавляет помещение к общему списку помещений
-  onSaveRoomClick(){
-    
-    // this.calculatorForm.rooms.push(new Room(0,this.calculatorForm.cityId,this.calculatorForm.buildingTypeId,))
+  onSaveRoomClick() {
+    this.rooms.push(new Room(
+      0,
+      this.calculatorForm.cityId,
+      this.calculatorForm.buildingTypeId,
+      this.form.get('room.roomName')!.value,
+      this.form.get('room.roomNumber')!.value,
+      "",
+      this.form.get('room.roomLength')!.value,
+      this.form.get('room.roomWidth')!.value,
+      this.form.get('room.roomArea')!.value,
+      this.form.get('room.roomHeight')!.value,
+      this.form.get('room.roomFloor')!.value,
+      this.form.get('room.roomPeopleAmount')!.value,
+      0
+    )
+    )
+    console.log(this.rooms);
   }
 
   ngOnInit() {
@@ -151,6 +173,13 @@ export class CalculatorFormComponent implements OnInit {
         () => { console.log(this.buildingKinds) }
       );
 
+    // Возвращает все типы помещений
+    this.roomTypeService.getAll()
+      .subscribe(
+        data => this.roomTypes = data,
+        () => { },
+        () => { console.log(this.roomTypes) }
+      )
 
   }
 

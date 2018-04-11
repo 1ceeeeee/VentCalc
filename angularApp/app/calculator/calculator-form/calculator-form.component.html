@@ -147,11 +147,11 @@
                   formControlName="roomName"
                   class="form-control" 
                   id="roomSelect">
-                  <option value="1">Выберите помещение ...</option>
-                  <option value="2">Тепловой пункт</option>
-                  <option value="3">Насосная масла</option>
-                  <option value="4">Техническое помещение</option>
-                  <option value="5">Станция газового пожарaтоушения</option>
+                  <option value="">Выберите помещение из списка ...</option>
+                  <option
+                    *ngFor="let r of roomTypes"
+                    value="{{ r.id }}"> {{ r.roomTypeName }}
+                  </option>   
                 </select>
               </div>            
             </div>
