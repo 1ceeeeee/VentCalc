@@ -3,7 +3,7 @@
 
 <form [formGroup]="form">
   <!-- География начало -->
-  <div class="row">
+  <div class="row city-section">
     <div class="col-sm-5">
       <div class="form-group">
         <label for="geography" 
@@ -37,7 +37,7 @@
   <!-- География конец -->
 
   <!-- Виды зданий  начало -->
-  <div class="row">
+  <div class="row buldingKind-section">
     <div class="col-sm-5">
       <div class="form-group">        
         <h2>Здания</h2> 
@@ -62,10 +62,8 @@
   </div>
   <!-- Виды зданий конец -->
 
-  <!-- Типы зданий начало -->
-  
-    <div class="row" *ngIf="selectedBuildingKind !== 0">
-      
+  <!-- Типы зданий начало -->  
+    <div class="row buldingType-section" *ngIf="selectedBuildingKind !== 0">      
         <div class="col-sm-5">
           <div 
             class="form-check"
@@ -91,16 +89,14 @@
             role="alert">
             <strong>Ошибка заполнения данных!</strong> Выберите вид здания.
           </div>  
-        </div>
-      
-    </div>
-  
+        </div>      
+    </div>  
   <!-- Типы зданий конец -->
-
-  <h2>Помещения</h2>
+  
   <!-- Добавить помещение начало -->
-  <div class="row">
+  <div class="row rooms-section">    
     <div class="col-sm-5">
+      <h2>Помещения</h2>
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
         Добавить
@@ -232,7 +228,8 @@
   <!-- Добавить помещение конец -->
 
   <!-- Таблица помещений начало -->
-  <div *ngIf="rooms.length > 0">
+  <div class="roomsTable-section" 
+    *ngIf="rooms.length > 0">
     <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -257,4 +254,12 @@
     </table>   
   </div>
   <!-- Таблица помещений конец -->
+
+  <!-- Рассчитать начало -->
+  <div class="row calc-setion">
+    <div class="col-sm-5">
+      <button class="btn btn-primary">Рассчитать</button>
+    </div>    
+  </div>
+  <!-- Рассчитать конец -->
 </form>
