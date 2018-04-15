@@ -15,7 +15,6 @@ namespace VentCalc.Controllers
     {
         private readonly IMapper mapper;
         private readonly IRoomRepository repository;
-        private readonly VentCalcDbContext context;
         public RoomsController(IMapper mapper, IRoomRepository repository)
         {
             this.mapper = mapper;
@@ -42,6 +41,19 @@ namespace VentCalc.Controllers
 
             return Ok(SaveRoomResource);
         }
+
+        [HttpPost]
+         public IActionResult CreateRoom ([FromBody] SaveRoomResource saveRoomResource) 
+         {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var room = mapper.Map<SaveRoomResource, Room>(saveRoomResource);
+
+            room = repository.CreateRoom(room);
+
+            return Ok(room);
+         }
 
     }
 }

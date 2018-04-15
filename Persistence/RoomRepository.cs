@@ -28,5 +28,12 @@ namespace VentCalc.Persistence
                 .Include(r => r.RoomType)
                 .SingleOrDefaultAsync(r => r.Id == id);
         }        
+
+        public Room CreateRoom(Room room)
+        {
+            context.Rooms.Add(room);
+            context.SaveChanges();
+            return room;
+        }
     }
 }
