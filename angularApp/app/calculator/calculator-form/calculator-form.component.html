@@ -95,7 +95,7 @@
   
   <!-- Добавить помещение начало -->
   <div class="row rooms-section">    
-    <div class="col-sm-5">
+    <div class="col-sm-3">
       <h2>Помещения</h2>
       <!-- Button trigger modal -->
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
@@ -231,7 +231,7 @@
   <div class="roomsTable-section" 
     *ngIf="rooms.length > 0">
     <table class="table">
-      <thead class="thead-dark">
+      <thead class="thead-light">
         <tr>
           <th scope="col">№</th>
           <th scope="col">Наименование</th>
@@ -258,7 +258,11 @@
   <!-- Рассчитать начало -->
   <div class="row calc-setion">
     <div class="col-sm-5">
-      <button class="btn btn-primary">Рассчитать</button>
+      <button 
+        class="btn btn-primary"
+        (click)="onCalculateProject()">
+        Рассчитать
+      </button>
     </div>    
   </div>
   <!-- Рассчитать конец -->
