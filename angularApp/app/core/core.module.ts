@@ -7,12 +7,14 @@ import { ThingService } from './services/thing-data.service';
 import { BuildingTypeService } from './services/building-type.service';
 import { CityService } from './services/city.service';
 import { RoomTypeService } from './services/room-type.service';
+import { ProjectService } from './services/project.service';
 // import { DataService } from './services/data.service';
 
 @NgModule({
     imports: [
         CommonModule
-    ]
+    ],
+    providers: [ProjectService]
 })
 
 export class CoreModule {
@@ -27,6 +29,7 @@ export class CoreModule {
                 BuildingKindService,
                 RoomService,
                 RoomTypeService,
+                ProjectService,
                 Configuration
             ]
         };

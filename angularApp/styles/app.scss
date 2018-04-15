@@ -1,10 +1,3 @@
-*,
-*::after,
-*::before {
-    padding: 0%;
-    padding: 0%;
-    box-sizing: inherit
-}
 
 a {
     color: #03A9F4;
@@ -16,7 +9,9 @@ body {
     line-height: 1.7;    
     // padding: 3rem;    
 }
-
+.navbar {
+    padding: 0rem 3rem;
+}
 .calc-setion {
     margin-top: 1rem;
 }
@@ -44,3 +39,4 @@ body {
 .roomsTable-section {
     margin-top: 1rem;
 }
+

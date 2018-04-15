@@ -1,3 +1,4 @@
+import { Project } from './../../models/project';
 import { RoomType } from './../../models/roomType';
 import { RoomService } from './../../core/services/room.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,6 +12,7 @@ import { Room } from '../../models/room';
 import { BuildingTypeService } from '../../core/services/building-type.service';
 import { CityService } from '../../core/services/city.service';
 import { RoomTypeService } from '../../core/services/room-type.service';
+import { ProjectService } from '../../core/services/project.service';
 
 
 @Component({
@@ -22,10 +24,10 @@ export class CalculatorFormComponent implements OnInit {
   buildingTypes: BuildingType[] = [];
   calculatorForm: CalculatorForm = new CalculatorForm();
   buildingKinds: BuildingKind[] = [];
-  //room: Room = new Room();
   rooms: Room[] = [];
   roomTypes: RoomType[] = [];
   buildTypeChecked: number = -1;
+  project: Project = new Project();
 
 
   form = new FormGroup({
@@ -49,7 +51,8 @@ export class CalculatorFormComponent implements OnInit {
     public buildinKindService: BuildingKindService,
     public buildingTypeService: BuildingTypeService,
     public roomService: RoomService,
-    public roomTypeService: RoomTypeService) { }
+    public roomTypeService: RoomTypeService,
+    public projectService: ProjectService) { }
 
   // Возвращает значение контрола географии
   get city() {
@@ -137,23 +140,37 @@ export class CalculatorFormComponent implements OnInit {
 
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
+    var roomTypeName = this.roomTypes
+      .filter( rt => rt.id == this.form.get('room.roomName')!
+      .value)[0].roomTypeName;   
     this.rooms.push(new Room(
       0,
       this.calculatorForm.cityId,
-      this.calculatorForm.buildingTypeId,
-      this.form.get('room.roomName')!.value,
+      this.calculatorForm.buildingTypeId,  
+      this.form.get('room.roomName')!.value,      
       this.form.get('room.roomNumber')!.value,
-      "",
+      roomTypeName,
       this.form.get('room.roomLength')!.value,
       this.form.get('room.roomWidth')!.value,
       this.form.get('room.roomArea')!.value,
       this.form.get('room.roomHeight')!.value,
       this.form.get('room.roomFloor')!.value,
       this.form.get('room.roomPeopleAmount')!.value,
-      0
-    )
+      0)
     )
     console.log(this.rooms);
+  }
+
+  onCalculateProject(){
+    console.log(this.rooms);
+    this.project.rooms = this.rooms;
+
+    this.projectService.Add(this.project)
+      .subscribe(
+        data => this.project = data,
+        () => { },
+        () => { console.log(this.project)}
+      );
   }
 
   ngOnInit() {
