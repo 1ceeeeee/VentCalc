@@ -20,28 +20,28 @@ namespace VentCalc.Persistence
             return project.Id;
         }
 
-        public void CalculateProject(int id)
-        {
-            var project = context.Projects
-            .Include(p => p.Rooms)
-                .ThenInclude(r => r.City)
-            .Include(p => p.Rooms)
-                .ThenInclude(r => r.BuildingType)
-            .Include(p => p.Rooms)
-                .ThenInclude(r => r.RoomType)
-            .Where(p => p.Id == id)
-            .FirstOrDefault();
+        // public void CalculateProject(int id)
+        // {
+        //     var project = context.Projects
+        //     .Include(p => p.Rooms)
+        //         .ThenInclude(r => r.City)
+        //     .Include(p => p.Rooms)
+        //         .ThenInclude(r => r.BuildingType)
+        //     .Include(p => p.Rooms)
+        //         .ThenInclude(r => r.RoomType)
+        //     .Where(p => p.Id == id)
+        //     .FirstOrDefault();
 
-            foreach (var item in project.Rooms)
-            {
-                item.Area = (item.Area != null ) ? item.Area : item.Length * item.Width;
-                item.Volume = item.Area * item.Height;
-                item.InflowCalc = item.Volume * item.RoomType.Inflow;
-                item.ExhaustCalc = item.Volume * item.RoomType.Exhaust;   
-            }
-            context.Projects.Update(project);
-            context.SaveChanges();
-        } 
+        //     foreach (var item in project.Rooms)
+        //     {
+        //         item.Area = (item.Area != null ) ? item.Area : item.Length * item.Width;
+        //         item.Volume = item.Area * item.Height;
+        //         item.InflowCalc = item.Volume * item.RoomType.Inflow;
+        //         item.ExhaustCalc = item.Volume * item.RoomType.Exhaust;   
+        //     }
+        //     context.Projects.Update(project);
+        //     context.SaveChanges();
+        // } 
 
         public async Task<Project> GetSingle(int id)
         {
