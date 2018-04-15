@@ -1,9 +1,9 @@
-<p>{{ form.value | json}}</p>
-<p>{{ calculatorForm | json}}</p>
+<!-- <p>{{ form.value | json}}</p>
+<p>{{ calculatorForm | json}}</p> -->
 
 <form [formGroup]="form">
   <!-- География начало -->
-  <div class="row">
+  <div class="row city-section">
     <div class="col-sm-5">
       <div class="form-group">
         <label for="geography" 
@@ -37,7 +37,7 @@
   <!-- География конец -->
 
   <!-- Виды зданий  начало -->
-  <div class="row">
+  <div class="row buldingKind-section">
     <div class="col-sm-5">
       <div class="form-group">        
         <h2>Здания</h2> 
@@ -62,162 +62,163 @@
   </div>
   <!-- Виды зданий конец -->
 
-  <!-- Типы зданий начало -->
-  <div *ngIf="selectedBuildingKind !== 0">
-    <div class="row">
-      <div class="col-sm-5">
-        <div 
-          class="form-check"
-          *ngFor="let type of buildingTypes; let i=index">
-          <input 
-            formControlName="buildingType"
-            class="form-check-input" 
-            type="radio" 
-            name="buildingType" 
-            id="typeRadio {{ type.id }}" 
-            value="type.id"            
-            (change)="onBuildTypeChange(type.id, i)"
-            [checked]="isCheckedBuildType(i)">
-          <label 
-            class="form-check-label" 
-            for="typeRadio {{ type.id }}">
-            {{ type.buildingTypeName }}
-          </label>
-        </div>
-        <div 
-          *ngIf="buildType.touched && buildType.invalid" 
-          class="alert alert-danger alert-dismissible fade show" 
-          role="alert">
-          <strong>Ошибка заполнения данных!</strong> Выберите вид здания.
-        </div>  
-      </div>
-    </div>
-  </div>
-  <!-- Типы зданий конец -->
-
-  <!-- Добавить помещение начало -->
-  <div>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
-      Добавить
-    </button>
-
-    <!-- Modal -->
-    <div 
-      class="modal fade" 
-      id="roomAdd" 
-      tabindex="-1" 
-      role="dialog" 
-      aria-labelledby="roomAddTitle" 
-      aria-hidden="true">
-      <div 
-        class="modal-dialog modal-dialog-centered" 
-        role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" 
-              id="exampleModalLongTitle">
-              Добавить помещение
-            </h5>
-            <button 
-              type="button" 
-              class="close" 
-              data-dismiss="modal" 
-              aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+  <!-- Типы зданий начало -->  
+    <div class="row buldingType-section" *ngIf="selectedBuildingKind !== 0">      
+        <div class="col-sm-5">
+          <div 
+            class="form-check"
+            *ngFor="let type of buildingTypes; let i=index">
+            <input 
+              formControlName="buildingType"
+              class="form-check-input" 
+              type="radio" 
+              name="buildingType" 
+              id="typeRadio {{ type.id }}" 
+              value="type.id"            
+              (change)="onBuildTypeChange(type.id, i)"
+              [checked]="isCheckedBuildType(i)">
+            <label 
+              class="form-check-label" 
+              for="typeRadio {{ type.id }}">
+              {{ type.buildingTypeName }}
+            </label>
           </div>
-          <div formGroupName="room">
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputRoomNumber">№ помещения</label>
-                <input 
-                  formControlName="roomNumber"
-                  type="number" 
-                  min="0"
-                  class="form-control" 
-                  id="inputRoomNumber" 
-                  placeholder="0">
-              </div>
-            </div>
-            <div class="modal-body">        
-              <div class="form-group">
-                <label for="roomSelect">Помещение</label>
-                <select 
-                  formControlName="roomName"
-                  class="form-control" 
-                  id="roomSelect">
-                  <option value="1">Выберите помещение ...</option>
-                  <option value="2">Тепловой пункт</option>
-                  <option value="3">Насосная масла</option>
-                  <option value="4">Техническое помещение</option>
-                  <option value="5">Станция газового пожарaтоушения</option>
-                </select>
-              </div>            
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputSquare">Площадь, м2</label>
-                <input 
-                formControlName="roomArea"
-                  type="number" 
-                  step="10"
-                  min="0"
-                  class="form-control" 
-                  id="inputSquare" 
-                  placeholder="0">
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputSquare">Высота, мм</label>
-                <input 
-                  formControlName="roomHeight"
-                  type="number" 
-                  step="10"
-                  min="0"
-                  class="form-control" 
-                  id="inputSquare" 
-                  placeholder="0">
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputSquare">Этаж</label>
-                <input 
-                  formControlName="roomFloor"
-                  type="number"               
-                  class="form-control" 
-                  id="inputSquare" 
-                  placeholder="0">
-              </div>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="inputSquare">Кол-во людей</label>
-                <input 
-                  formControlName="roomPeopleAmount"
-                  type="number"    
-                  min="0"           
-                  class="form-control" 
-                  id="inputSquare" 
-                  placeholder="0">
-              </div>
-            </div>
-            <div class="modal-footer">
+          <div 
+            *ngIf="buildType.touched && buildType.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка заполнения данных!</strong> Выберите вид здания.
+          </div>  
+        </div>      
+    </div>  
+  <!-- Типы зданий конец -->
+  
+  <!-- Добавить помещение начало -->
+  <div class="row rooms-section">    
+    <div class="col-sm-5">
+      <h2>Помещения</h2>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
+        Добавить
+      </button>
+
+      <!-- Modal -->
+      <div 
+        class="modal fade" 
+        id="roomAdd" 
+        tabindex="-1" 
+        role="dialog" 
+        aria-labelledby="roomAddTitle" 
+        aria-hidden="true">
+        <div 
+          class="modal-dialog modal-dialog-centered" 
+          role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" 
+                id="exampleModalLongTitle">
+                Добавить помещение
+              </h5>
               <button 
                 type="button" 
-                class="btn btn-secondary" 
-                data-dismiss="modal">
-                Отмена
+                class="close" 
+                data-dismiss="modal" 
+                aria-label="Close">
+                <span aria-hidden="true">&times;</span>
               </button>
-              <button 
-                type="button" 
-                data-dismiss="modal"
-                (click)="onSaveRoomClick()"
-                class="btn btn-primary">                            
-                Сохранить
-              </button>
+            </div>
+            <div formGroupName="room">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="inputRoomNumber">№ помещения</label>
+                  <input 
+                    formControlName="roomNumber"
+                    type="number" 
+                    min="0"
+                    class="form-control" 
+                    id="inputRoomNumber" 
+                    placeholder="0">
+                </div>
+              </div>
+              <div class="modal-body">        
+                <div class="form-group">
+                  <label for="roomSelect">Помещение</label>
+                  <select 
+                    formControlName="roomName"
+                    class="form-control" 
+                    id="roomSelect">
+                    <option value="">Выберите помещение из списка ...</option>
+                    <option
+                      *ngFor="let r of roomTypes"
+                      value="{{ r.id }}"> {{ r.roomTypeName }}
+                    </option>   
+                  </select>
+                </div>            
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="inputSquare">Площадь, м2</label>
+                  <input 
+                  formControlName="roomArea"
+                    type="number" 
+                    step="10"
+                    min="0"
+                    class="form-control" 
+                    id="inputSquare" 
+                    placeholder="0">
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="inputSquare">Высота, мм</label>
+                  <input 
+                    formControlName="roomHeight"
+                    type="number" 
+                    step="10"
+                    min="0"
+                    class="form-control" 
+                    id="inputSquare" 
+                    placeholder="0">
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="inputSquare">Этаж</label>
+                  <input 
+                    formControlName="roomFloor"
+                    type="number"               
+                    class="form-control" 
+                    id="inputSquare" 
+                    placeholder="0">
+                </div>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="inputSquare">Кол-во людей</label>
+                  <input 
+                    formControlName="roomPeopleAmount"
+                    type="number"    
+                    min="0"           
+                    class="form-control" 
+                    id="inputSquare" 
+                    placeholder="0">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button 
+                  type="button" 
+                  class="btn btn-secondary" 
+                  data-dismiss="modal">
+                  Отмена
+                </button>
+                <button 
+                  type="button" 
+                  data-dismiss="modal"
+                  (click)="onSaveRoomClick()"
+                  class="btn btn-primary">                            
+                  Сохранить
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -226,4 +227,39 @@
   </div>
   <!-- Добавить помещение конец -->
 
+  <!-- Таблица помещений начало -->
+  <div class="roomsTable-section" 
+    *ngIf="rooms.length > 0">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">№</th>
+          <th scope="col">Наименование</th>
+          <th scope="col">Площадь м2</th>
+          <th scope="col">Высота</th>
+          <th scope="col">Этаж</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of rooms; let i=index">
+          <th scope="row">{{ r.roomNumber }}</th>
+          <td>{{ r.roomName }}</td>
+          <td>{{ r.area }}</td>
+          <td>{{ r.height }}</td>
+          <td>{{ r.floor }}</td>
+          <td></td>
+        </tr>        
+      </tbody>
+    </table>   
+  </div>
+  <!-- Таблица помещений конец -->
+
+  <!-- Рассчитать начало -->
+  <div class="row calc-setion">
+    <div class="col-sm-5">
+      <button class="btn btn-primary">Рассчитать</button>
+    </div>    
+  </div>
+  <!-- Рассчитать конец -->
 </form>

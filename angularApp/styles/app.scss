@@ -1,3 +1,46 @@
+*,
+*::after,
+*::before {
+    padding: 0%;
+    padding: 0%;
+    box-sizing: inherit
+}
+
 a {
     color: #03A9F4;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;    
+    // padding: 3rem;    
+}
+
+.calc-setion {
+    margin-top: 1rem;
+}
+
+.rooms-section {
+    margin-top: 1rem;
+}
+
+.bulding-section {
+    margin-top: 1rem;
+}
+
+.city-section {
+    margin-top: 1rem;
+}
+
+.buldingType-section {
+    margin-top: 1rem;
+}
+
+.buldingKind-section {
+    margin-top: 1rem;
+}
+
+.roomsTable-section {
+    margin-top: 1rem;
 }
