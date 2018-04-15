@@ -1,16 +1,11 @@
-using VentCalc.Models;
-
 namespace VentCalc.Controllers.Resources
 {
-    public class RoomResource
+    public class SaveRoomResource
     {
         public int Id { get; set; }
         public int CityId { get; set; }
-        public CityResource City { get; set; }
         public int BuildingTypeId { get; set; }
-        public BuildingTypeResource BuildingType { get; set; }
         public int RoomTypeId { get; set; }
-        public RoomTypeResource RoomType { get; set; }
         public int? RoomNumber { get; set; }
         public string RoomName { get; set; }
         public double? Length { get; set; }
@@ -21,9 +16,6 @@ namespace VentCalc.Controllers.Resources
         public int? PeopleAmount { get; set; }
         public int? UserId { get; set; }
         public int ProjectId { get; set; }
-        public double? Volume { get; set; }
-        public double? InflowCalc { get; set; } 
-        public double? ExhaustCalc { get; set; } 
 
     }
 }
