@@ -144,6 +144,24 @@ export class CalculatorFormComponent implements OnInit {
       .filter(rt => rt.id == this.form.get('room.roomName')!
         .value)[0]
       .roomTypeName;
+    var rm = new Room(
+      0,
+      this.calculatorForm.cityId,
+      this.calculatorForm.buildingTypeId,
+      this.form.get('room.roomName')!.value,
+      this.form.get('room.roomNumber')!.value,
+      roomTypeName,
+      this.form.get('room.roomLength')!.value,
+      this.form.get('room.roomWidth')!.value,
+      this.form.get('room.roomArea')!.value,
+      this.form.get('room.roomHeight')!.value,
+      this.form.get('room.roomFloor')!.value,
+      this.form.get('room.roomPeopleAmount')!.value,
+      0,
+      0);
+
+    console.log(rm);
+
     this.roomService.add(new Room(
       0,
       this.calculatorForm.cityId,
@@ -157,7 +175,8 @@ export class CalculatorFormComponent implements OnInit {
       this.form.get('room.roomHeight')!.value,
       this.form.get('room.roomFloor')!.value,
       this.form.get('room.roomPeopleAmount')!.value,
-      0))
+      0,
+      this.project.id))
       .subscribe(
         () => {
           this.getAllRooms()

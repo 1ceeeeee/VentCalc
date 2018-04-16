@@ -12,5 +12,6 @@ export class Room {
         public height: number = 0,
         public floor: number = 0,
         public peopleAmount: number = 0,    
-        public userId: number = 0 ){ }
+        public userId: number = 0,
+        public projectId: number = 0){ }
 }
