@@ -141,13 +141,14 @@ export class CalculatorFormComponent implements OnInit {
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
     var roomTypeName = this.roomTypes
-      .filter( rt => rt.id == this.form.get('room.roomName')!
-      .value)[0].roomTypeName;   
-    this.rooms.push(new Room(
+      .filter(rt => rt.id == this.form.get('room.roomName')!
+        .value)[0]
+      .roomTypeName;
+    var rm = new Room(
       0,
       this.calculatorForm.cityId,
-      this.calculatorForm.buildingTypeId,  
-      this.form.get('room.roomName')!.value,      
+      this.calculatorForm.buildingTypeId,
+      this.form.get('room.roomName')!.value,
       this.form.get('room.roomNumber')!.value,
       roomTypeName,
       this.form.get('room.roomLength')!.value,
@@ -156,24 +157,96 @@ export class CalculatorFormComponent implements OnInit {
       this.form.get('room.roomHeight')!.value,
       this.form.get('room.roomFloor')!.value,
       this.form.get('room.roomPeopleAmount')!.value,
-      0)
-    )
-    console.log(this.rooms);
+      0,
+      0);
+
+    console.log(rm);
+
+    this.roomService.add(new Room(
+      0,
+      this.calculatorForm.cityId,
+      this.calculatorForm.buildingTypeId,
+      this.form.get('room.roomName')!.value,
+      this.form.get('room.roomNumber')!.value,
+      roomTypeName,
+      this.form.get('room.roomLength')!.value,
+      this.form.get('room.roomWidth')!.value,
+      this.form.get('room.roomArea')!.value,
+      this.form.get('room.roomHeight')!.value,
+      this.form.get('room.roomFloor')!.value,
+      this.form.get('room.roomPeopleAmount')!.value,
+      0,
+      this.project.id))
+      .subscribe(
+        () => {
+          this.getAllRooms()
+        },
+        () => { },
+        () => {
+          console.log(this.rooms)
+        }
+      );
+
+    // var roomTypeName = this.roomTypes
+    //   .filter( rt => rt.id == this.form.get('room.roomName')!
+    //   .value)[0].roomTypeName;   
+    // this.rooms.push(new Room(
+    //   0,
+    //   this.calculatorForm.cityId,
+    //   this.calculatorForm.buildingTypeId,  
+    //   this.form.get('room.roomName')!.value,      
+    //   this.form.get('room.roomNumber')!.value,
+    //   roomTypeName,
+    //   this.form.get('room.roomLength')!.value,
+    //   this.form.get('room.roomWidth')!.value,
+    //   this.form.get('room.roomArea')!.value,
+    //   this.form.get('room.roomHeight')!.value,
+    //   this.form.get('room.roomFloor')!.value,
+    //   this.form.get('room.roomPeopleAmount')!.value,
+    //   0)
+    // )
+    // console.log(this.rooms);
   }
 
-  onCalculateProject(){
-    console.log(this.rooms);
+  // Делает рассчет проекта
+  onCalculateProject() {
     this.project.rooms = this.rooms;
+    this.projectService.Add(this.project)
+      .subscribe(
+        data => this.project = data,
+        () => { },
+        () => { console.log(this.project) }
+      );
+  }
+
+  // Возвращает все помещения из БД
+  private getAllRooms() {
+    this.roomService.getAll()
+      .subscribe(
+        data => this.rooms = data,
+        () => { },
+        () => { console.log(this.rooms) }
+      )
+  }
+
+  // Создает проект
+  private createProject() {
+    this.project.id = 0;
+    this.project.projectName = "";
 
     this.projectService.Add(this.project)
       .subscribe(
         data => this.project = data,
         () => { },
-        () => { console.log(this.project)}
-      );
+        () => { console.log(this.project) }
+      )
   }
 
   ngOnInit() {
+
+    // Создает проект
+    this.createProject();
+
     // Возвращает все географии городов из бд
     this.cityService.getAll()
       .subscribe(
