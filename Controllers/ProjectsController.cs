@@ -32,14 +32,14 @@ namespace VentCalc.Controllers
             return Ok(project);
          }
         
-        [HttpPost("{id}")]
-         public IActionResult CalculateProject (int id) 
-         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            repository.CalculateProject(id);
-            return Ok();
-         }
+        // [HttpPost("{id}")]
+        //  public IActionResult CalculateProject (int id) 
+        //  {
+        //     if (!ModelState.IsValid)
+        //         return BadRequest(ModelState);
+        //     repository.CalculateProject(id);
+        //     return Ok();
+        //  }
         
 
         [HttpGet("{id}")]
