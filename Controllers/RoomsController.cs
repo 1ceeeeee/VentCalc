@@ -29,6 +29,15 @@ namespace VentCalc.Controllers
             return mapper.Map<List<Room>, List<RoomResource>>(rooms);
         }
 
+        [HttpGet]
+        [Route("~/api/Projects/{projectId:int}/Rooms")]
+        public async Task<IEnumerable<RoomResource>> ReadAll(int projectId)
+        {
+            var rooms = await repository.ReadAll(projectId);
+
+            return mapper.Map<List<Room>, List<RoomResource>>(rooms);
+        }        
+
         [HttpGet("{id}")]
         public async Task<IActionResult> ReadSingle(int id)
         {
@@ -43,20 +52,20 @@ namespace VentCalc.Controllers
         }
 
         [HttpPost]
-         public async Task<IActionResult> CreateRoom ([FromBody] SaveRoomResource saveRoomResource) 
+         public async Task<IActionResult> Create ([FromBody] SaveRoomResource saveRoomResource) 
          {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             var room = mapper.Map<SaveRoomResource, Room>(saveRoomResource);
-            room = await repository.CreateRoom(room);
+            room = await repository.Create(room);
             var roomResource = mapper.Map<Room, RoomResource>(room);
 
             return Ok(roomResource);
          }
 
          [HttpPut("{id}")]
-         public async Task<IActionResult> UpdateRoomAsync (int id, [FromBody] SaveRoomResource saveRoomResource) 
+         public async Task<IActionResult> Update (int id, [FromBody] SaveRoomResource saveRoomResource) 
          {
 
             if (!ModelState.IsValid)
@@ -68,14 +77,14 @@ namespace VentCalc.Controllers
                 return NotFound();
 
             mapper.Map<SaveRoomResource, Room>(saveRoomResource, room);
-            room = await repository.UpdateRoom(room);
+            room = await repository.Update(room);
             var roomResource = mapper.Map<Room, RoomResource>(room);
 
             return Ok(roomResource);
          }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteRoom(int id)
+        public IActionResult Delete(int id)
         {
 
             var room = repository.ReadSingle(id);
@@ -83,7 +92,7 @@ namespace VentCalc.Controllers
             if (room == null)
                 return NotFound();
 
-            repository.DeleteRoom(id);
+            repository.Delete(id);
 
             return Ok(id);
         }

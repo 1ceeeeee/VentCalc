@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -13,12 +14,42 @@ namespace VentCalc.Persistence
             this.context = context;
         }
 
-        public int CreateProject(Project project) 
+         public async Task<List<Project>> ReadAll()
+         {
+            return await context.Projects.ToListAsync();
+         }
+
+        public async Task<Project> ReadSingle(int id)
         {
+            return await context.Projects
+                .Where(p => p.Id == id)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<Project> Create(Project project)
+        {   
             context.Projects.Add(project);
             context.SaveChanges();
-            return project.Id;
+            return await context.Projects.FirstOrDefaultAsync(r => r.Id == project.Id);
         }
+
+        public async Task<Project> Update(Project project)
+        {
+            context.Projects.Update(project);
+            context.SaveChanges();
+            return await context.Projects.FirstOrDefaultAsync(r => r.Id == project.Id);
+        }
+
+        public void Delete(int id)
+        {
+            var project = context.Projects.FirstOrDefault(r => r.Id == id);
+            context.Projects.Remove(project);
+            context.SaveChanges();
+        }        
+
+
+
+
 
         // public void CalculateProject(int id)
         // {
@@ -43,17 +74,6 @@ namespace VentCalc.Persistence
         //     context.SaveChanges();
         // } 
 
-        public async Task<Project> GetSingle(int id)
-        {
-            return await context.Projects
-                .Include(p => p.Rooms)
-                    .ThenInclude(r => r.City)
-                .Include(p => p.Rooms)
-                    .ThenInclude(r => r.BuildingType)
-                .Include(p => p.Rooms)
-                    .ThenInclude(r => r.RoomType)
-                .Where(p => p.Id == id)
-                .FirstOrDefaultAsync();
-        }
+
     }
 }

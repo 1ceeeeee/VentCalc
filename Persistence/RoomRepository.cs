@@ -20,6 +20,13 @@ namespace VentCalc.Persistence
             return await context.Rooms.ToListAsync();
         }        
 
+        public async Task<List<Room>> ReadAll(int projectId) 
+        {
+            return await context.Rooms
+                .Where(r => r.ProjectId == projectId)
+                .ToListAsync();
+        }             
+
         public async Task<Room> ReadSingle(int id)
         {
             return await context.Rooms
@@ -29,21 +36,21 @@ namespace VentCalc.Persistence
                 .SingleOrDefaultAsync(r => r.Id == id);
         }        
 
-        public async Task<Room> CreateRoom(Room room)
+        public async Task<Room> Create(Room room)
         {   
             context.Rooms.Add(room);
             context.SaveChanges();
             return await context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
         }
 
-        public async Task<Room> UpdateRoom(Room room)
+        public async Task<Room> Update(Room room)
         {
             context.Rooms.Update(room);
             context.SaveChanges();
             return await context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
         }
 
-        public void DeleteRoom(int id)
+        public void Delete(int id)
         {
             var room = context.Rooms.FirstOrDefault(r => r.Id == id);
             context.Rooms.Remove(room);
