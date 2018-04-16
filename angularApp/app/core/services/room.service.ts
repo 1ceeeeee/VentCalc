@@ -23,9 +23,9 @@ export class RoomService {
     return this.http.get<Room[]>(this.actionUrl, { headers: this.headers });
   }
 
-  add(roomsToAdd: Room): Observable<Room> {
+  add(roomToAdd: Room): Observable<Room> {
     console.log(this.actionUrl);
-    return this.http.post<Room>(this.actionUrl, roomsToAdd, {headers: this.headers});
+    return this.http.post<Room>(this.actionUrl, roomToAdd, {headers: this.headers});
   }
 
 }
