@@ -21,7 +21,6 @@ namespace VentCalc.Controllers
             this.repository = repository;
         }
 
-
         [HttpGet]
         public async Task<IEnumerable<ProjectResource>> ReadAll()
         {
@@ -89,9 +88,19 @@ namespace VentCalc.Controllers
             return Ok(id);
         }
 
+        [HttpGet]
+        [Route("~/api/Projects/{id:int}/AirExchange")]
+        public async Task<IActionResult> ReadAirExchange(int id)
+        {
+            var project = await repository.ReadSingle(id);
 
+            if (project == null)
+                return NotFound();
 
+            var airExchangeProject = repository.ReadAirExchange(id);
 
+            return Ok(airExchangeProject);
+        }
 
 
 

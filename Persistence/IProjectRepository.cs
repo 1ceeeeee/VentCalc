@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using VentCalc.Controllers.Resources;
 using VentCalc.Models;
 
 namespace VentCalc.Persistence
@@ -11,5 +12,6 @@ namespace VentCalc.Persistence
          Task<Project> Create(Project project);
          Task<Project> Update(Project project);
          void Delete(int id);
+         AirExchangeProjectResource ReadAirExchange(int id);
     }
 }
