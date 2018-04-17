@@ -49,12 +49,7 @@ namespace VentCalc.Models
         [Description("ИД проекта")]
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-        [Description("Объем")]
-        public double? Volume { get; set; }
-        [Description("Приток (расчёт)")]
-        public double? InflowCalc { get; set; } 
-        [Description("Вытяжка (расчёт)")]
-        public double? ExhaustCalc { get; set; } 
+
     }
 
 }
