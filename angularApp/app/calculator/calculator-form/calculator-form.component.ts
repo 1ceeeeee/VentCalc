@@ -229,6 +229,17 @@ export class CalculatorFormComponent implements OnInit {
       )
   }
 
+  onDeleteRoomClick(id: number) {
+    this.roomService.delete(id)
+      .subscribe(
+        () => {
+          this.getAllRooms();
+        },
+        () => { },
+        () => { console.log("deleted room " + id) }
+      );
+  }
+
   // Создает проект
   private createProject() {
     this.project.id = 0;

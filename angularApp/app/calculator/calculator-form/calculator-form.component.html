@@ -248,7 +248,14 @@
           <td>{{ r.area }}</td>
           <td>{{ r.height }}</td>
           <td>{{ r.floor }}</td>
-          <td></td>
+          <td>
+            <button 
+              type="button" 
+              class="btn btn-primary btn-sm"
+              (click)="onDeleteRoomClick(r.id)">
+              Удалить
+            </button>
+          </td>
         </tr>        
       </tbody>
     </table>   

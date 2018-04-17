@@ -28,4 +28,8 @@ export class RoomService {
     return this.http.post<Room>(this.actionUrl, roomToAdd, {headers: this.headers});
   }
 
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(this.actionUrl + id, { headers: this.headers });
+  }
+
 }
