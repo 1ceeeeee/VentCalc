@@ -25,11 +25,15 @@ export class RoomService {
 
   add(roomToAdd: Room): Observable<Room> {
     console.log(this.actionUrl);
-    return this.http.post<Room>(this.actionUrl, roomToAdd, {headers: this.headers});
+    return this.http.post<Room>(this.actionUrl, roomToAdd, { headers: this.headers });
   }
 
   delete(id: number): Observable<any> {
     return this.http.delete<any>(this.actionUrl + id, { headers: this.headers });
+  }
+
+  getById(id: number): Observable<Room> {
+    return this.http.get<Room>(this.actionUrl + id, { headers: this.headers });
   }
 
 }

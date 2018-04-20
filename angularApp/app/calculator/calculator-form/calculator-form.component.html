@@ -238,12 +238,12 @@
           <th scope="col">Площадь м2</th>
           <th scope="col">Высота</th>
           <th scope="col">Этаж</th>
-          <th scope="col"></th>
+          <th scope="col"> </th>          
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let r of rooms; let i=index">
-          <th scope="row">{{ r.roomNumber }}</th>
+          <td scope="row">{{ r.roomNumber }}</td>
           <td>{{ r.roomName }}</td>
           <td>{{ r.area }}</td>
           <td>{{ r.height }}</td>
@@ -255,7 +255,21 @@
               (click)="onDeleteRoomClick(r.id)">
               Удалить
             </button>
-          </td>
+            <button 
+              type="button" 
+              class="btn btn-primary btn-sm"
+              data-toggle="modal" data-target="#roomAdd"
+              (click)="initRoom(r.id, true)">
+              Копировать
+            </button>  
+            <button 
+              type="button" 
+              class="btn btn-primary btn-sm"
+              data-toggle="modal" data-target="#roomAdd"
+              (click)="initRoom(r.id)">
+              Изменить
+            </button>           
+          </td>         
         </tr>        
       </tbody>
     </table>   
