@@ -75,10 +75,10 @@ namespace VentCalc.Controllers
          }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 
-            var project = repository.ReadSingle(id);
+            var project = await repository.ReadSingle(id);
 
             if (project == null)
                 return NotFound();
@@ -101,55 +101,5 @@ namespace VentCalc.Controllers
 
             return Ok(airExchangeProject);
         }
-
-
-
-
-
-
-
-
-
-
-
-        // [HttpGet("{id}")]
-        // public async Task<IActionResult> ReadSingle(int id)
-        // {
-        //     var project = await repository.ReadSingle(id);
-
-        //     if (project == null)
-        //         return NotFound();
-
-        //     var projectResource = mapper.Map<Project, ProjectResource>(project);
-
-        //     return Ok(projectResource);
-        // }
-
-        // [HttpPost]
-        //  public async Task<IActionResult> CreateProject ([FromBody] ProjectResource projectResource) 
-        //  {
-
-        //     if (!ModelState.IsValid)
-        //         return BadRequest(ModelState);
-
-        //     var project = mapper.Map<SaveProjectResource, Project>(saveProjectResource);
-        //     project = await repository.CreateProject(project);
-        //     var projectResource = mapper.Map<Project, ProjectResource>(project);
-
-        //     return Ok(projectResource);
-
-        //  }
-        
-        // [HttpPost("{id}")]
-        //  public IActionResult CalculateProject (int id) 
-        //  {
-        //     if (!ModelState.IsValid)
-        //         return BadRequest(ModelState);
-        //     repository.CalculateProject(id);
-        //     return Ok();
-        //  }
-    
-
-
     }
 }

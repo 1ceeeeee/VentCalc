@@ -84,10 +84,10 @@ namespace VentCalc.Controllers
          }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
 
-            var room = repository.ReadSingle(id);
+            var room =  await repository.ReadSingle(id);
 
             if (room == null)
                 return NotFound();
