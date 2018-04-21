@@ -32,6 +32,10 @@ export class RoomService {
     return this.http.delete<any>(this.actionUrl + id, { headers: this.headers });
   }
 
+  update(id: number, roomToUpdate: Room): Observable<Room> {
+    return this.http.put<Room>(this.actionUrl + id, roomToUpdate, { headers: this.headers });
+  }
+
   getById(id: number): Observable<Room> {
     return this.http.get<Room>(this.actionUrl + id, { headers: this.headers });
   }

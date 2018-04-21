@@ -27,7 +27,8 @@ export class CalculatorFormComponent implements OnInit {
   rooms: Room[] = [];
   roomTypes: RoomType[] = [];
   buildTypeChecked: number = -1;
-  project: Project = new Project();  
+  project: Project = new Project();
+  projectId: number = 0;
   initedIdRoom: number = 0;
 
 
@@ -140,11 +141,12 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Добавляет помещение к общему списку помещений
-  onSaveRoomClick() {    
+  onSaveRoomClick() {
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
         .value)[0]
       .roomTypeName;
+
     var rm = new Room(
       this.initedIdRoom,
       this.calculatorForm.cityId,
@@ -159,34 +161,35 @@ export class CalculatorFormComponent implements OnInit {
       this.form.get('room.roomFloor')!.value,
       this.form.get('room.roomPeopleAmount')!.value,
       0,
-      0);
+      this.projectId);
 
     console.log(rm);
+    console.log(this.initedIdRoom);
+    if (this.initedIdRoom == 0) {
+      this.roomService.add(rm)
+        .subscribe(
+          () => {
+            this.getAllRooms()
+          },
+          () => { },
+          () => {
+            console.log(this.rooms)
+          }
+        );
+    } else {
+      this.roomService.update(this.initedIdRoom, rm)
+        .subscribe(
+          () => {
+            this.getAllRooms()
+          },
+          () => { },
+          () => {
+            console.log("Обновлено помещения с ид: " + this.initedIdRoom);
+          }
+        )
+    }
 
-    this.roomService.add(new Room(
-      this.initedIdRoom,
-      this.calculatorForm.cityId,
-      this.calculatorForm.buildingTypeId,
-      this.form.get('room.roomName')!.value,
-      this.form.get('room.roomNumber')!.value,
-      roomTypeName,
-      this.form.get('room.roomLength')!.value,
-      this.form.get('room.roomWidth')!.value,
-      this.form.get('room.roomArea')!.value,
-      this.form.get('room.roomHeight')!.value,
-      this.form.get('room.roomFloor')!.value,
-      this.form.get('room.roomPeopleAmount')!.value,
-      0,
-      this.project.id))
-      .subscribe(
-        () => {
-          this.getAllRooms()
-        },
-        () => { },
-        () => {
-          console.log(this.rooms)
-        }
-      );
+
 
   }
 
@@ -217,13 +220,14 @@ export class CalculatorFormComponent implements OnInit {
 
   initRoom(id: number, isCopy?: boolean) {
     var initedRoom = new Room();
-    initedRoom = this.rooms.filter(r => r.id == id)[0];   
-    this.initedIdRoom = id; 
+    initedRoom = this.rooms.filter(r => r.id == id)[0];
+    this.initedIdRoom = id;
+    if (initedRoom) {
+      this.projectId = initedRoom.projectId;
+    }
     if (isCopy) {
       this.initedIdRoom = 0;
     }
-    console.log(initedRoom.id, " " + this.initedIdRoom);
-    console.log(id);
     this.form.get('room.roomName')!
       .setValue(initedRoom.roomTypeId);
     this.form.get('room.roomNumber')!
