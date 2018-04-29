@@ -30,6 +30,7 @@ export class CalculatorFormComponent implements OnInit {
   project: Project = new Project();
   projectId: number = 0;
   initedIdRoom: number = 0;
+  
 
 
   form = new FormGroup({

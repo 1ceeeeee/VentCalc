@@ -249,10 +249,20 @@
           <td>{{ r.height }}</td>
           <td>{{ r.floor }}</td>
           <td>
-            <button 
+            <swal
+              #deleteSwal
+              title="Удалить помещение №{{ r.roomNumber }}?"
+              text="Действие не обратимо"
+              type="question"
+              [showCancelButton]="true"
+              [focusCancel]="true"
+              (confirm)="onDeleteRoomClick(r.id)">
+            </swal>
+            <button              
               type="button" 
-              class="btn btn-primary btn-sm"
-              (click)="onDeleteRoomClick(r.id)">
+              class="btn btn-primary btn-sm"              
+              (click)="deleteSwal.show()"
+              >
               Удалить
             </button>
             <button 
