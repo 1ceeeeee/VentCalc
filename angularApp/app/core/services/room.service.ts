@@ -9,10 +9,11 @@ export class RoomService {
 
   private headers: HttpHeaders;
   private actionUrl: string;
+  private serverUrl: string;
 
   constructor(private http: HttpClient, configuration: Configuration) {
     this.actionUrl = configuration.Server + 'api/rooms/';
-
+    this.serverUrl = configuration.Server;
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
     this.headers = this.headers.set('Accept', 'application/json');
@@ -21,6 +22,10 @@ export class RoomService {
   getAll(): Observable<Room[]> {
     console.log(this.actionUrl);
     return this.http.get<Room[]>(this.actionUrl, { headers: this.headers });
+  }
+
+  getAllByIdProject(id: number): Observable<Room[]> {
+    return this.http.get<Room[]>(this.serverUrl + 'api/Projects/' + id + '/Rooms', { headers: this.headers });
   }
 
   add(roomToAdd: Room): Observable<Room> {

@@ -25,7 +25,8 @@ export class HomeComponent implements OnInit {
     addThing() {
         this.dataService
             .add(this.thing)
-            .subscribe(() => {
+            .subscribe(
+                () => {
                 this.getAllThings();
                 this.thing = new Thing();
             }, (error) => {

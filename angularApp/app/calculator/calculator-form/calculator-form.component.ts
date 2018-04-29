@@ -141,7 +141,7 @@ export class CalculatorFormComponent implements OnInit {
       .subscribe(
         data => this.buildingTypes = data,
         () => { },
-        () => { console.log(this.buildingTypes) }
+        () => { }
       );
   }
 
@@ -168,34 +168,30 @@ export class CalculatorFormComponent implements OnInit {
       0,
       this.project.id);
 
-    console.log(rm);
-    console.log(this.initedIdRoom);
     if (this.initedIdRoom == 0) {
       this.roomService.add(rm)
         .subscribe(
           () => {
-            this.getAllRooms()
+            console.log(rm);
+            this.getAllRooms(this.project.id);
           },
-          () => { },
-          () => {
-            console.log(this.rooms)
+          (error) => {
+            console.log(error);
           }
         );
     } else {
       this.roomService.update(this.initedIdRoom, rm)
         .subscribe(
           () => {
-            this.getAllRooms()
+            this.getAllRooms(this.project.id);
           },
           () => { },
           () => {
             console.log("Обновлено помещения с ид: " + this.initedIdRoom);
+
           }
         )
     }
-
-
-
   }
 
   // Делает рассчет проекта
@@ -207,19 +203,12 @@ export class CalculatorFormComponent implements OnInit {
         () => {
           console.log(this.airExchangeProject);
         }
-      )
-    // this.project.rooms = this.rooms;
-    // this.projectService.Add(this.project)
-    //   .subscribe(
-    //     data => this.project = data,
-    //     () => { },
-    //     () => { console.log(this.project) }
-    //   );
+      );
   }
 
   // Возвращает все помещения из БД
-  private getAllRooms() {
-    this.roomService.getAll()
+  private getAllRooms(id: number) {
+    this.roomService.getAllByIdProject(id)
       .subscribe(
         data => this.rooms = data,
         () => { },
@@ -265,7 +254,7 @@ export class CalculatorFormComponent implements OnInit {
     this.roomService.delete(id)
       .subscribe(
         () => {
-          this.getAllRooms();
+          this.getAllRooms(this.project.id);
         },
         () => { },
         () => { console.log("deleted room " + id) }
@@ -286,8 +275,6 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.getAllRooms();
 
     // Создает проект
     this.createProject();
