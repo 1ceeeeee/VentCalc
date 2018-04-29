@@ -1,3 +1,5 @@
+import { AirExchangeProject } from './../../models/airExchangeProject';
+import { AirExchangeCalculateService } from './../../core/services/air-exchange-calculate.service';
 import { Project } from './../../models/project';
 import { RoomType } from './../../models/roomType';
 import { RoomService } from './../../core/services/room.service';
@@ -30,7 +32,8 @@ export class CalculatorFormComponent implements OnInit {
   project: Project = new Project();
   projectId: number = 0;
   initedIdRoom: number = 0;
-  
+  airExchangeProject: AirExchangeProject = new AirExchangeProject();
+
 
 
   form = new FormGroup({
@@ -55,7 +58,8 @@ export class CalculatorFormComponent implements OnInit {
     public buildingTypeService: BuildingTypeService,
     public roomService: RoomService,
     public roomTypeService: RoomTypeService,
-    public projectService: ProjectService) { }
+    public projectService: ProjectService,
+    public airExchangeService: AirExchangeCalculateService) { }
 
   // Возвращает значение контрола географии
   get city() {
@@ -162,7 +166,7 @@ export class CalculatorFormComponent implements OnInit {
       this.form.get('room.roomFloor')!.value,
       this.form.get('room.roomPeopleAmount')!.value,
       0,
-      this.projectId);
+      this.project.id);
 
     console.log(rm);
     console.log(this.initedIdRoom);
@@ -195,14 +199,22 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Делает рассчет проекта
-  onCalculateProject() {
-    this.project.rooms = this.rooms;
-    this.projectService.Add(this.project)
+  onCalculateProjectClick() {
+    this.airExchangeService.Get(this.project.id)
       .subscribe(
-        data => this.project = data,
+        data => this.airExchangeProject = data,
         () => { },
-        () => { console.log(this.project) }
-      );
+        () => {
+          console.log(this.airExchangeProject);
+        }
+      )
+    // this.project.rooms = this.rooms;
+    // this.projectService.Add(this.project)
+    //   .subscribe(
+    //     data => this.project = data,
+    //     () => { },
+    //     () => { console.log(this.project) }
+    //   );
   }
 
   // Возвращает все помещения из БД
@@ -213,8 +225,10 @@ export class CalculatorFormComponent implements OnInit {
         () => { },
         () => {
           console.log(this.rooms);
-          this.calculatorForm.cityId = this.rooms[0].cityId;
-          this.calculatorForm.buildingTypeId = this.rooms[0].buildingTypeId;
+          if (this.rooms.length > 0) {
+            this.calculatorForm.cityId = this.rooms[0].cityId;
+            this.calculatorForm.buildingTypeId = this.rooms[0].buildingTypeId;
+          }
         }
       )
   }
@@ -223,9 +237,9 @@ export class CalculatorFormComponent implements OnInit {
     var initedRoom = new Room();
     initedRoom = this.rooms.filter(r => r.id == id)[0];
     this.initedIdRoom = id;
-    if (initedRoom) {
-      this.projectId = initedRoom.projectId;
-    }
+    // if (initedRoom) {
+    //   this.projectId = initedRoom.projectId;
+    // }
     if (isCopy) {
       this.initedIdRoom = 0;
     }

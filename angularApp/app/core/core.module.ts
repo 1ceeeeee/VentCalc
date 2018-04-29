@@ -8,13 +8,14 @@ import { BuildingTypeService } from './services/building-type.service';
 import { CityService } from './services/city.service';
 import { RoomTypeService } from './services/room-type.service';
 import { ProjectService } from './services/project.service';
+import { AirExchangeCalculateService } from './services/air-exchange-calculate.service';
 // import { DataService } from './services/data.service';
 
 @NgModule({
     imports: [
         CommonModule
     ],
-    providers: [ProjectService]
+    providers: [ProjectService, AirExchangeCalculateService]
 })
 
 export class CoreModule {
@@ -30,6 +31,7 @@ export class CoreModule {
                 RoomService,
                 RoomTypeService,
                 ProjectService,
+                AirExchangeCalculateService,
                 Configuration
             ]
         };
