@@ -1,3 +1,4 @@
+import { DataService } from './../../core/services/data.service';
 import { AirExchangeProject } from './../../models/airExchangeProject';
 import { AirExchangeCalculateService } from './../../core/services/air-exchange-calculate.service';
 import { Project } from './../../models/project';
@@ -15,6 +16,7 @@ import { BuildingTypeService } from '../../core/services/building-type.service';
 import { CityService } from '../../core/services/city.service';
 import { RoomTypeService } from '../../core/services/room-type.service';
 import { ProjectService } from '../../core/services/project.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -33,8 +35,6 @@ export class CalculatorFormComponent implements OnInit {
   projectId: number = 0;
   initedIdRoom: number = 0;
   airExchangeProject: AirExchangeProject = new AirExchangeProject();
-
-
 
   form = new FormGroup({
     city: new FormControl('', Validators.required),
@@ -59,7 +59,10 @@ export class CalculatorFormComponent implements OnInit {
     public roomService: RoomService,
     public roomTypeService: RoomTypeService,
     public projectService: ProjectService,
-    public airExchangeService: AirExchangeCalculateService) { }
+    public airExchangeService: AirExchangeCalculateService,
+    private dataService: DataService,
+    public router: Router
+  ) { }
 
   // Возвращает значение контрола географии
   get city() {
@@ -152,6 +155,8 @@ export class CalculatorFormComponent implements OnInit {
         .value)[0]
       .roomTypeName;
 
+
+
     var rm = new Room(
       this.initedIdRoom,
       this.calculatorForm.cityId,
@@ -198,7 +203,11 @@ export class CalculatorFormComponent implements OnInit {
   onCalculateProjectClick() {
     this.airExchangeService.Get(this.project.id)
       .subscribe(
-        data => this.airExchangeProject = data,
+        data => {
+          this.airExchangeProject = data,
+            this.dataService.changeAirExchangeProject(this.airExchangeProject)
+          this.router.navigate(['/airexchange'])
+        },
         () => { },
         () => {
           console.log(this.airExchangeProject);
@@ -275,6 +284,15 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.dataService.currentAirExchangeProject
+      .subscribe(
+        data => {
+          this.airExchangeProject = data
+        },
+        () => { },
+        () => { }
+      );
 
     // Создает проект
     this.createProject();

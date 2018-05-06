@@ -9,7 +9,7 @@ import { CityService } from './services/city.service';
 import { RoomTypeService } from './services/room-type.service';
 import { ProjectService } from './services/project.service';
 import { AirExchangeCalculateService } from './services/air-exchange-calculate.service';
-// import { DataService } from './services/data.service';
+import { DataService } from './services/data.service';
 
 @NgModule({
     imports: [
@@ -25,7 +25,7 @@ export class CoreModule {
             providers: [
                 ThingService,                
                 CityService,
-                // DataService,
+                DataService,
                 BuildingTypeService,
                 BuildingKindService,
                 RoomService,

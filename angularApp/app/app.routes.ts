@@ -7,6 +7,9 @@ export const routes: Routes = [
     },
     {
         path: 'calculator', loadChildren: './calculator/calculator.module#CalculatorModule'
+    },
+    {
+        path: 'airexchange', loadChildren: './airexchange/airexchange.module#AirexchangeModule'
     }
 ];
 

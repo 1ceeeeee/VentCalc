@@ -1,0 +1,41 @@
+
+<div class="row airExchange-section">
+  <h2>Воздухообмены по нормативным кратностям</h2>
+  <table class="table table-bordered airExchange-section__table">
+    <thead>
+      <tr>
+        <th rowspan="2">№ пом</th>
+        <th rowspan="2">Наименование помещения</th>
+        <th rowspan="2">Tвн., С</th>
+        <th rowspan="2">Площадь помещения, м2</th>
+        <th rowspan="2"> Объем помещения, м3</th>
+        <th colspan="2">Кратность воздухообмена</th>
+        <th colspan="2">Расчетный расход воздуха м3/ч</th>
+      </tr>
+      <tr>
+        <th>Приток</th>
+        <th>Вытяжка</th>
+        <th>Приток</th>
+        <th>Вытяжка</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let a of airExchangeProject.airExchangeRooms">
+        <td>{{ a.roomNumber }}</td>
+        <td>{{ a.roomName }}</td>
+        <td>{{ a.tempIn }}</td>
+        <td>{{ a.area }}</td>
+        <td>{{ a.volume }}</td>
+        <td>{{ a.inflow }}</td>
+        <td>{{ a.exhaust }}</td>
+        <td>{{ a.inflowCalc }}</td>
+        <td>{{ a.exhaustCalc }}</td>
+      </tr>
+    </tbody>
+    <tr>
+      <td colspan="7" style="text-align: right; font-weight: bold">Итог</td>
+      <td>{{ airExchangeProject.inflowTotal }}</td>
+      <td>{{ airExchangeProject.exhaustTotal }}</td>
+    </tr>
+  </table>
+</div>
