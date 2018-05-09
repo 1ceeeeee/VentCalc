@@ -205,8 +205,7 @@ export class CalculatorFormComponent implements OnInit {
       .subscribe(
         data => {
           this.airExchangeProject = data,
-            this.dataService.changeAirExchangeProject(this.airExchangeProject)
-          this.router.navigate(['/airexchange'])
+            this.dataService.changeAirExchangeProject(this.airExchangeProject)          
         },
         () => { },
         () => {

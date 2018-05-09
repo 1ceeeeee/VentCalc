@@ -3,7 +3,7 @@ import { DataService } from './../../core/services/data.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-airexchange-form',
+  selector: 'airexchange-form',
   templateUrl: './airexchange-form.component.html'
 })
 export class AirexchangeFormComponent implements OnInit {

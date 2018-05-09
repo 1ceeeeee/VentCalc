@@ -11,8 +11,7 @@
           data-placement="right" 
           title="Tooltip on right">
           <h2>География</h2>
-        </label>
-		
+        </label>		
         <select 
           formControlName="city"
           id="inputCity" 
@@ -29,7 +28,7 @@
         <div *ngIf="city.touched && city.invalid" 
           class="alert alert-danger alert-dismissible fade show" 
           role="alert">
-          <strong>Ошибка заполнения данных!</strong> Выберите город.
+          <strong>Ошибка заполнения данных.</strong> Выберите город.
         </div>
       </div>      
     </div>
@@ -88,7 +87,7 @@
             *ngIf="buildType.touched && buildType.invalid" 
             class="alert alert-danger alert-dismissible fade show" 
             role="alert">
-            <strong>Ошибка заполнения данных!</strong> Выберите вид здания.
+            <strong>Ошибка заполнения данных.</strong> Выберите вид здания.
           </div>  
         </div>      
     </div>  
@@ -102,7 +101,6 @@
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
         Добавить
       </button>
-
       <!-- Modal -->
       <div 
         class="modal fade" 
@@ -298,4 +296,9 @@
     </div>    
   </div>
   <!-- Рассчитать конец -->
+  <div class="airexchange-section"
+    *ngIf="airExchangeProject.airExchangeRooms.length > 0">
+    <airexchange-form></airexchange-form>
+  </div>
+  
 </form>
