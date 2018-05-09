@@ -1,7 +1,7 @@
+import { SharedModule } from './../shared/shared.module';
 import { AirexchangeRoutes } from './airexchange.routes';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AirexchangeFormComponent } from './airexchange-form/airexchange-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -9,8 +9,9 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     AirexchangeRoutes,
-    ReactiveFormsModule    
+    ReactiveFormsModule,
+    SharedModule   
   ],
-  declarations: [AirexchangeFormComponent]  
+  declarations: []  
 })
 export class AirexchangeModule { }

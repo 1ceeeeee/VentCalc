@@ -1,4 +1,4 @@
-import { AirexchangeFormComponent } from './../airexchange/airexchange-form/airexchange-form.component';
+import { SharedModule } from './../shared/shared.module';
 import { CalculatorRoutes } from './calculator.routes';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -11,8 +11,9 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     CommonModule,
     CalculatorRoutes,
     ReactiveFormsModule,
-    SweetAlert2Module
+    SweetAlert2Module,
+    SharedModule
   ],
-  declarations: [CalculatorFormComponent, AirexchangeFormComponent]  
+  declarations: [CalculatorFormComponent]  
 })
 export class CalculatorModule { }
