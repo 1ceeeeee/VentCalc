@@ -18,7 +18,6 @@ import { RoomTypeService } from '../../core/services/room-type.service';
 import { ProjectService } from '../../core/services/project.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-calculator-form',
   templateUrl: './calculator-form.component.html'
@@ -281,6 +280,42 @@ export class CalculatorFormComponent implements OnInit {
         () => { console.log(this.project) }
       )
   }
+
+  /* Полезный код если надо будет объединять ячейки в икселе вручную */
+  // exportFile() {
+  //   /* create new workbook */
+  //   var workbook = XLSX.utils.book_new();
+
+  //   XLSX.writeFile({
+  //     SheetNames:["Sheet1"],
+  //     Sheets: {
+  //       Sheet1: {
+  //         "!ref": "A1:I2",
+  //         A1:{t:'s', v:"№ пом"},
+  //         B1:{t:'s', v:"Наименование помещения", wch:15},
+  //         C1:{t:'s', v:"Tвн., С"},
+  //         D1:{t:'s', v:"Площадь помещения, м2"},
+  //         E1:{t:'s', v:"Объем помещения, м3"},
+  //         F1:{t:'s', v:"Кратность воздухообмена"},
+  //         F2:{t:'s', v:"Приток"},
+  //         G2:{t:'s', v:"Вытяжка"},
+  //         H1:{t:'s', v:"Расчетный расход воздуха м3/ч"},
+  //         H2:{t:'s', v:"Приток"},
+  //         I2:{t:'s', v:"Вытяжка"},
+  //         "!merges":[
+  //           {s:{r:0,c:0},e:{r:1,c:0}}, /* A1:A2 */
+  //           {s:{r:0,c:1},e:{r:1,c:1}}, /* B1:B2 */
+  //           {s:{r:0,c:2},e:{r:1,c:2}}, /* C1:C2 */
+  //           {s:{r:0,c:3},e:{r:1,c:3}}, /* D1:D2 */
+  //           {s:{r:0,c:4},e:{r:1,c:4}}, /* E1:E2 */
+  //           {s:{r:0,c:5},e:{r:0,c:6}}, /* F1:G1 */
+  //           {s:{r:0,c:7},e:{r:0,c:8}} /* H1:I1 */
+  //         ]
+  //       }
+  //     }
+  //   }, 'test.xlsx');
+  //   XLSX.writeFile(workbook, 'out.xls');
+  // }
 
   ngOnInit() {
 
