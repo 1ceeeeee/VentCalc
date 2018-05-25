@@ -18,6 +18,7 @@ import { RoomTypeService } from '../../core/services/room-type.service';
 import { ProjectService } from '../../core/services/project.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-calculator-form',
   templateUrl: './calculator-form.component.html'
@@ -119,8 +120,9 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Возвращает выбранный ид географии объекта
-  onCityChange() {
-    this.calculatorForm.cityId = this.city.value;
+  onCityChange(value: any) {
+    this.calculatorForm.cityId = value;//this.city.value;
+    console.log(this.calculatorForm.cityId);
   }
 
 
@@ -204,7 +206,7 @@ export class CalculatorFormComponent implements OnInit {
       .subscribe(
         data => {
           this.airExchangeProject = data,
-            this.dataService.changeAirExchangeProject(this.airExchangeProject)          
+            this.dataService.changeAirExchangeProject(this.airExchangeProject)
         },
         () => { },
         () => {

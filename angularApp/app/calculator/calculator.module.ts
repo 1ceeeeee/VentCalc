@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { CalculatorFormComponent } from './calculator-form/calculator-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+import { NgxSelectModule } from 'ngx-select-ex';
 
 @NgModule({
   imports: [
@@ -12,7 +13,8 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     CalculatorRoutes,
     ReactiveFormsModule,
     SweetAlert2Module,
-    SharedModule
+    SharedModule,
+    NgxSelectModule
   ],
   declarations: [CalculatorFormComponent]  
 })

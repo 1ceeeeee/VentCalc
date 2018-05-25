@@ -12,7 +12,16 @@
           title="Tooltip on right">
           <h2>География</h2>
         </label>		
-        <select 
+        <ngx-select 
+          [formControl]="city"
+          optionValueField="id"
+          optionTextField="cityName" 
+          [allowClear]="true"                    
+          [items]="cities"
+          placeholder="Выберите город из списка или напишите ..."
+          (select)="onCityChange($event)">
+        </ngx-select>
+        <!-- <select 
           formControlName="city"
           id="inputCity" 
           class="form-control"       
@@ -22,7 +31,7 @@
             *ngFor="let c of cities" 
             value="{{ c.id }}"> {{ c.cityName}}
           </option>
-        </select>
+        </select> -->
         <!-- <div  class="alert alert-danger">Выберите город</div> -->
         <!-- Предупреждение в случае ошибки заполнения данных -->
         <div *ngIf="city.touched && city.invalid" 
@@ -142,7 +151,15 @@
               <div class="modal-body">        
                 <div class="form-group">
                   <label for="roomSelect">Помещение</label>
-                  <select 
+                  <ngx-select 
+                    [formControl]="roomName"
+                    optionValueField="id"
+                    optionTextField="roomTypeName" 
+                    [allowClear]="true"                    
+                    [items]="roomTypes"
+                    placeholder="Выберите помещение из списка или напишите ...">
+                  </ngx-select>
+                  <!-- <select 
                     formControlName="roomName"
                     class="form-control" 
                     id="roomSelect">
@@ -151,7 +168,7 @@
                       *ngFor="let r of roomTypes"
                       value="{{ r.id }}"> {{ r.roomTypeName }}
                     </option>   
-                  </select>
+                  </select> -->
                 </div>            
               </div>
               <div class="modal-body">
