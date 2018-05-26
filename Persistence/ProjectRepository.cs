@@ -53,8 +53,8 @@ namespace VentCalc.Persistence
             var project = context.Projects
             .Include(p => p.Rooms)
                 .ThenInclude(r => r.City)
-            .Include(p => p.Rooms)
-                .ThenInclude(r => r.BuildingType)
+            // .Include(p => p.Rooms)
+            //     .ThenInclude(r => r.BuildingType)
             .Include(p => p.Rooms)
                 .ThenInclude(r => r.RoomType)
             .Where(p => p.Id == id)

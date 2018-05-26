@@ -43,6 +43,9 @@ namespace VentCalc.Models
         {
             Rooms = new Collection<Room>(); 
         }
-
+        [Required]
+        [Description("ИД типа здания")]
+        public int BuildingTypeId { get; set; }
+        public BuildingType BuildingType { get; set; }
     }
 }

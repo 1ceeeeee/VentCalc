@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180526120814_NormativeDocument")]
+    partial class NormativeDocument
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,13 +64,9 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<int>("NormativeDocumentId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BuildingPurposeId");
-
-                    b.HasIndex("NormativeDocumentId");
 
                     b.ToTable("BuildingTypes");
                 });
@@ -246,11 +243,6 @@ namespace VentCalc.Migrations
                     b.HasOne("VentCalc.Models.BuildingPurpose", "BuildingPurpose")
                         .WithMany("BuildingTypes")
                         .HasForeignKey("BuildingPurposeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("VentCalc.Models.NormativeDocument", "NormativeDocument")
-                        .WithMany()
-                        .HasForeignKey("NormativeDocumentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
