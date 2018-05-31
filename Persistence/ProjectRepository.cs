@@ -62,25 +62,26 @@ namespace VentCalc.Persistence
 
             var airExchangeRooms = new List<AirExchangeRoomResource>();
 
-            foreach (var item in project.Rooms)
-            {
-                var area = (item.Area != null) ? item.Area : item.Length * item.Width;
-                var volume = area * item.Height;
-                airExchangeRooms.Add(new AirExchangeRoomResource() {
-                        Id = item.Id,
-                        RoomNumber = item.RoomNumber,
-                        RoomName = item.RoomName,
-                        TempIn = item.RoomType.TempIn,
-                        Area = area,
-                        Volume = volume,
-                        PeopleAmount = item.PeopleAmount,
-                        Inflow = item.RoomType.Inflow,
-                        Exhaust = item.RoomType.Exhaust,
-                        InflowCalc = volume * item.RoomType.Inflow,
-                        ExhaustCalc = volume * item.RoomType.Exhaust  
-                    }
-                ); 
-            }      
+            //TODO:Изменить рассчет
+            // foreach (var item in project.Rooms)
+            // {
+            //     var area = (item.Area != null) ? item.Area : item.Length * item.Width;
+            //     var volume = area * item.Height;
+            //     airExchangeRooms.Add(new AirExchangeRoomResource() {
+            //             Id = item.Id,
+            //             RoomNumber = item.RoomNumber,
+            //             RoomName = item.RoomName,
+            //             TempIn = item.RoomType.TempIn,
+            //             Area = area,
+            //             Volume = volume,
+            //             PeopleAmount = item.PeopleAmount,
+            //             Inflow = item.RoomType.Inflow,
+            //             Exhaust = item.RoomType.Exhaust,
+            //             InflowCalc = volume * item.RoomType.Inflow,
+            //             ExhaustCalc = volume * item.RoomType.Exhaust  
+            //         }
+            //     ); 
+            // }      
 
             var airExchangeProject = new AirExchangeProjectResource()
             {

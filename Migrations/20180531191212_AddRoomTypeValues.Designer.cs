@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180531191212_AddRoomTypeValues")]
+    partial class AddRoomTypeValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +64,13 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
+                    b.Property<int>("NormativeDocumentId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BuildingPurposeId");
+
+                    b.HasIndex("NormativeDocumentId");
 
                     b.ToTable("BuildingTypes");
                 });
@@ -108,24 +113,6 @@ namespace VentCalc.Migrations
                     b.HasIndex("NormativeDocumentTypeId");
 
                     b.ToTable("NormativeDocuments");
-                });
-
-            modelBuilder.Entity("VentCalc.Models.NormativeDocumentRoomTypeLink", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("NormativeDocumentId");
-
-                    b.Property<int>("RoomTypeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormativeDocumentId");
-
-                    b.HasIndex("RoomTypeId");
-
-                    b.ToTable("NormativeDocumentRoomTypeLinks");
                 });
 
             modelBuilder.Entity("VentCalc.Models.NormativeDocumentType", b =>
@@ -285,6 +272,11 @@ namespace VentCalc.Migrations
                         .WithMany("BuildingTypes")
                         .HasForeignKey("BuildingPurposeId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("VentCalc.Models.NormativeDocument", "NormativeDocument")
+                        .WithMany()
+                        .HasForeignKey("NormativeDocumentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("VentCalc.Models.City", b =>
@@ -300,19 +292,6 @@ namespace VentCalc.Migrations
                     b.HasOne("VentCalc.Models.NormativeDocumentType", "NormativeDocumentTypes")
                         .WithMany("NormativeDocuments")
                         .HasForeignKey("NormativeDocumentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("VentCalc.Models.NormativeDocumentRoomTypeLink", b =>
-                {
-                    b.HasOne("VentCalc.Models.NormativeDocument", "NormativeDocument")
-                        .WithMany()
-                        .HasForeignKey("NormativeDocumentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("VentCalc.Models.RoomType", "RoomType")
-                        .WithMany()
-                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

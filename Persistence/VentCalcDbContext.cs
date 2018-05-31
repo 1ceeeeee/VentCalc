@@ -20,5 +20,7 @@ namespace VentCalc.Persistence
         public DbSet<Project> Projects { get; set; }
         public DbSet<NormativeDocumentType> NormativeDocumentTypes { get; set; }
         public DbSet<NormativeDocument> NormativeDocuments { get; set; }
+        public DbSet<RoomTypeValue> RoomTypeValues { get; set; }
+        public DbSet<NormativeDocumentRoomTypeLink> NormativeDocumentRoomTypeLinks { get; set; }
     }
 }

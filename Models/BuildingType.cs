@@ -21,10 +21,6 @@ namespace VentCalc.Models
         [Description("ИД назначения здания")]
         public int BuildingPurposeId { get; set; }
         public BuildingPurpose BuildingPurpose { get; set; }
-        [Required]
-        [Description("ИД нормативного документа")]
-        public int NormativeDocumentId { get; set; }
-        public NormativeDocument NormativeDocument { get; set; }
         public ICollection<RoomType> RoomTypes { get; set; }
         public BuildingType()
         {
