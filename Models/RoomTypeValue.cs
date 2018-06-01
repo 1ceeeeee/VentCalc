@@ -17,34 +17,30 @@ namespace VentCalc.Models
         [Description("ИД типа помещения")]
         public int RoomTypeId { get; set; }
         public RoomType RoomType { get; set; }        
-        [Required]
         [Description("Температура внутреннего воздуха")]
-        public double TempIn { get; set; }        
-        [Required]
+        public double? TempIn { get; set; }        
         [Description("Влажность от")]
-        public double HumidityFrom { get; set; }   
-        [Required]
+        public double? HumidityFrom { get; set; }   
         [Description("Влажность до")]
-        public double HumidityTo { get; set; }  
-        [Required]
+        public double? HumidityTo { get; set; }  
         [Description("Относительная влажность")]
-        public double HumidityRelative { get; set; } 
+        public double? HumidityRelative { get; set; } 
         [Description("Приток")]
-        public double Inflow { get; set; } 
+        public double? Inflow { get; set; } 
         [Description("Приток по жилой площади, м2")]
-        public double InflowArea { get; set; } 
+        public double? InflowArea { get; set; } 
         [Description("Приток по людям, м3/ч на 1 человека")]
-        public double InflowPeople { get; set; } 
+        public double? InflowPeople { get; set; } 
         [Description("Приток по кратности, 1/ч")]
-        public double InflowMultiply { get; set; } 
+        public double? InflowMultiply { get; set; } 
         [Description("Вытяжка")]
-        public double Exhaust { get; set; } 
+        public double? Exhaust { get; set; } 
         [Description("Вытяжка по жилой площади, м2")]
-        public double ExhaustArea { get; set; } 
+        public double? ExhaustArea { get; set; } 
         [Description("Вытяжка по людям, м3/ч на 1 человека")]
-        public double ExhaustPeople { get; set; } 
+        public double? ExhaustPeople { get; set; } 
         [Description("Вытяжка по кратности, 1/ч")]
-        public double ExhaustMultiply { get; set; } 
+        public double? ExhaustMultiply { get; set; } 
         [StringLength(255)]
         [Description("Примечание")]
         public string Comment { get; set; }
