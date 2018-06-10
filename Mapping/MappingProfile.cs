@@ -16,6 +16,7 @@ namespace VentCalc.Mapping
             CreateMap<BuildingType, BuildingTypeResource>();
             CreateMap<Room, RoomResource>();
             CreateMap<Project, ProjectResource>();
+            CreateMap<RoomTypeValue, RoomTypeValueResource>();
 
             // API Resource to Domain
              CreateMap<SaveRoomResource, Room>()

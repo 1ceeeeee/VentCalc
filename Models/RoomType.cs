@@ -22,9 +22,11 @@ namespace VentCalc.Models
         [Description("Тип помещения")]
         public string RoomTypeName { get; set; }
         public ICollection<Room> Rooms { get; set; }
+        public ICollection<RoomTypeValue> RoomTypeValues { get; set; }
         public RoomType()
         {
             Rooms = new Collection<Room>(); 
+            RoomTypeValues = new Collection<RoomTypeValue>(); 
         }
     }
 }

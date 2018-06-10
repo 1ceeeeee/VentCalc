@@ -34,6 +34,7 @@ namespace Angular2WebpackVisualStudio
             services.AddScoped<IBuildingTypeRepository, BuildingTypeRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IRoomTypeValueRepository, RoomTypeValueRepository>();
 
 
             services.AddAutoMapper();

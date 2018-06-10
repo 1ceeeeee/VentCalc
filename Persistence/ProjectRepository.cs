@@ -10,9 +10,12 @@ namespace VentCalc.Persistence
     public class ProjectRepository : IProjectRepository
     {
         private readonly VentCalcDbContext context;
-        public ProjectRepository(VentCalcDbContext context)
+        private readonly IRoomTypeValueRepository roomTypeValueRepository;
+
+        public ProjectRepository(VentCalcDbContext context, IRoomTypeValueRepository roomTypeValueRepository)
         {
             this.context = context;
+            this.roomTypeValueRepository = roomTypeValueRepository;
         }
 
          public async Task<List<Project>> ReadAll()
@@ -27,7 +30,7 @@ namespace VentCalc.Persistence
         }
 
         public async Task<Project> Create(Project project)
-        {   
+        {
             context.Projects.Add(project);
             context.SaveChanges();
             return await context.Projects.FirstOrDefaultAsync(r => r.Id == project.Id);
@@ -51,37 +54,35 @@ namespace VentCalc.Persistence
         {
 
             var project = context.Projects
-            .Include(p => p.Rooms)
-                .ThenInclude(r => r.City)
-            // .Include(p => p.Rooms)
-            //     .ThenInclude(r => r.BuildingType)
-            .Include(p => p.Rooms)
-                .ThenInclude(r => r.RoomType)
-            .Where(p => p.Id == id)
-            .FirstOrDefault();
-
+                .Include(p => p.Rooms)
+                .Where(p => p.Id == id)
+                .FirstOrDefault();
+            
             var airExchangeRooms = new List<AirExchangeRoomResource>();
 
-            //TODO:Изменить рассчет
-            // foreach (var item in project.Rooms)
-            // {
-            //     var area = (item.Area != null) ? item.Area : item.Length * item.Width;
-            //     var volume = area * item.Height;
-            //     airExchangeRooms.Add(new AirExchangeRoomResource() {
-            //             Id = item.Id,
-            //             RoomNumber = item.RoomNumber,
-            //             RoomName = item.RoomName,
-            //             TempIn = item.RoomType.TempIn,
-            //             Area = area,
-            //             Volume = volume,
-            //             PeopleAmount = item.PeopleAmount,
-            //             Inflow = item.RoomType.Inflow,
-            //             Exhaust = item.RoomType.Exhaust,
-            //             InflowCalc = volume * item.RoomType.Inflow,
-            //             ExhaustCalc = volume * item.RoomType.Exhaust  
-            //         }
-            //     ); 
-            // }      
+            foreach (var item in project.Rooms)
+            {
+                var area = (item.Area != null) ? item.Area : item.Length * item.Width;
+                var volume = area * item.Height;
+                
+                var roomTypeValue = roomTypeValueRepository.GetRoomTypeValue(project, item.RoomTypeId);
+
+                airExchangeRooms.Add(new AirExchangeRoomResource() {
+
+                        Id = item.Id,
+                        RoomNumber = item.RoomNumber,
+                        RoomName = item.RoomName,
+                        TempIn = roomTypeValue.TempIn,
+                        Area = area,
+                        Volume = volume,
+                        PeopleAmount = item.PeopleAmount,
+                        // Inflow = item.RoomType.Inflow,
+                        // Exhaust = item.RoomType.Exhaust,
+                        InflowCalc = GetRoomInflowCalc(roomTypeValue, volume, item.PeopleAmount),
+                        ExhaustCalc = GetRoomExhaustCalc(roomTypeValue, volume, item.PeopleAmount)
+                    }
+                );
+            }
 
             var airExchangeProject = new AirExchangeProjectResource()
             {
@@ -94,6 +95,53 @@ namespace VentCalc.Persistence
             return airExchangeProject;
         }
 
+        public double? GetRoomInflowCalc (RoomTypeValue roomTypeValue, double? volume,int? peopleAmount)
+        {
+            double? inflowCalc = 0;
+
+            if (roomTypeValue.Inflow != null)
+            {
+                inflowCalc = roomTypeValue.Inflow;
+            }
+            else if (roomTypeValue.InflowArea != null )
+            {
+                //TODO: добавить рассчет по площади
+            }
+            else if (roomTypeValue.InflowMultiply != null )
+            {
+                inflowCalc = roomTypeValue.InflowMultiply * volume;
+            }
+            else if (roomTypeValue.InflowPeople != null )
+            {
+                inflowCalc = roomTypeValue.InflowPeople * peopleAmount;
+            }
+
+            return inflowCalc;
+        }
+
+       public double? GetRoomExhaustCalc (RoomTypeValue roomTypeValue, double? volume,int? peopleAmount)
+        {
+            double? exhaustCalc = 0;
+
+            if (roomTypeValue.Exhaust != null)
+            {
+                exhaustCalc = roomTypeValue.Exhaust;
+            }
+            else if (roomTypeValue.ExhaustArea != null )
+            {
+                //TODO: добавить рассчет по площади
+            }
+            else if (roomTypeValue.ExhaustMultiply != null )
+            {
+                exhaustCalc = roomTypeValue.ExhaustMultiply * volume;
+            }
+            else if (roomTypeValue.ExhaustPeople != null )
+            {
+                exhaustCalc = roomTypeValue.ExhaustPeople * peopleAmount;
+            }
+
+            return exhaustCalc;
+        }
 
     }
 }
