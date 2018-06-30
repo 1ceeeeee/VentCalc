@@ -19,8 +19,7 @@ export class BuildingKindService {
     this.headers = this.headers.set('Accept', 'application/json');
    }
 
-   getAll(): Observable<BuildingKind[]>{
-    console.log(this.actionUrl); 
+   getAll(): Observable<BuildingKind[]>{    
      return this.http.get<BuildingKind[]>(this.actionUrl, {headers: this.headers});
    }
 

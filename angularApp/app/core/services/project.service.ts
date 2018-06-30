@@ -19,8 +19,7 @@ export class ProjectService {
     this.headers = this.headers.set('Accept', 'application/json');
   }
 
-  Add(project: Project): Observable<Project> {
-    console.log(project);
+  Add(project: Project): Observable<Project> {    
     return this.http.post<Project>(this.actionUrl, project, { headers: this.headers });
   }
 

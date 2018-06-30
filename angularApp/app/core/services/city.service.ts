@@ -22,8 +22,7 @@ export class CityService {
     this.headers = this.headers.set('Accept', 'application/json');    
   }
 
-  getAll(): Observable<City[]>{
-    console.log(this.actionUrl);    
+  getAll(): Observable<City[]>{      
     return this.http.get<City[]>(this.actionUrl, { headers: this.headers });  
   }
 

@@ -279,8 +279,45 @@ export class CalculatorFormComponent implements OnInit {
       .subscribe(
         data => this.project = data,
         () => { },
-        () => { console.log(this.project) }
+        () => { }
       )
+  }
+
+  private initCities() {
+
+    this.dataService.getCities()
+    .subscribe(
+      data => {
+        this.cities = data
+      },
+      () => {},
+      () => {console.log(this.cities)}
+    )
+    // this.dataService.currentCities
+    //   .subscribe(
+    //     data => {
+    //       this.cities = data,
+    //         console.log(this.cities),
+    //         //console.log('from cash'),
+    //         console.log(this.cities.length)
+    //     },
+    //     () => { },
+    //     () => {console.log('from cash') }
+    //   )
+    //   if (this.cities.length == 0) {
+    //     // Возвращает все географии городов из бд
+    //     this.cityService.getAll()
+    //       .subscribe(
+    //         data => {
+    //           console.log(this.cities.length),
+    //             this.cities = data,
+    //             this.dataService.changeCities(this.cities)
+    //         },
+    //         () => { },
+    //         () => { console.log('cities.getAll()') }
+    //       );
+    //   }
+
   }
 
   /* Полезный код если надо будет объединять ячейки в икселе вручную */
@@ -333,20 +370,14 @@ export class CalculatorFormComponent implements OnInit {
     // Создает проект
     this.createProject();
 
-    // Возвращает все географии городов из бд
-    this.cityService.getAll()
-      .subscribe(
-        data => this.cities = data,
-        () => { },
-        () => { console.log(this.cities) }
-      );
+    this.initCities();
 
     // Возвращает все виды зданий из бд
     this.buildinKindService.getAll()
       .subscribe(
         data => this.buildingKinds = data,
         () => { },
-        () => { console.log(this.buildingKinds) }
+        () => { }
       );
 
     // Возвращает все типы помещений
@@ -354,7 +385,7 @@ export class CalculatorFormComponent implements OnInit {
       .subscribe(
         data => this.roomTypes = data,
         () => { },
-        () => { console.log(this.roomTypes) }
+        () => { }
       )
 
   }

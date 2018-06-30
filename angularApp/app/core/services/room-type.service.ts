@@ -18,8 +18,7 @@ export class RoomTypeService {
     this.headers = this.headers.set('Accept', 'application/json');
   }
 
-  getAll(): Observable<RoomType[]> {
-    console.log(this.actionUrl);
+  getAll(): Observable<RoomType[]> {    
     return this.http.get<RoomType[]>(this.actionUrl, { headers: this.headers });
   }
 
