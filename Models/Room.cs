@@ -18,10 +18,10 @@ namespace VentCalc.Models
         [Description("ИД города")]
         public int CityId { get; set; }
         public City City { get; set; }
-        [Required]
-        [Description("ИД типа здания")]
-        public int BuildingTypeId { get; set; }
-        public BuildingType BuildingType { get; set; }
+        // [Required]
+        // [Description("ИД типа здания")]
+        // public int BuildingTypeId { get; set; }
+        // public BuildingType BuildingType { get; set; }
         [Required]
         [Description("ИД типа помещения")]
         public int RoomTypeId { get; set; }

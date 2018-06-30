@@ -17,14 +17,14 @@ namespace VentCalc.Models
         [StringLength(255)]
         [Description("Тип здания")]
         public string BuildingTypeName { get; set; }
-        public BuildingPurpose BuildingPurpose { get; set; }
         [Required]
         [Description("ИД назначения здания")]
         public int BuildingPurposeId { get; set; }
-        public ICollection<Room> Rooms { get; set; }
+        public BuildingPurpose BuildingPurpose { get; set; }
+        public ICollection<RoomType> RoomTypes { get; set; }
         public BuildingType()
         {
-            Rooms = new Collection<Room>(); 
+            RoomTypes = new Collection<RoomType>(); 
         }        
     }
 }

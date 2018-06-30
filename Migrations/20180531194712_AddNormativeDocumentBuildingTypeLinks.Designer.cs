@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180531194712_AddNormativeDocumentBuildingTypeLinks")]
+    partial class AddNormativeDocumentBuildingTypeLinks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,22 +111,22 @@ namespace VentCalc.Migrations
                     b.ToTable("NormativeDocuments");
                 });
 
-            modelBuilder.Entity("VentCalc.Models.NormativeDocumentRoomTypeLink", b =>
+            modelBuilder.Entity("VentCalc.Models.NormativeDocumentBuildingTypeLink", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("NormativeDocumentId");
+                    b.Property<int>("BuildingTypeId");
 
-                    b.Property<int>("RoomTypeId");
+                    b.Property<int>("NormativeDocumentId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BuildingTypeId");
+
                     b.HasIndex("NormativeDocumentId");
 
-                    b.HasIndex("RoomTypeId");
-
-                    b.ToTable("NormativeDocumentRoomTypeLinks");
+                    b.ToTable("NormativeDocumentBuildingTypeLinks");
                 });
 
             modelBuilder.Entity("VentCalc.Models.NormativeDocumentType", b =>
@@ -238,31 +239,31 @@ namespace VentCalc.Migrations
                     b.Property<string>("Comment")
                         .HasMaxLength(255);
 
-                    b.Property<double?>("Exhaust");
+                    b.Property<double>("Exhaust");
 
-                    b.Property<double?>("ExhaustArea");
+                    b.Property<double>("ExhaustArea");
 
-                    b.Property<double?>("ExhaustMultiply");
+                    b.Property<double>("ExhaustMultiply");
 
-                    b.Property<double?>("ExhaustPeople");
+                    b.Property<double>("ExhaustPeople");
 
-                    b.Property<double?>("HumidityFrom");
+                    b.Property<double>("HumidityFrom");
 
-                    b.Property<double?>("HumidityRelative");
+                    b.Property<double>("HumidityRelative");
 
-                    b.Property<double?>("HumidityTo");
+                    b.Property<double>("HumidityTo");
 
-                    b.Property<double?>("Inflow");
+                    b.Property<double>("Inflow");
 
-                    b.Property<double?>("InflowArea");
+                    b.Property<double>("InflowArea");
 
-                    b.Property<double?>("InflowMultiply");
+                    b.Property<double>("InflowMultiply");
 
-                    b.Property<double?>("InflowPeople");
+                    b.Property<double>("InflowPeople");
 
                     b.Property<int>("RoomTypeId");
 
-                    b.Property<double?>("TempIn");
+                    b.Property<double>("TempIn");
 
                     b.HasKey("Id");
 
@@ -303,16 +304,16 @@ namespace VentCalc.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("VentCalc.Models.NormativeDocumentRoomTypeLink", b =>
+            modelBuilder.Entity("VentCalc.Models.NormativeDocumentBuildingTypeLink", b =>
                 {
+                    b.HasOne("VentCalc.Models.BuildingType", "BuildingType")
+                        .WithMany()
+                        .HasForeignKey("BuildingTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("VentCalc.Models.NormativeDocument", "NormativeDocument")
                         .WithMany()
                         .HasForeignKey("NormativeDocumentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("VentCalc.Models.RoomType", "RoomType")
-                        .WithMany()
-                        .HasForeignKey("RoomTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

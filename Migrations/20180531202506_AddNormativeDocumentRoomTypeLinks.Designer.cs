@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180531202506_AddNormativeDocumentRoomTypeLinks")]
+    partial class AddNormativeDocumentRoomTypeLinks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,31 +239,31 @@ namespace VentCalc.Migrations
                     b.Property<string>("Comment")
                         .HasMaxLength(255);
 
-                    b.Property<double?>("Exhaust");
+                    b.Property<double>("Exhaust");
 
-                    b.Property<double?>("ExhaustArea");
+                    b.Property<double>("ExhaustArea");
 
-                    b.Property<double?>("ExhaustMultiply");
+                    b.Property<double>("ExhaustMultiply");
 
-                    b.Property<double?>("ExhaustPeople");
+                    b.Property<double>("ExhaustPeople");
 
-                    b.Property<double?>("HumidityFrom");
+                    b.Property<double>("HumidityFrom");
 
-                    b.Property<double?>("HumidityRelative");
+                    b.Property<double>("HumidityRelative");
 
-                    b.Property<double?>("HumidityTo");
+                    b.Property<double>("HumidityTo");
 
-                    b.Property<double?>("Inflow");
+                    b.Property<double>("Inflow");
 
-                    b.Property<double?>("InflowArea");
+                    b.Property<double>("InflowArea");
 
-                    b.Property<double?>("InflowMultiply");
+                    b.Property<double>("InflowMultiply");
 
-                    b.Property<double?>("InflowPeople");
+                    b.Property<double>("InflowPeople");
 
                     b.Property<int>("RoomTypeId");
 
-                    b.Property<double?>("TempIn");
+                    b.Property<double>("TempIn");
 
                     b.HasKey("Id");
 

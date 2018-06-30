@@ -12,6 +12,7 @@ namespace VentCalc.Controllers.Resources
         public double Exhaust { get; set; } 
         public string Unit { get; set; }
         public bool IsForPeople { get; set; }
+        public int BuildingTypeId { get; set; }
 
     }
 }

@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180601185039_EditRoomTypeValue")]
+    partial class EditRoomTypeValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,11 +247,14 @@ namespace VentCalc.Migrations
 
                     b.Property<double?>("ExhaustPeople");
 
-                    b.Property<double?>("HumidityFrom");
+                    b.Property<double?>("HumidityFrom")
+                        .IsRequired();
 
-                    b.Property<double?>("HumidityRelative");
+                    b.Property<double?>("HumidityRelative")
+                        .IsRequired();
 
-                    b.Property<double?>("HumidityTo");
+                    b.Property<double?>("HumidityTo")
+                        .IsRequired();
 
                     b.Property<double?>("Inflow");
 
@@ -262,7 +266,8 @@ namespace VentCalc.Migrations
 
                     b.Property<int>("RoomTypeId");
 
-                    b.Property<double?>("TempIn");
+                    b.Property<double?>("TempIn")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
