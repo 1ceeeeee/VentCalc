@@ -11,9 +11,10 @@ using VentCalc.Persistence;
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180730164158_CityEntityAddBaseEntity")]
+    partial class CityEntityAddBaseEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,6 +79,8 @@ namespace VentCalc.Migrations
                     b.Property<string>("CityName")
                         .IsRequired()
                         .HasMaxLength(255);
+
+                    b.Property<string>("CreateUser");
 
                     b.Property<int>("RegionId");
 

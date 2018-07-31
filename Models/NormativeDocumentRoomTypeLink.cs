@@ -3,16 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VentCalc.Persistence;
 
 namespace VentCalc.Models
 {
     [Table("NormativeDocumentRoomTypeLinks")]
     [Description("Связи норм. документов и типов помещений")]
-    public class NormativeDocumentRoomTypeLink
+    public class NormativeDocumentRoomTypeLink : BaseEntity
     {
-        [Required]
-        [Description("ИД связи норм. док. и типа помещения")]
-        public int Id { get; set; }
         [Required]
         [Description("ИД нормативного документа")]
         public int NormativeDocumentId { get; set; }

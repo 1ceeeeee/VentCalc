@@ -3,16 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VentCalc.Persistence;
 
 namespace VentCalc.Models
 {
     [Table("NormativeDocumentTypes")]
     [Description("Типы нормативных документов")]
-    public class NormativeDocumentType
+    public class NormativeDocumentType : BaseEntity
     {
-        [Required]
-        [Description("ИД типа нормативного документа")]
-        public int Id { get; set; }
         [Required]
         [StringLength(255)]
         [Description("Тип нормативного документа")]        

@@ -1,9 +1,9 @@
-import { CityService } from './city.service';
-import { City } from './../../models/city';
+//import { CityService } from './city.service';
+//import { City } from './../../models/city';
 import { AirExchangeProject } from './../../models/airExchangeProject';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+//import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class DataService {
 
@@ -13,23 +13,23 @@ export class DataService {
 
   currentAirExchangeProject = this.airExchangeProject.asObservable();
   //currentCities = this.cities.asObservable();
-  cities: Observable<City[]> = null;
+  //cities: Observable<City[]> = null;
 
-  constructor(private cityService: CityService) { }
+  // constructor(private cityService: CityService) { }
 
   changeAirExchangeProject(currentAirExchangeProject: AirExchangeProject) {
     this.airExchangeProject.next(currentAirExchangeProject)
     console.log(currentAirExchangeProject);
   }
 
-  getCities() {
-    console.log('citites in data service: ' + this.cities);
-    if (!this.cities) {
-      this.cities = this.cityService
-        .getAll();
-    }
-    return this.cities;
-  }
+  // getCities() {
+  //   console.log('citites in data service: ' + this.cities);
+  //   if (!this.cities) {
+  //     this.cities = this.cityService
+  //       .getAll();
+  //   }
+  //   return this.cities;
+  // }
 
   // getFriends() {
   //   if (!this._friends) {

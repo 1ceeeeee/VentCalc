@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -7,26 +9,29 @@ using Newtonsoft.Json;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
 using VentCalc.Persistence;
+using VentCalc.Repositories;
 
 namespace VentCalc.Controllers
 {
     [Route("api/[controller]")]
     public class CitiesController : Controller
-    {
-        private readonly VentCalcDbContext context;
-        private readonly IMapper mapper;
-        public CitiesController(VentCalcDbContext context, IMapper mapper)
+    {        
+        private readonly IMapper Mapper;
+        private IUnitOfWork UnitOfWork; 
+        public CitiesController(IUnitOfWork uow, IMapper mapper)
         {
-            this.mapper = mapper;
-            this.context = context;
+            this.Mapper = mapper;
+            this.UnitOfWork = uow;            
         }
         
         [HttpGet]
         public async Task<IEnumerable<CityResource>> GetAll()
-        {
-            var cities = await context.Cities.ToListAsync();
+        {            
+            var cities = await UnitOfWork.Repository<City>().GetEnumerableAsync();
             
-            return mapper.Map<List<City>, List<CityResource>>(cities);
+            return Mapper.Map<List<City>, List<CityResource>>(cities.ToList());
         }
+
+        
     }
 }

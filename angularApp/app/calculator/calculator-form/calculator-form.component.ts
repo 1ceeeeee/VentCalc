@@ -285,14 +285,14 @@ export class CalculatorFormComponent implements OnInit {
 
   private initCities() {
 
-    this.dataService.getCities()
-    .subscribe(
-      data => {
-        this.cities = data
-      },
-      () => {},
-      () => {console.log(this.cities)}
-    )
+    //this.dataService.getCities()
+    // .subscribe(
+    //   data => {
+    //     this.cities = data
+    //   },
+    //   () => {},
+    //   () => {console.log(this.cities)}
+    // )
     // this.dataService.currentCities
     //   .subscribe(
     //     data => {
@@ -304,19 +304,19 @@ export class CalculatorFormComponent implements OnInit {
     //     () => { },
     //     () => {console.log('from cash') }
     //   )
-    //   if (this.cities.length == 0) {
-    //     // Возвращает все географии городов из бд
-    //     this.cityService.getAll()
-    //       .subscribe(
-    //         data => {
-    //           console.log(this.cities.length),
-    //             this.cities = data,
-    //             this.dataService.changeCities(this.cities)
-    //         },
-    //         () => { },
-    //         () => { console.log('cities.getAll()') }
-    //       );
-    //   }
+      if (this.cities.length == 0) {
+        // Возвращает все географии городов из бд
+        this.cityService.getAll()
+          .subscribe(
+            data => {
+              console.log(this.cities.length),
+                this.cities = data
+                //this.dataService.changeCities(this.cities)
+            },
+            () => { },
+            () => { console.log('cities.getAll()') }
+          );
+      }
 
   }
 

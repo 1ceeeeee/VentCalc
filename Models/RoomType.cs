@@ -3,16 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VentCalc.Persistence;
 
 namespace VentCalc.Models
 {
     [Table("RoomTypes")]
     [Description("Помещения")]
-    public class RoomType
+    public class RoomType : BaseEntity
     {
-        [Required]
-        [Description("ИД типа помещения")]
-        public int Id { get; set; }
         [Required]
         [Description("ИД типа здания")]
         public int BuildingTypeId { get; set; }

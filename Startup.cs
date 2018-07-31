@@ -11,6 +11,7 @@ using Angular2WebpackVisualStudio.Models;
 using VentCalc.Persistence;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using VentCalc.Repositories;
 
 namespace Angular2WebpackVisualStudio
 {
@@ -35,6 +36,8 @@ namespace Angular2WebpackVisualStudio
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IRoomTypeValueRepository, RoomTypeValueRepository>();
+
+            services.AddScoped<IUnitOfWork, UnitOfWork<VentCalcDbContext>>();
 
 
             services.AddAutoMapper();

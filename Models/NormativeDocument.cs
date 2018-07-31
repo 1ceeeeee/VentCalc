@@ -1,16 +1,14 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VentCalc.Persistence;
 
 namespace VentCalc.Models
 {
     [Table("NormativeDocuments")]
     [Description("Нормативные документы")]
-    public class NormativeDocument
+    public class NormativeDocument : BaseEntity
     {
-        [Required]
-        [Description("ИД нормативного документа")]
-        public int Id { get; set; }
         [Required]
         [Description("ИД типа нормативного документа")]
         public int NormativeDocumentTypeId { get; set; }
