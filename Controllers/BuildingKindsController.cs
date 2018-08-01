@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -7,27 +8,23 @@ using Newtonsoft.Json;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
 using VentCalc.Persistence;
+using VentCalc.Repositories;
 
-
-namespace VentCalc.Controllers
-{
+namespace VentCalc.Controllers {
     [Route("api/[controller]")]
-    public class BuildingKindsController : Controller
-    {
-        private readonly VentCalcDbContext context;
+    public class BuildingKindsController : Controller {
+        private readonly IUnitOfWork UnitOfWork;
         private readonly IMapper mapper;
-        public BuildingKindsController(VentCalcDbContext context, IMapper mapper)
-        {
+        public BuildingKindsController(IUnitOfWork uow, IMapper mapper) {
             this.mapper = mapper;
-            this.context = context;
+            this.UnitOfWork = uow;
         }
-        
+
         [HttpGet]
-        public async Task<IEnumerable<BuildingKindResource>> GetAll()
-        {
-            var buildingKinds = await context.BuildingKinds.ToListAsync();
-            
-            return mapper.Map<List<BuildingKind>, List<BuildingKindResource>>(buildingKinds);
+        public async Task<IEnumerable<BuildingKindResource>> GetAll() {
+            var buildingKinds = await UnitOfWork.Repository<BuildingKind>().GetEnumerableAsync(); //await context.BuildingKinds.ToListAsync();
+
+            return mapper.Map<List<BuildingKind>, List<BuildingKindResource>>(buildingKinds.ToList());
         }
     }
 }
