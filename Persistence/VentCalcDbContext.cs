@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VentCalc.Models;
 
 namespace VentCalc.Persistence
 {
-    public class VentCalcDbContext : DbContext
+    public class VentCalcDbContext : IdentityDbContext
     {
         public VentCalcDbContext(DbContextOptions<VentCalcDbContext> options)
             : base(options)
