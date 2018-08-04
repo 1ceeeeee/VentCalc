@@ -2,12 +2,9 @@ using AutoMapper;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
 
-namespace VentCalc.Mapping
-{
-    public class MappingProfile : Profile
-    {
-        public MappingProfile()
-        {
+namespace VentCalc.Mapping {
+    public class MappingProfile : Profile {
+        public MappingProfile() {
             // Domain to API Resource
             CreateMap<Region, RegionResource>();
             CreateMap<City, CityResource>();
@@ -18,11 +15,17 @@ namespace VentCalc.Mapping
             CreateMap<Project, ProjectResource>();
             CreateMap<RoomTypeValue, RoomTypeValueResource>();
             CreateMap<RoomType, RoomTypeResource>();
+            CreateMap<PortalUser, PortalUserResource>();
+            CreateMap<AppUser, PortalUserResource>();
 
             // API Resource to Domain
-             CreateMap<SaveRoomResource, Room>()
+            CreateMap<SaveRoomResource, Room>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
             CreateMap<SaveProjectResource, Project>()
+                .ForMember(v => v.Id, opt => opt.Ignore());
+            CreateMap<PortalUserResource, PortalUser>()
+                .ForMember(v => v.Id, opt => opt.Ignore());
+            CreateMap<PortalUserResource, AppUser>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
         }
     }

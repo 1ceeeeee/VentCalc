@@ -11,6 +11,8 @@ using VentCalc.Persistence;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using VentCalc.Repositories;
+using VentCalc.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Angular2WebpackVisualStudio
 {
@@ -52,6 +54,19 @@ namespace Angular2WebpackVisualStudio
                             .AllowAnyMethod();
                     });
             });
+
+                        services.AddIdentity<AppUser, IdentityRole>
+                (o =>
+                {
+                    // configure identity options
+                    o.Password.RequireDigit = false;
+                    o.Password.RequireLowercase = false;
+                    o.Password.RequireUppercase = false;
+                    o.Password.RequireNonAlphanumeric = false;
+                    o.Password.RequiredLength = 6;
+                })
+                .AddEntityFrameworkStores<VentCalcDbContext>()
+                .AddDefaultTokenProviders();
 
             // Add framework services.            
             services.AddMvc();
