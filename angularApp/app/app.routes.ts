@@ -10,6 +10,9 @@ export const routes: Routes = [
     },
     {
         path: 'airexchange', loadChildren: './airexchange/airexchange.module#AirexchangeModule'
+    },
+    {
+        path: 'registration', loadChildren: './registration/registration.module#RegistrationModule'
     }
 ];
 

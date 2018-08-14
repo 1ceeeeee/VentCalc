@@ -16,6 +16,7 @@
     "build-dev": "npm run webpack-dev",
     "build-production": "npm run webpack-production",
     "watch-webpack-dev": "webpack --env=dev --watch --color",
+    
     "watch-webpack-production": "npm run build-production --watch --color",
     "publish-for-iis": "npm run build-production && dotnet publish -c Release",
     "test": "karma start",

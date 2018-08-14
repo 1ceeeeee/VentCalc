@@ -10,6 +10,7 @@ import { RoomTypeService } from './services/room-type.service';
 import { ProjectService } from './services/project.service';
 import { AirExchangeCalculateService } from './services/air-exchange-calculate.service';
 import { DataService } from './services/data.service';
+import { UserService } from './services/user.service';
 
 @NgModule({
     imports: [
@@ -32,6 +33,7 @@ export class CoreModule {
                 RoomTypeService,
                 ProjectService,
                 AirExchangeCalculateService,
+                UserService,
                 Configuration
             ]
         };

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { ThingService } from './../../core/services/thing-data.service';
-import { Thing } from './../../models/thing';
+import { ThingService } from '../../core/services/thing-data.service';
+import { Thing } from '../../models/thing';
 
 @Component({
     selector: 'app-home-component',
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getAllThings();
+        // this.getAllThings();
     }
 
     addThing() {

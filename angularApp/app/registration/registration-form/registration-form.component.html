@@ -1,0 +1,130 @@
+<form [formGroup]="form">
+
+<!-- email начало -->
+  <div class="row user-section">
+    <div class="col-sm-5">
+      <div formGroupName="user">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Адрес email</label>
+          <input 
+            formControlName="email"
+            type="email" 
+            class="form-control" 
+            id="inputEmail" 
+            required="true"
+            aria-describedby="emailHelp" 
+            placeholder="Укажите ваш email">
+          <small 
+            id="emailHelp" 
+            class="form-text text-muted">Мы никогда не раскроем вашего почтового адреса, он будет использоваться для авторизации на сайте.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- email конец -->
+
+  <!-- Отчество начало -->
+  <div class="row user-section">
+      <div class="col-sm-5">
+        <div formGroupName="user">
+          <div class="form-group">
+            <label for="inputLastName">Фамилия</label>
+            <input
+              formControlName="lastName"
+              type="text" 
+              class="form-control" 
+              id="inputLastName" 
+              aria-describedby="lastNameHelp" 
+              placeholder="Укажите вашу фамилию (необязательно)">
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Отчество конец -->
+
+  <!-- Имя начало -->
+  <div class="row user-section">
+      <div class="col-sm-5">
+        <div formGroupName="user">
+          <div class="form-group">
+            <label for="inputFirstName">Имя</label>
+            <input
+              formControlName="firstName"
+              type="text" 
+              class="form-control" 
+              id="inputFirstName" 
+              aria-describedby="firstNameHelp" 
+              placeholder="Укажите вашe имя (необязательно)">
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Имя конец -->
+
+  <!-- Отчество начало -->
+  <div class="row user-section">
+      <div class="col-sm-5">
+        <div formGroupName="user">
+          <div class="form-group">
+            <label for="inputMiddleName">Отчество</label>
+            <input
+              formControlName="middleName"
+              type="text" 
+              class="form-control" 
+              id="inputMiddleName" 
+              aria-describedby="middleNameHelp" 
+              placeholder="Укажите вашe отчество (необязательно)">
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Отчество конец -->
+
+  <!-- Пароль начало -->
+  <div class="row user-section">
+      <div class="col-sm-5">
+        <div formGroupName="user">
+          <div class="form-group">
+            <label for="inputPassword">Пароль</label>
+            <input
+              formControlName="password"
+              type="password" 
+              class="form-control" 
+              id="inputPassword" 
+              aria-describedby="passwordHelp" 
+              placeholder="Укажите ваш пароль">
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Пароль конец -->
+
+  <!-- Подтверждение пароля начало -->
+  <div class="row user-section">
+      <div class="col-sm-5">
+        <div formGroupName="user">
+          <div class="form-group">
+            <label for="inputPasswordCheck">Подтверждение пароля</label>
+            <input
+              formControlName="passwordCheck"
+              type="password" 
+              class="form-control" 
+              id="inputPasswordCheck" 
+              aria-describedby="passwordCheckHelp" 
+              placeholder="Укажите ваш пароль еще раз">
+          </div>
+        </div>
+      </div>
+  </div>
+  <!-- Подтверждение пароля конец -->
+
+  <div class="row col-sm-5 user-section">
+      <button 
+        class="btn btn-primary"
+        (click)="onCreateUserClick()">
+        Создать аккаунт
+      </button>
+  </div>  
+
+
+</form> 
