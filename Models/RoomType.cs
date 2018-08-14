@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("RoomTypes")]
     [Description("Помещения")]
-    public class RoomType : BaseEntity
+    public class RoomType : CrudBase
     {
         [Required]
         [Description("ИД типа здания")]

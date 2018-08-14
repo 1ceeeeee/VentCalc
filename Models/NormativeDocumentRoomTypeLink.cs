@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("NormativeDocumentRoomTypeLinks")]
     [Description("Связи норм. документов и типов помещений")]
-    public class NormativeDocumentRoomTypeLink : BaseEntity
+    public class NormativeDocumentRoomTypeLink : CrudBase
     {
         [Required]
         [Description("ИД нормативного документа")]

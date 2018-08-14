@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Angular2WebpackVisualStudio.Models;
+//using Angular2WebpackVisualStudio.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;

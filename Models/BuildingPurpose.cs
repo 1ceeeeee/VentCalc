@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("BuildingPurposes")]
     [Description("Назначения зданий")]
-    public class BuildingPurpose : BaseEntity
+    public class BuildingPurpose : CrudBase
     {
         [Required]
         [Description("Назначение здания")]
