@@ -10,13 +10,20 @@
             formControlName="email"
             type="email" 
             class="form-control" 
-            id="inputEmail" 
-            required="true"
+            id="inputEmail"             
             aria-describedby="emailHelp" 
             placeholder="Укажите ваш email">
           <small 
             id="emailHelp" 
-            class="form-text text-muted">Мы никогда не раскроем вашего почтового адреса, он будет использоваться для авторизации на сайте.</small>
+            class="form-text text-muted">
+            Мы никогда не раскроем вашего почтового адреса, он будет использоваться для авторизации на сайте.
+          </small>
+          <div 
+            *ngIf="email.touched && email.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Email введен неверно.
+        </div>
         </div>
       </div>
     </div>
@@ -37,6 +44,12 @@
               aria-describedby="lastNameHelp" 
               placeholder="Укажите вашу фамилию (необязательно)">
           </div>
+          <div 
+            *ngIf="lastName.touched && lastName.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Фамиилия может содержать только буквы киррилицы.
+      </div>
         </div>
       </div>
   </div>
@@ -56,6 +69,12 @@
               aria-describedby="firstNameHelp" 
               placeholder="Укажите вашe имя (необязательно)">
           </div>
+          <div 
+            *ngIf="firstName.touched && firstName.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Имя может содержать только буквы киррилицы.
+        </div>
         </div>
       </div>
   </div>
@@ -75,6 +94,12 @@
               aria-describedby="middleNameHelp" 
               placeholder="Укажите вашe отчество (необязательно)">
           </div>
+          <div 
+            *ngIf="middleName.touched && middleName.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Отчество может содержать только буквы киррилицы.
+      </div>
         </div>
       </div>
   </div>
@@ -93,6 +118,12 @@
               id="inputPassword" 
               aria-describedby="passwordHelp" 
               placeholder="Укажите ваш пароль">
+          </div>
+          <div 
+            *ngIf="password.touched && password.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Пароль должен быть длиной не менее 6 символов и иметь хотя бы один не повторяющийся.
           </div>
         </div>
       </div>
@@ -113,6 +144,12 @@
               aria-describedby="passwordCheckHelp" 
               placeholder="Укажите ваш пароль еще раз">
           </div>
+          <div 
+            *ngIf="passwordCheck.touched && passwordCheck.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Пароль должен быть длиной не менее 6 символов и иметь хотя бы один не повторяющийся.
+          </div>
         </div>
       </div>
   </div>
@@ -121,10 +158,19 @@
   <div class="row col-sm-5 user-section">
       <button 
         class="btn btn-primary"
+        [disabled]="!form.valid"
         (click)="onCreateUserClick()">
         Создать аккаунт
       </button>
   </div>  
-
+  <div 
+    class="user-section alert alert-danger alert-dismissible fade show" 
+    role="alert"
+    *ngIf="errors.length > 0">
+    <div 
+      *ngFor="let error of errors; let i=index">
+        {{errors[i].description}}
+    </div>    
+  </div> 
 
 </form> 

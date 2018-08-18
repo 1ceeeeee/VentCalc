@@ -10,14 +10,31 @@ import { FormGroup, FormControl, Validators } from '../../../../node_modules/@an
 export class RegistrationFormComponent implements OnInit {
 
   user: User = new User();
+  errors: string[] = [];
 
   form = new FormGroup({
     user: new FormGroup({
-      email: new FormControl('', Validators.required),
-      firstName: new FormControl('', Validators.required),
-      middleName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)      
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])),
+      firstName: new FormControl('', Validators.compose([
+        Validators.pattern('^[А-Яа-я]+$')
+      ])),
+      middleName: new FormControl('', Validators.compose([
+        Validators.pattern('^[А-Яа-я]+$')
+      ])),
+      lastName: new FormControl('', Validators.compose([
+        Validators.pattern('^[А-Яа-я]+$')
+      ])),
+      password: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(6)
+      ])),
+      passwordCheck: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(6)
+      ]))
     })
   });
 
@@ -43,9 +60,12 @@ export class RegistrationFormComponent implements OnInit {
     return this.form.get('user.password')!;
   }
 
-  onCreateUserClick(){
-    
-    console.log(this.email.value, + ' ' + this.firstName.value + ' ' + this.middleName.value + ' ' + this.lastName.value + ' ' + this.password.value);
+  get passwordCheck() {
+    return this.form.get('user.passwordCheck')!;
+  }
+
+  onCreateUserClick() {
+
     var usr = new User(
       0,
       this.firstName.value,
@@ -57,14 +77,15 @@ export class RegistrationFormComponent implements OnInit {
     );
 
     this.userService.Create(usr)
-    .subscribe(
-      () => {
-        console.log(usr);        
-      },
-      (error) => {
-        console.log(error)
-      }
-    );
+      .subscribe(
+        () => {
+        },
+        (errors) => {
+          this.errors = errors.error;
+          console.log(this.errors);
+          console.log(this.errors.length);
+        }
+      );
   }
 
   ngOnInit() {
