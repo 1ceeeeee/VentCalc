@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("NormativeDocumentTypes")]
     [Description("Типы нормативных документов")]
-    public class NormativeDocumentType : BaseEntity
+    public class NormativeDocumentType : CrudBase
     {
         [Required]
         [StringLength(255)]

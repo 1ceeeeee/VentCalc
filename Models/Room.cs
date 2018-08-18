@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("Rooms")]
     [Description("Помещения")]
-    public class Room : BaseEntity
+    public class Room : CrudBase
     {
         [Required]
         [Description("ИД города")]
@@ -46,7 +46,12 @@ namespace VentCalc.Models
         [Description("ИД проекта")]
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-
+        [StringLength(255)]
+        [Description("Приточная система")]
+        public string InflowSystem { get; set; }
+        [StringLength(255)]
+        [Description("Вытяжная система")]
+        public string ExhaustSystem { get; set; }
     }
 
 }

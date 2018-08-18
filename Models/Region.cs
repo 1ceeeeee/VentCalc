@@ -7,7 +7,7 @@ using VentCalc.Persistence;
 namespace VentCalc.Models
 {
     [Table("Regions")]
-    public class Region : BaseEntity
+    public class Region : CrudBase
     {
         [Required]
         [StringLength(255)]

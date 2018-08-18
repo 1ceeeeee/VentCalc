@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("Projects")]
     [Description("Проекты")]
-    public class Project : BaseEntity
+    public class Project : CrudBase
     {
         [Required]
         [StringLength(255)]

@@ -1,0 +1,9 @@
+obj/VentCalc.csproj.nuget.g.props
+obj/Debug/netcoreapp2.0/VentCalc.csproj.FileListAbsolute.txt
+bin/Debug/netcoreapp2.0/VentCalc.deps.json
+obj/VentCalc.csproj.nuget.g.targets
+obj/VentCalc.csproj.dotnetwatch.g.targets
+bin/Debug/netcoreapp2.0/VentCalc.runtimeconfig.dev.json
+obj/project.assets.json
+obj/Debug/netcoreapp2.0/VentCalc.AssemblyInfo.cs
+bin/Debug/netcoreapp2.0/VentCalc.runtimeconfig.json

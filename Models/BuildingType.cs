@@ -9,7 +9,7 @@ namespace VentCalc.Models
 {
     [Table("BuildingTypes")]
     [Description("Типы зданий")]
-    public class BuildingType : BaseEntity
+    public class BuildingType : CrudBase
     {
         [Required]
         [StringLength(255)]

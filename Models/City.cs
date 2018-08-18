@@ -8,7 +8,7 @@ using VentCalc.Persistence;
 namespace VentCalc.Models
 {
     [Table("Cities")]
-    public class City : BaseEntity
+    public class City : CrudBase
     {
         // [Description("ИД города")]
         // public int Id { get; set; }
