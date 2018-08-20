@@ -2,6 +2,7 @@ import { UserService } from './../../core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
+import { PasswordValidator } from '../../core/validators/password.validator';
 
 @Component({
   selector: 'registration-form',
@@ -11,34 +12,6 @@ export class RegistrationFormComponent implements OnInit {
 
   user: User = new User();
   errors: string[] = [];
-
-  form = new FormGroup({
-    user: new FormGroup({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
-      ])),
-      firstName: new FormControl('', Validators.compose([
-        Validators.pattern('^[А-Яа-я]+$')
-      ])),
-      middleName: new FormControl('', Validators.compose([
-        Validators.pattern('^[А-Яа-я]+$')
-      ])),
-      lastName: new FormControl('', Validators.compose([
-        Validators.pattern('^[А-Яа-я]+$')
-      ])),
-      password: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.minLength(6)
-      ])),
-      passwordCheck: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.minLength(6)
-      ]))
-    })
-  });
-
-  constructor(public userService: UserService) { }
 
   get email() {
     return this.form.get('user.email')!;
@@ -57,12 +30,47 @@ export class RegistrationFormComponent implements OnInit {
   }
 
   get password() {
-    return this.form.get('user.password')!;
+    return this.form.get('passwordForm.password')!;
   }
 
-  get passwordCheck() {
-    return this.form.get('user.passwordCheck')!;
+  get repeatPassword() {
+    return this.form.get('passwordForm.repeatPassword')!;
   }
+
+  form = new FormGroup({
+
+    user: new FormGroup({
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
+      ])),
+      firstName: new FormControl('', Validators.compose([
+        Validators.pattern('^[А-Яа-я]+$')
+      ])),
+      middleName: new FormControl('', Validators.compose([
+        Validators.pattern('^[А-Яа-я]+$')
+      ])),
+      lastName: new FormControl('', Validators.compose([
+        Validators.pattern('^[А-Яа-я]+$')
+      ]))
+    }),
+
+    passwordForm: new FormGroup({
+      password: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(6)
+      ])),
+      repeatPassword: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(6)        
+      ]))
+    },{
+      validators: PasswordValidator.validate.bind(this)
+    })
+
+  });
+
+  constructor(public userService: UserService) { }
 
   onCreateUserClick() {
 
