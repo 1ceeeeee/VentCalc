@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from '../../models/user';
 import { FormGroup, FormControl, Validators } from '../../../../node_modules/@angular/forms';
 import { PasswordValidator } from '../../core/validators/password.validator';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'registration-form',
@@ -10,7 +11,7 @@ import { PasswordValidator } from '../../core/validators/password.validator';
 })
 export class RegistrationFormComponent implements OnInit {
 
-  user: User = new User();
+  // user: User = new User();
   errors: string[] = [];
 
   get email() {
@@ -70,7 +71,7 @@ export class RegistrationFormComponent implements OnInit {
 
   });
 
-  constructor(public userService: UserService) { }
+  constructor(public userService: UserService, public router:Router) { }
 
   onCreateUserClick() {
 
@@ -84,14 +85,16 @@ export class RegistrationFormComponent implements OnInit {
       this.email.value
     );
 
-    this.userService.Create(usr)
+    this.userService.register(usr)
       .subscribe(
-        () => {
+        (result) => {
+          if(result){
+            console.log(usr.email);
+            this.router.navigate(['/auth'], {queryParams: {brandNew: true, userName: usr.email}});
+          }
         },
         (errors) => {
           this.errors = errors.error;
-          console.log(this.errors);
-          console.log(this.errors.length);
         }
       );
   }

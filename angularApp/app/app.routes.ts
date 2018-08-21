@@ -13,6 +13,9 @@ export const routes: Routes = [
     },
     {
         path: 'registration', loadChildren: './registration/registration.module#RegistrationModule'
+    },
+    {
+        path: 'auth', loadChildren:'./auth/auth.module#AuthModule'
     }
 ];
 

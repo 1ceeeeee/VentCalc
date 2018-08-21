@@ -1,0 +1,67 @@
+
+<form [formGroup]="form">
+
+    <div class="row user-section">
+        <div class="col-sm-5">
+
+            <h4>Войти</h4>
+
+            <div class="form-group">
+              <label for="inputUserName">Электронный адрес</label>
+                <input 
+                  formControlName="userName"
+                  type="email" 
+                  class="form-control" 
+                  id="inputUserName"             
+                  aria-describedby="userNameHelp" 
+                  placeholder="Укажите ваш email, указанный при регистрации">
+                <div 
+                  *ngIf="userName.touched && userName.invalid" 
+                  class="alert alert-danger alert-dismissible fade show" 
+                  role="alert">
+                  <strong>Ошибка.</strong>Email введен неверно.
+                </div>
+            </div>
+  
+            <div class="form-group">
+              <label for="inputPassword">Пароль</label>
+                <input
+                  formControlName="password"
+                  type="password" 
+                  class="form-control" 
+                  id="inputPassword" 
+                  aria-describedby="passwordHelp" 
+                  placeholder="Укажите ваш пароль">
+            </div>
+            <div 
+              *ngIf="password.touched && password.invalid" 
+              class="alert alert-danger alert-dismissible fade show" 
+              role="alert">
+              <strong>Ошибка.</strong>Пароль должен быть длиной не менее 6 символов и иметь хотя бы один не повторяющийся.
+            </div>
+    
+          
+        </div>
+      </div>
+
+      <div class="row col-sm-5 user-section">
+          <button 
+            class="btn btn-primary"
+            [disabled]="!form.valid"
+            (click)="onLoginClick()">
+            Войти
+          </button>
+      </div>  
+      <div 
+        class="user-section alert alert-danger alert-dismissible fade show" 
+        role="alert"
+        *ngIf="errors.length > 0">
+        {{errors}}
+        <!-- <div 
+          *ngFor="let error of errors; let i=index">
+            {{errors[i].item2}}
+        </div>     -->
+      </div> 
+
+</form>
+

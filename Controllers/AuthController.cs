@@ -27,7 +27,7 @@ namespace VentCalc.Controllers {
             };
         }
 
-        [HttpPost("login")]
+        [HttpPost]
         public async Task<IActionResult> Login([FromBody] CredentialsResource credentials) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);
