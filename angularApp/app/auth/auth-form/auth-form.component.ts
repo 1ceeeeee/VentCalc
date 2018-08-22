@@ -11,12 +11,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class AuthFormComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) { }
-
-  // subscription: any = null;
-  credentials: Credentials = new Credentials();
+    
   brandNew: boolean = false;
   // isRequesting: boolean;
-  submitted: boolean = true;
+  // submitted: boolean = true;
   errors: string[] = [];
 
   get userName() {
@@ -28,7 +26,7 @@ export class AuthFormComponent implements OnInit {
   }
 
   form = new FormGroup({
-    userName: new FormControl('123', Validators.compose([
+    userName: new FormControl('', Validators.compose([
       Validators.required,
       Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')
     ])),
@@ -39,23 +37,22 @@ export class AuthFormComponent implements OnInit {
   })
 
   onLoginClick() {
-    // var cred = new Credentials(
-    //   this.userName.value,
-    //   this.password.value
-    // )
 
-    this.credentials.userName = this.userName.value;
-    this.credentials.password = this.password.value;
+    var cred = new Credentials(
+      this.userName.value,
+      this.password.value
+    );
 
-    this.userService.login(this.credentials)
+    this.userService.login(cred)
       .subscribe(
         (result) => {
           if (result) {
+            this.userService.storeCurrentUser(result);
             this.router.navigate(['/home']);
           }
         },
         (errors) => {          
-          this.errors = errors.error.item2;          
+          this.errors = errors.error!.item2!;          
         }
       );
   }
@@ -65,14 +62,10 @@ export class AuthFormComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(
       (param: any) => {
         this.brandNew = param['brandNew'];
-        this.credentials.userName = param['userName'];
+        this.form.get('userName')!.setValue(param['userName']);        
       }
     );
-    this.form.get('userName')!.setValue(this.credentials.userName);
+    
   }
-
-  // ngOnDestroy() {
-  //   this.subscription.unsubscribe();
-  // }
 
 }
