@@ -13,7 +13,7 @@ export class AuthFormComponent implements OnInit {
   constructor(private userService: UserService, private router: Router, private activatedRoute: ActivatedRoute) { }
     
   brandNew: boolean = false;
-  // isRequesting: boolean;
+  isRequesting: boolean = false;
   // submitted: boolean = true;
   errors: string[] = [];
 
@@ -37,13 +37,13 @@ export class AuthFormComponent implements OnInit {
   })
 
   onLoginClick() {
-
+    
     var cred = new Credentials(
       this.userName.value,
       this.password.value
     );
-
-    this.userService.login(cred)
+    this.isRequesting = true;    
+    this.userService.login(cred)    
       .subscribe(
         (result) => {
           if (result) {
@@ -52,7 +52,11 @@ export class AuthFormComponent implements OnInit {
           }
         },
         (errors) => {          
-          this.errors = errors.error!.item2!;          
+          this.errors = errors.error!.item2!;  
+          this.isRequesting = false;         
+        },
+        () => {
+          this.isRequesting = false;          
         }
       );
   }

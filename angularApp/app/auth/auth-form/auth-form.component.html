@@ -49,13 +49,17 @@
       </div>
 
       <div class="row col-sm-5 user-section">
+        <div class="form-group">
           <button 
             class="btn btn-primary"
-            [disabled]="!form.valid"
+            [disabled]="!form.valid || isRequesting"
             (click)="onLoginClick()">
             Войти
           </button>
-      </div>  
+          <spinner-form [isRunning]="isRequesting"></spinner-form>  
+        </div>     
+      </div>
+
       <div 
         class="user-section alert alert-danger alert-dismissible fade show" 
         role="alert"
@@ -66,6 +70,7 @@
             {{errors[i].item2}}
         </div>     -->
       </div> 
+
 
 </form>
 
