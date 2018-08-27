@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Newtonsoft.Json;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
 using VentCalc.Persistence;
+using VentCalc.Repositories;
 
 namespace VentCalc.Controllers
 {
@@ -14,34 +16,34 @@ namespace VentCalc.Controllers
     public class RoomsController : Controller
     {
         private readonly IMapper mapper;
-        private readonly IRoomRepository repository;
-        public RoomsController(IMapper mapper, IRoomRepository repository)
+        private IUnitOfWork UnitOfWork;
+        public RoomsController(IMapper mapper, IUnitOfWork uow)
         {
             this.mapper = mapper;
-            this.repository = repository;
+            this.UnitOfWork = uow;
         }
 
         [HttpGet]
         public async Task<IEnumerable<RoomResource>> ReadAll()
         {
-            var rooms = await repository.ReadAll();
+            var rooms = await UnitOfWork.Repository<Room>().GetEnumerableAsync();
 
-            return mapper.Map<List<Room>, List<RoomResource>>(rooms);
+            return mapper.Map<List<Room>, List<RoomResource>>(rooms.ToList());
         }
 
         [HttpGet]
         [Route("~/api/Projects/{projectId:int}/Rooms")]
         public async Task<IEnumerable<RoomResource>> ReadAll(int projectId)
         {
-            var rooms = await repository.ReadAll(projectId);
+            var rooms = await UnitOfWork.Repository<Room>().GetEnumerableAsync(x => x.ProjectId == projectId);
 
-            return mapper.Map<List<Room>, List<RoomResource>>(rooms);
+            return mapper.Map<List<Room>, List<RoomResource>>(rooms.ToList());
         }        
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ReadSingle(int id)
         {
-            var room = await repository.ReadSingle(id);
+            var room = await UnitOfWork.Repository<Room>().GetByIdAsync(id);
 
             if (room == null)
                 return NotFound();
@@ -58,7 +60,9 @@ namespace VentCalc.Controllers
                 return BadRequest(ModelState);
 
             var room = mapper.Map<SaveRoomResource, Room>(saveRoomResource);
-            room = await repository.Create(room);
+            await UnitOfWork.Repository<Room>().AddAsync(room);
+            UnitOfWork.Commit();
+
             var roomResource = mapper.Map<Room, RoomResource>(room);
 
             return Ok(roomResource);
@@ -71,14 +75,16 @@ namespace VentCalc.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var room = await repository.ReadSingle(id);
+            var room = await UnitOfWork.Repository<Room>().GetByIdAsync(id);
 
             if (room == null)
                 return NotFound();
 
             mapper.Map<SaveRoomResource, Room>(saveRoomResource, room);
-            room = await repository.Update(room);
+            UnitOfWork.Repository<Room>().MarkUpdated(room);
             var roomResource = mapper.Map<Room, RoomResource>(room);
+
+            UnitOfWork.Commit();
 
             return Ok(roomResource);
          }
@@ -87,12 +93,13 @@ namespace VentCalc.Controllers
         public async Task<IActionResult> DeleteAsync(int id)
         {
 
-            var room =  await repository.ReadSingle(id);
+            var room =  await UnitOfWork.Repository<Room>().GetByIdAsync(id);
 
             if (room == null)
                 return NotFound();
 
-            repository.Delete(id);
+            UnitOfWork.Repository<Room>().Delete(room);
+            UnitOfWork.Commit();
 
             return Ok(id);
         }

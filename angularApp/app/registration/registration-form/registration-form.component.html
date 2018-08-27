@@ -131,12 +131,16 @@
 
 
   <div class="row col-sm-5 user-section">
+    <div class="form-group">
       <button 
         class="btn btn-primary"
-        [disabled]="!form.valid"
+        [disabled]="!form.valid || isRequesting"
         (click)="onCreateUserClick()">
         Создать аккаунт
       </button>
+      <spinner-form [isRunning]="isRequesting"></spinner-form>
+    </div>
+ 
   </div>  
   <div 
     class="user-section alert alert-danger alert-dismissible fade show" 

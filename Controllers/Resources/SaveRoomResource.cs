@@ -14,7 +14,7 @@ namespace VentCalc.Controllers.Resources
         public double? Height { get; set; }
         public int? Floor { get; set; }
         public int? PeopleAmount { get; set; }
-        public int? UserId { get; set; }
+        public int UserId { get; set; }
         public int ProjectId { get; set; }
         public string InflowSystem { get; set; }
         public string ExhaustSystem { get; set; }

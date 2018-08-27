@@ -14,6 +14,7 @@ export class AuthFormComponent implements OnInit {
     
   brandNew: boolean = false;
   isRequesting: boolean = false;
+  isLoggedIn: boolean = false;
   // submitted: boolean = true;
   errors: string[] = [];
 
@@ -56,6 +57,7 @@ export class AuthFormComponent implements OnInit {
           this.isRequesting = false;         
         },
         () => {
+          this.isLoggedIn = true;
           this.isRequesting = false;          
         }
       );

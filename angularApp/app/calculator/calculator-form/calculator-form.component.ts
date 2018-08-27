@@ -1,3 +1,4 @@
+import { UserService } from './../../core/services/user.service';
 import { DataService } from './../../core/services/data.service';
 import { AirExchangeProject } from './../../models/airExchangeProject';
 import { AirExchangeCalculateService } from './../../core/services/air-exchange-calculate.service';
@@ -61,6 +62,7 @@ export class CalculatorFormComponent implements OnInit {
     public projectService: ProjectService,
     public airExchangeService: AirExchangeCalculateService,
     private dataService: DataService,
+    private userService: UserService,
     public router: Router
   ) { }
 
@@ -158,21 +160,36 @@ export class CalculatorFormComponent implements OnInit {
 
 
 
-    var rm = new Room(
-      this.initedIdRoom,
-      this.calculatorForm.cityId,
-      this.calculatorForm.buildingTypeId,
-      this.form.get('room.roomName')!.value,
-      this.form.get('room.roomNumber')!.value,
-      roomTypeName,
-      this.form.get('room.roomLength')!.value,
-      this.form.get('room.roomWidth')!.value,
-      this.form.get('room.roomArea')!.value,
-      this.form.get('room.roomHeight')!.value,
-      this.form.get('room.roomFloor')!.value,
-      this.form.get('room.roomPeopleAmount')!.value,
-      0,
-      this.project.id);
+    // var rm = new Room(
+    //   this.initedIdRoom,
+    //   this.calculatorForm.cityId,
+    //   this.calculatorForm.buildingTypeId,
+    //   this.form.get('room.roomName')!.value,
+    //   this.form.get('room.roomNumber')!.value,
+    //   roomTypeName,
+    //   this.form.get('room.roomLength')!.value,
+    //   this.form.get('room.roomWidth')!.value,
+    //   this.form.get('room.roomArea')!.value,
+    //   this.form.get('room.roomHeight')!.value,
+    //   this.form.get('room.roomFloor')!.value,
+    //   this.form.get('room.roomPeopleAmount')!.value,
+    //   0,
+    //   this.project.id);
+    var rm = new Room();
+    rm.id = this.initedIdRoom;
+    rm.cityId = this.calculatorForm.cityId,
+    rm.buildingTypeId = this.calculatorForm.buildingTypeId;
+    rm.roomTypeId = this.roomName.value; 
+    rm.roomNumber = this.roomNumber.value;
+    rm.roomName = roomTypeName,
+    rm.length = this.roomLength.value;
+    rm.width = this.roomWidth.value;
+    rm.area = this.roomArea.value;
+    rm.height = this.roomHeight.value;
+    rm.floor = this.roomFloor.value;
+    rm.peopleAmount = this.roomPeopleAmount.value;
+    rm.projectId = this.project.id;
+    rm.createUserId = this.userService.getCurrentUser()!.id;
 
     if (this.initedIdRoom == 0) {
       this.roomService.add(rm)
@@ -304,19 +321,19 @@ export class CalculatorFormComponent implements OnInit {
     //     () => { },
     //     () => {console.log('from cash') }
     //   )
-      if (this.cities.length == 0) {
-        // Возвращает все географии городов из бд
-        this.cityService.getAll()
-          .subscribe(
-            data => {
-              console.log(this.cities.length),
-                this.cities = data
-                //this.dataService.changeCities(this.cities)
-            },
-            () => { },
-            () => { console.log('cities.getAll()') }
-          );
-      }
+    if (this.cities.length == 0) {
+      // Возвращает все географии городов из бд
+      this.cityService.getAll()
+        .subscribe(
+          data => {
+            console.log(this.cities.length),
+              this.cities = data
+            //this.dataService.changeCities(this.cities)
+          },
+          () => { },
+          () => { console.log('cities.getAll()') }
+        );
+    }
 
   }
 

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class RegistrationFormComponent implements OnInit {
 
   // user: User = new User();
+  isRequesting: boolean = false;
   errors: string[] = [];
 
   get email() {
@@ -85,6 +86,7 @@ export class RegistrationFormComponent implements OnInit {
       this.email.value
     );
 
+    this.isRequesting = true;
     this.userService.register(usr)
       .subscribe(
         (result) => {
@@ -95,6 +97,10 @@ export class RegistrationFormComponent implements OnInit {
         },
         (errors) => {
           this.errors = errors.error;
+          this.isRequesting = false;
+        },
+        () => {
+          this.isRequesting = false;
         }
       );
   }

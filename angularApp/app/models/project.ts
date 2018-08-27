@@ -1,7 +1,7 @@
+import { CrudBase } from './CrudBase';
 import { Room } from "./room";
 
-export class Project {
-    public id: number = 0;
+export class Project extends CrudBase {
     public projectName: string = "";
     public rooms: Room[] = [];
 }
