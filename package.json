@@ -16,7 +16,6 @@
     "build-dev": "npm run webpack-dev",
     "build-production": "npm run webpack-production",
     "watch-webpack-dev": "webpack --env=dev --watch --color",
-    
     "watch-webpack-production": "npm run build-production --watch --color",
     "publish-for-iis": "npm run build-production && dotnet publish -c Release",
     "test": "karma start",
@@ -40,6 +39,7 @@
     "bootstrap": "4.0.0",
     "core-js": "2.5.3",
     "ie-shim": "0.1.0",
+    "jwt-decode": "^2.2.0",
     "ngx-select-dropdown": "^0.4.1",
     "ngx-select-ex": "^3.5.2-ng4",
     "rxjs": "5.5.6",

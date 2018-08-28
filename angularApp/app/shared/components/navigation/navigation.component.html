@@ -5,6 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['/calculator']" href="#">Калькулятор</a>
@@ -13,7 +14,18 @@
                     <a class="nav-link" href="#">Нормативная база</a>
                 </li>
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+
+            <ul 
+                *ngIf="isLoggedIn"
+                class="nav navbar-nav navbar-right">                
+                <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/auth']" href="#">Выйти</a>
+                </li>
+            </ul>            
+            
+            <ul 
+                *ngIf="!isLoggedIn"
+                class="nav navbar-nav navbar-right">                
                 <li class="nav-item">
                         <a class="nav-link" [routerLink]="['/auth']" href="#">Войти</a>
                 </li>
@@ -21,6 +33,7 @@
                     <a class="nav-link" [routerLink]="['/registration']" href="#">Зарегестрироваться</a>
                 </li>
             </ul>
+
         </div>    
 </nav>
 

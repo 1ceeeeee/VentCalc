@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../core/services/user.service';
 
+
 @Component({
     selector: 'navigation',
     templateUrl: 'navigation.component.html'
@@ -9,13 +10,14 @@ import { UserService } from '../../../core/services/user.service';
 export class NavigationComponent implements OnInit { 
 
     isLoggedIn: boolean = false;
+    //subscription: any;
 
     constructor(private userService: UserService){
 
     }
 
-    ngOnInit(){
-        this.isLoggedIn = this.userService.isLoggedIn();
-        //console.log(this.isLoggedIn)
+    ngOnInit(){        
+        this.userService.authNavStatus$.subscribe(status => this.isLoggedIn = status);        
     }
+
 }
