@@ -9,11 +9,14 @@ import { UserService } from '../../../core/services/user.service';
 
 export class NavigationComponent implements OnInit { 
 
-    isLoggedIn: boolean = false;
-    //subscription: any;
+    isLoggedIn: boolean = false;    
 
     constructor(private userService: UserService){
 
+    }
+
+    logout(){
+        this.userService.logout();
     }
 
     ngOnInit(){        

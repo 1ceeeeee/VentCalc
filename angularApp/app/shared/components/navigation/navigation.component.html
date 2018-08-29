@@ -19,7 +19,7 @@
                 *ngIf="isLoggedIn"
                 class="nav navbar-nav navbar-right">                
                 <li class="nav-item">
-                        <a class="nav-link" [routerLink]="['/auth']" href="#">Выйти</a>
+                        <a class="nav-link" (click)="logout()" href="#">Выйти</a>
                 </li>
             </ul>            
             

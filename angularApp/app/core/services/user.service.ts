@@ -30,8 +30,7 @@ export class UserService {
     this.headers = this.headers.set('Content-Type', 'application/json');
     this.headers = this.headers.set('Accept', 'application/json');
 
-    this.loggedIn = !this.isTokenExpired();
-    // this.loggedIn = !!localStorage.getItem(TOKEN_NAME);
+    this.loggedIn = !this.isTokenExpired();    
     this._authNavStatusSource.next(this.loggedIn);
   }
 
@@ -47,7 +46,7 @@ export class UserService {
     localStorage.removeItem(TOKEN_NAME);
     localStorage.removeItem(USER_ID);
     this.loggedIn = false;
-    this._authNavStatusSource.next(false);
+    this._authNavStatusSource.next(this.loggedIn);
   }
 
   storeCurrentUser(credentials: Credentials){

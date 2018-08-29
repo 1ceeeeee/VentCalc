@@ -14,8 +14,7 @@ export class AuthFormComponent implements OnInit {
     
   brandNew: boolean = false;
   isRequesting: boolean = false;
-  isLoggedIn: boolean = false;
-  // submitted: boolean = true;
+  isLoggedIn: boolean = false;  
   errors: string[] = [];
 
   get userName() {
