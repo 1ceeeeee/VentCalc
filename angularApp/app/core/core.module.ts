@@ -1,3 +1,4 @@
+import { AuthGuard } from './guards/auth.guard';
 import { RoomService } from './services/room.service';
 import { BuildingKindService } from './services/building-kind.service';
 import { CommonModule } from '@angular/common';
@@ -34,6 +35,7 @@ export class CoreModule {
                 ProjectService,
                 AirExchangeCalculateService,
                 UserService,
+                AuthGuard,
                 Configuration
             ]
         };
