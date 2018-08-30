@@ -49,7 +49,7 @@ namespace VentCalc.Controllers {
 
             credentials.Auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity);
             credentials.Expires_in = (int) _jwtOptions.ValidFor.TotalSeconds;
-            credentials.Id = identity.Claims.Single(c => c.Type == "id").Value;
+            credentials.Id = identity.Claims.Single(c => c.Type == "id").Value;            
 
             return Ok(credentials);
         }

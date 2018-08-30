@@ -10,6 +10,7 @@ import * as jwt_decode from 'jwt-decode';
 
 export const TOKEN_NAME: string = 'currentUser_auth_token';
 export const USER_ID: string = 'currentUser_id';
+export const USER_NAME: string = 'currentUser_name';
 
 @Injectable()
 export class UserService {
@@ -52,11 +53,12 @@ export class UserService {
   storeCurrentUser(credentials: Credentials){
     localStorage.setItem(TOKEN_NAME, credentials.auth_token);
     localStorage.setItem(USER_ID, credentials.id);
+    localStorage.setItem(USER_NAME,credentials.userName);
   }
 
   getCurrentUser(): Credentials{        
     return new Credentials(
-      "",
+      localStorage.getItem(USER_NAME)!,
       "",
       localStorage.getItem(TOKEN_NAME)!,
       0,

@@ -7,7 +7,7 @@ export const routes: Routes = [
         path: 'about', loadChildren: './about/about.module#AboutModule'
     }, 
     {
-        path: 'calculator', loadChildren: './calculator/calculator.module#CalculatorModule', canActivate: [AuthGuard]
+        path: 'calculator', loadChildren: './calculator/calculator.module#CalculatorModule'
     },
     {
         path: 'airexchange', loadChildren: './airexchange/airexchange.module#AirexchangeModule'
@@ -17,6 +17,9 @@ export const routes: Routes = [
     },
     {
         path: 'auth', loadChildren:'./auth/auth.module#AuthModule'
+    },
+    {
+        path: 'personal-info', loadChildren:'./personal-info/personal-info.module#PersonalInfoModule', canActivate: [AuthGuard]
     }
 ];
 
