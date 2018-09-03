@@ -79,11 +79,12 @@ export class UserService {
   }
 
   getTokenExpirationDate(token: string): Date | null {
-    const decoded: any = jwt_decode(token);
+    var decoded: any = jwt_decode(token);
 
     if (decoded.exp === undefined) return null;
 
-    const date = new Date(0); 
+    console.log(decoded.exp);
+    var date = new Date(0); 
     date.setUTCSeconds(decoded.exp);
     return date;
   }
@@ -92,8 +93,13 @@ export class UserService {
     if(!token) token = this.getToken();
     if(!token) return true;
 
+    console.log('token: ' + token);
     const date = this.getTokenExpirationDate(token);
-    if(date === undefined || date === null) return false;
+    if(date === undefined || date === null) {
+      console.log('date :' + date);
+      return false;
+    }
+    console.log('comparison dates :' + date + ' ' + Date().valueOf());
     return !(date.valueOf() > new Date().valueOf());
   }
 

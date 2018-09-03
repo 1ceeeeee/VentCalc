@@ -42,6 +42,7 @@ namespace Angular2WebpackVisualStudio {
 
             services.AddScoped<IUnitOfWork, UnitOfWork<VentCalcDbContext>>();
             services.AddSingleton<IJwtFactory, JwtFactory>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddAutoMapper();
             services.AddDbContext<VentCalcDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));

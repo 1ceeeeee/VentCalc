@@ -45,7 +45,7 @@ namespace VentCalc.Controllers {
             //     expires_in = (int) _jwtOptions.ValidFor.TotalSeconds
             // };
 
-            // var json = JsonConvert.SerializeObject(response, _serializerSettings);            
+            // var json = JsonConvert.SerializeObject(response, _serializerSettings);          
 
             credentials.Auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity);
             credentials.Expires_in = (int) _jwtOptions.ValidFor.TotalSeconds;

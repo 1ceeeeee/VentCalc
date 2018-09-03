@@ -6,25 +6,32 @@ import { CustomFooterComponent } from './components/customfooter/customfooter.co
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { AirexchangeFormComponent } from './../airexchange/airexchange-form/airexchange-form.component';
 import { SpinnerFormComponent } from './components/spinner/spinner-form/spinner-form.component';
+import { ChangePasswordFormComponent } from './components/change-password/change-password-form/change-password-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
     imports: [
         CommonModule,
-        RouterModule
+        RouterModule,
+        ReactiveFormsModule
+        
     ],
 
     declarations: [
         NavigationComponent,
         CustomFooterComponent,
         AirexchangeFormComponent,
-        SpinnerFormComponent
+        SpinnerFormComponent,
+        ChangePasswordFormComponent
     ],
 
     exports: [
         NavigationComponent,
         CustomFooterComponent,
         AirexchangeFormComponent,
-        SpinnerFormComponent
+        SpinnerFormComponent,
+        ChangePasswordFormComponent
     ]
 })
 
