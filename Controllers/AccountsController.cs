@@ -10,13 +10,13 @@ using VentCalc.Models;
 using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
-    [Route("api/[controller]")]
+    [Route("api/[controller]")]    
     public class AccountsController : Controller {
 
         private readonly IMapper _mapper;
         private IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
-        
+
         public AccountsController(IUnitOfWork uow, IMapper mapper, UserManager<AppUser> userManager) {
             this._mapper = mapper;
             this._unitOfWork = uow;
@@ -40,7 +40,32 @@ namespace VentCalc.Controllers {
 
             _unitOfWork.Commit();
 
-            return new OkObjectResult("Account created");
+            return new OkObjectResult("Account created.");
+        }
+
+        [HttpPost("changepwd")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordResource changePwd) {
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByIdAsync(changePwd.Id);
+
+            if (user == null) {
+                return BadRequest(("find_user_failure", "Не удалость найти пользователя.", ModelState));
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, changePwd.OldPassword, changePwd.NewPassword);
+
+            if (result.Succeeded) {
+                return new OkObjectResult("Password changed.");
+            } else {
+                if (result.Errors.Any())
+                    return BadRequest(("Errors has happen", result.Errors.ToArray()));                
+            }
+
+            return new OkObjectResult("Password changed.");
+
         }
 
     }
