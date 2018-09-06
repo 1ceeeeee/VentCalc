@@ -58,6 +58,7 @@ export class AuthFormComponent implements OnInit {
         () => {
           this.isLoggedIn = true;
           this.userService.changeAuthNavStatus(true);
+          this.userService.changeAuthNavUserName(this.userService.getCurrentUser().userName);
           this.isRequesting = false;          
         }
       );

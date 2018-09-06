@@ -90,8 +90,7 @@ export class RegistrationFormComponent implements OnInit {
     this.userService.register(usr)
       .subscribe(
         (result) => {
-          if(result){
-            console.log(usr.email);
+          if(result){            
             this.router.navigate(['/auth'], {queryParams: {brandNew: true, userName: usr.email}});
           }
         },

@@ -61,7 +61,8 @@ namespace VentCalc.Controllers {
                 return new OkObjectResult("Password changed.");
             } else {
                 if (result.Errors.Any())
-                    return BadRequest(("Errors has happen", result.Errors.ToArray()));                
+                    return BadRequest(("change_password_failure", "Старый пароль введен не верно"));   
+                    // return BadRequest(result.Errors.ToArray());              
             }
 
             return new OkObjectResult("Password changed.");

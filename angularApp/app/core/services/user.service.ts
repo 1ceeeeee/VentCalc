@@ -1,3 +1,4 @@
+import { ChangePassword } from './../../models/changePassword';
 import { Credentials } from './../../models/credentials';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '../../../../node_modules/@angular/common/http';
@@ -18,21 +19,26 @@ export class UserService {
   private headers: HttpHeaders;
   private actionUrlAuth: string;
   private actionUrlReg: string;
+  private actionUrlChangePwd: string;
   private loggedIn: boolean = false;
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
   authNavStatus$ = this._authNavStatusSource.asObservable();
+  private _authNavUserName = new BehaviorSubject<string>('');
+  _authNavUserName$ = this._authNavUserName.asObservable();
 
   constructor(private http: HttpClient, configuration: Configuration) {
 
     this.actionUrlAuth = configuration.Server + 'api/auth/';
-    this.actionUrlReg = configuration.Server + 'api/accounts/';    
+    this.actionUrlReg = configuration.Server + 'api/accounts/';
+    this.actionUrlChangePwd = configuration.Server + 'api/accounts/changepwd'
 
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
     this.headers = this.headers.set('Accept', 'application/json');
 
-    this.loggedIn = !this.isTokenExpired();    
+    this.loggedIn = !this.isTokenExpired();
     this._authNavStatusSource.next(this.loggedIn);
+    this._authNavUserName.next(this.getCurrentUser().userName);
   }
 
   register(user: User): Observable<User> {
@@ -40,23 +46,29 @@ export class UserService {
   }
 
   login(credentials: Credentials) {
-    return this.http.post<Credentials>(this.actionUrlAuth,credentials, {headers: this.headers});
+    return this.http.post<Credentials>(this.actionUrlAuth, credentials, { headers: this.headers });
   }
 
   logout() {
     localStorage.removeItem(TOKEN_NAME);
     localStorage.removeItem(USER_ID);
+    localStorage.removeItem(USER_NAME);
     this.loggedIn = false;
     this._authNavStatusSource.next(this.loggedIn);
+    this._authNavUserName.next('');
   }
 
-  storeCurrentUser(credentials: Credentials){
+  changePassword(pwd: ChangePassword): Observable<ChangePassword> {
+    return this.http.post<ChangePassword>(this.actionUrlChangePwd, pwd, { headers: this.headers });
+  }
+
+  storeCurrentUser(credentials: Credentials) {
     localStorage.setItem(TOKEN_NAME, credentials.auth_token);
     localStorage.setItem(USER_ID, credentials.id);
-    localStorage.setItem(USER_NAME,credentials.userName);
+    localStorage.setItem(USER_NAME, credentials.userName);
   }
 
-  getCurrentUser(): Credentials{        
+  getCurrentUser(): Credentials {
     return new Credentials(
       localStorage.getItem(USER_NAME)!,
       "",
@@ -66,7 +78,7 @@ export class UserService {
     );
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     return this.loggedIn;
   }
 
@@ -83,28 +95,28 @@ export class UserService {
 
     if (decoded.exp === undefined) return null;
 
-    console.log(decoded.exp);
-    var date = new Date(0); 
+    var date = new Date(0);
     date.setUTCSeconds(decoded.exp);
     return date;
   }
 
-  isTokenExpired(token?: string | null): boolean {        
-    if(!token) token = this.getToken();
-    if(!token) return true;
+  isTokenExpired(token?: string | null): boolean {
+    if (!token) token = this.getToken();
+    if (!token) return true;
 
-    console.log('token: ' + token);
     const date = this.getTokenExpirationDate(token);
-    if(date === undefined || date === null) {
-      console.log('date :' + date);
+    if (date === undefined || date === null) {
       return false;
     }
-    console.log('comparison dates :' + date + ' ' + Date().valueOf());
     return !(date.valueOf() > new Date().valueOf());
   }
 
   changeAuthNavStatus(currentStatus: boolean) {
-    this._authNavStatusSource.next(currentStatus)    
+    this._authNavStatusSource.next(currentStatus)
+  }
+
+  changeAuthNavUserName(currentUserName: string){
+    this._authNavUserName.next(currentUserName);
   }
 
 }
