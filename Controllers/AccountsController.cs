@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
+using VentCalc.Persistence;
 using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
@@ -17,10 +19,13 @@ namespace VentCalc.Controllers {
         private IUnitOfWork _unitOfWork;
         private readonly UserManager<AppUser> _userManager;
 
-        public AccountsController(IUnitOfWork uow, IMapper mapper, UserManager<AppUser> userManager) {
+        private readonly VentCalcDbContext _context;
+
+        public AccountsController(IUnitOfWork uow, IMapper mapper, UserManager<AppUser> userManager, VentCalcDbContext context) {
             this._mapper = mapper;
             this._unitOfWork = uow;
             this._userManager = userManager;
+            this._context = context;
         }
 
         [HttpPost]
@@ -67,6 +72,12 @@ namespace VentCalc.Controllers {
 
             return new OkObjectResult("Password changed.");
 
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<PortalUser>> GetAll(){            
+            var users = await _unitOfWork.Repository<PortalUser>().GetEnumerableIcludeMultipleAsync(x => x.Identity);
+            return users;
         }
 
     }

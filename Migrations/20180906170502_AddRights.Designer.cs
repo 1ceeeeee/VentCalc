@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VentCalc.Persistence;
 
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180906170502_AddRights")]
+    partial class AddRights
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,40 +182,6 @@ namespace VentCalc.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("VentCalc.Models.AppUserRights", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("AppUserId");
-
-                    b.Property<string>("AppUsersId");
-
-                    b.Property<DateTime>("CreateDate");
-
-                    b.Property<int>("CreateUserId");
-
-                    b.Property<DateTime?>("DateDelete");
-
-                    b.Property<int?>("DeleteUsertId");
-
-                    b.Property<int>("RightId");
-
-                    b.Property<int?>("RightsId");
-
-                    b.Property<DateTime?>("UpdateDate");
-
-                    b.Property<int?>("UpdateUserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUsersId");
-
-                    b.HasIndex("RightsId");
-
-                    b.ToTable("AppUserRights");
                 });
 
             modelBuilder.Entity("VentCalc.Models.BuildingKind", b =>
@@ -713,17 +681,6 @@ namespace VentCalc.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("VentCalc.Models.AppUserRights", b =>
-                {
-                    b.HasOne("VentCalc.Models.AppUser", "AppUsers")
-                        .WithMany("Rights")
-                        .HasForeignKey("AppUsersId");
-
-                    b.HasOne("VentCalc.Models.Rights", "Rights")
-                        .WithMany("Users")
-                        .HasForeignKey("RightsId");
                 });
 
             modelBuilder.Entity("VentCalc.Models.BuildingPurpose", b =>

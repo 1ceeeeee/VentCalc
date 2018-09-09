@@ -16,6 +16,8 @@ namespace VentCalc.Repositories {
         Task<T> GetByIdAsync(int id);
         Task<IEnumerable<T>> GetEnumerableAsync();
         Task<IEnumerable<T>> GetEnumerableAsync(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<IEnumerable<T>> GetEnumerableIcludeMultipleAsync(params Expression<Func<T, object>>[] includes);
         Task AddAsync(T enitity, CancellationToken cancellationToken = default(CancellationToken));
 
     }

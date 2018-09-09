@@ -22,8 +22,7 @@ export class NavigationComponent implements OnInit {
 
     ngOnInit(){        
         this.userService.authNavStatus$.subscribe(status => this.isLoggedIn = status); 
-        this.userService._authNavUserName$.subscribe(userName => this.userName = userName);
-        //this.userName = this.userService.getCurrentUser().userName;       
+        this.userService._authNavUserName$.subscribe(userName => this.userName = userName);        
     }
 
 }
