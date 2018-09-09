@@ -24,7 +24,14 @@
                 <li class="nav-item">
                         <a class="nav-link" [routerLink]="['/personal-info']"  href="#">Здравствуйте, {{userName}}!</a>
                 </li>
-            </ul>            
+            </ul>   
+            
+            <ul                 
+                class="nav navbar-nav navbar-right">                
+                <li class="nav-item">
+                        <a class="nav-link" [routerLink]="['/admin']" href="#">Админ</a>
+                </li>       
+            </ul>
             
             <ul 
                 *ngIf="!isLoggedIn"

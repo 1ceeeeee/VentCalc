@@ -1,9 +1,9 @@
+import { User } from './../../models/user';
 import { ChangePassword } from './../../models/changePassword';
 import { Credentials } from './../../models/credentials';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '../../../../node_modules/@angular/common/http';
 import { Configuration } from '../../app.constants';
-import { User } from '../../models/user';
 import { Observable } from '../../../../node_modules/rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as jwt_decode from 'jwt-decode';
@@ -62,6 +62,10 @@ export class UserService {
     return this.http.post<ChangePassword>(this.actionUrlChangePwd, pwd, { headers: this.headers });
   }
 
+  getAll(): Observable<User[]>{
+    return this.http.get<User[]>(this.actionUrlReg, {headers: this.headers});
+  }
+  
   storeCurrentUser(credentials: Credentials) {
     localStorage.setItem(TOKEN_NAME, credentials.auth_token);
     localStorage.setItem(USER_ID, credentials.id);

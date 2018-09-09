@@ -20,6 +20,9 @@ export const routes: Routes = [
     },
     {
         path: 'personal-info', loadChildren:'./personal-info/personal-info.module#PersonalInfoModule', canActivate: [AuthGuard]
+    },
+    {
+        path: 'admin', loadChildren:'./admin/admin.module#AdminModule'
     }
 ];
 
