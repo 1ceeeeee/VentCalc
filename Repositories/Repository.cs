@@ -41,6 +41,7 @@ namespace VentCalc.Repositories {
         public Task AddAsync(T enitity) => AddAsync(enitity, cancellationToken : new CancellationToken());
         public Task AddAsync(T enitity, CancellationToken cancellationToken = default(CancellationToken)) => _dbSet.AddAsync(enitity, cancellationToken);
         public async Task<T> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
+        public async Task<T> GetByIdAsync(string id) => await _dbSet.FindAsync(id);
         public async Task<IEnumerable<T>> GetEnumerableAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken)) {
             IQueryable<T> query = _dbSet;
             return await query.Where(predicate).ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -55,14 +56,16 @@ namespace VentCalc.Repositories {
             return await query.ToListAsync().ConfigureAwait(false);
         }
 
-        // public static IQueryable<T> IncludeMultiple<T>(this IQueryable<T> query, params Expression<Func<T, object>>[] includes)
-        // where T : class {
-        //     if (includes != null) {
-        //         query = includes.Aggregate(query,
-        //             (current, include) => current.Include(include));
-        //     }
-
-        //     return query;
-        // }
+                public async Task<IEnumerable<T>> GetEnumerableIcludeMultipleAsync(Expression<System.Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) {
+            IQueryable<T> query = _dbSet;            
+            if (includes != null) {
+                query = includes.Aggregate(query,
+                    (current, include) => current.Include(include));
+            }
+            if(predicate != null){
+                return await query.Where(predicate).ToListAsync().ConfigureAwait(false);
+            }
+            return await query.ToListAsync().ConfigureAwait(false);
+        }
     }
 }

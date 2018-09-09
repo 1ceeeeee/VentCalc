@@ -18,7 +18,7 @@ namespace VentCalc.Controllers {
         }
 
         [HttpGet]
-        public async Task<IEnumerable<IdentityRole>> GetAll() {
+        public IEnumerable<IdentityRole> GetAll() {
             return _roleManager.Roles.ToList();
         }
 
@@ -29,8 +29,12 @@ namespace VentCalc.Controllers {
                 return BadRequest(("create_role_failure", "Не удалось создать роль, имя роли не было передано"));                
 
             var role = await _roleManager.CreateAsync(new IdentityRole(name));
-
-            return Ok(name);
+            if(role.Succeeded){
+                return Ok(name);
+            }
+            else {
+                return BadRequest(("create_role_failure", role.Errors.ToArray()));
+            }
         }
 
         [HttpDelete("{id}")]

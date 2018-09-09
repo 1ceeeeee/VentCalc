@@ -15,10 +15,12 @@ namespace VentCalc.Repositories {
         void MarkUpdated(T enitity);
 
         Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(string id);
         Task<IEnumerable<T>> GetEnumerableAsync();
         Task<IEnumerable<T>> GetEnumerableAsync(Expression<Func<T, bool>> predicate = null, CancellationToken cancellationToken = default(CancellationToken));
 
         Task<IEnumerable<T>> GetEnumerableIcludeMultipleAsync(params Expression<Func<T, object>>[] includes);
+        Task<IEnumerable<T>> GetEnumerableIcludeMultipleAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includes);
         Task AddAsync(T enitity, CancellationToken cancellationToken = default(CancellationToken));
 
     }
