@@ -9,6 +9,7 @@ namespace VentCalc.Repositories {
     public interface IBaseRepository<T> where T : BaseEntity {
         IEnumerable<T> GetEnumerable();
         IEnumerable<T> GetEnumerable(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> GetEnumerableIcludeMultiple(params Expression<Func<T, object>>[] includes);
         void Add(T enitity);
         void Delete(T enitity);
         void MarkUpdated(T enitity);

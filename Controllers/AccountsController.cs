@@ -75,9 +75,23 @@ namespace VentCalc.Controllers {
         }
 
         [HttpGet]
-        public async Task<IEnumerable<PortalUser>> GetAll(){            
+        public async Task<IEnumerable<PortalUserResource>> GetAll(){            
             var users = await _unitOfWork.Repository<PortalUser>().GetEnumerableIcludeMultipleAsync(x => x.Identity);
-            return users;
+
+            var portalUsers = new List<PortalUserResource>();
+
+            foreach (var user in users){
+                portalUsers.Add(new PortalUserResource(){
+                    Id = user.Id,
+                    FirstName = user.Identity?.FirstName,
+                    SecondName = user.Identity?.SecondName,
+                    LastName = user.Identity?.LastName,
+                    UserName = user.Identity?.UserName,
+                    Email = user.Identity?.Email,
+                    IdentityId = user.IdentityId
+                });
+            }            
+            return portalUsers;
         }
 
     }
