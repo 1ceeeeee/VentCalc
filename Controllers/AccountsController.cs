@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
+    
     public class AccountsController : Controller {
 
         private readonly IMapper _mapper;
@@ -47,6 +49,25 @@ namespace VentCalc.Controllers {
             return new OkObjectResult("Account created.");
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
+        public async Task<IActionResult> Delete(string id) {
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+                return BadRequest(("user_delete_failure", "Пользователь с таким ID не найден"));
+
+            var pUsers = await _unitOfWork.Repository<PortalUser>().GetEnumerableAsync(x => x.IdentityId == id);
+            var pUser = pUsers.SingleOrDefault();
+            if (pUser != null) {
+                _unitOfWork.Repository<PortalUser>().Delete(pUser);
+                await _userManager.DeleteAsync(user);
+            }
+
+            return new OkObjectResult("User deleted");
+        }
+
         [HttpPost("changepwd")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordResource changePwd) {
             if (!ModelState.IsValid) {
@@ -71,6 +92,18 @@ namespace VentCalc.Controllers {
 
             return new OkObjectResult("Password changed.");
 
+        }
+
+        [HttpGet("test")]
+        // [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles="Администратор")]
+        // [Authorize(Roles="Администратор")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
+        public JsonResult Test() {
+            
+            
+            // var u = User.Identity.Name;
+            var user = HttpContext.Request.Headers;//["Authorization"];
+            return new JsonResult(user);
         }
 
         [HttpGet]
@@ -103,6 +136,9 @@ namespace VentCalc.Controllers {
                 res.IdentityId = selectedUser.IdentityId;
                 res.UserRoles = await _userManager.GetRolesAsync(selectedUser.Identity);
                 res.AllRoles = _roleManager.Roles.Select(x => x.Name).ToList();
+                res.FirsName = selectedUser.Identity.FirstName;
+                res.SecondName = selectedUser.Identity.SecondName;
+                res.LastName = selectedUser.Identity.LastName;
             }
             return res;
         }

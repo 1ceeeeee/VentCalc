@@ -40,6 +40,11 @@ namespace VentCalc.Repositories {
         public async Task<IEnumerable<T>> GetEnumerableAsync() => await _dbSet.ToListAsync();
         public Task AddAsync(T enitity) => AddAsync(enitity, cancellationToken : new CancellationToken());
         public Task AddAsync(T enitity, CancellationToken cancellationToken = default(CancellationToken)) => _dbSet.AddAsync(enitity, cancellationToken);
+        public async Task DeleteAsync(T enitity) {
+            T existing = await _dbSet.FindAsync(enitity.Id);
+            if (existing != null) _dbSet.Remove(existing); // TODO: переделать с физического удаления на статус
+        }
+
         public async Task<T> GetByIdAsync(int id) => await _dbSet.FindAsync(id);        
         public async Task<IEnumerable<T>> GetEnumerableAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken)) {
             IQueryable<T> query = _dbSet;

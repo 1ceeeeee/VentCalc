@@ -1,3 +1,4 @@
+import { UserWithRoles } from './../../models/userWithRoles';
 import { User } from './../../models/user';
 import { ChangePassword } from './../../models/changePassword';
 import { Credentials } from './../../models/credentials';
@@ -20,6 +21,7 @@ export class UserService {
   private actionUrlAuth: string;
   private actionUrlReg: string;
   private actionUrlChangePwd: string;
+  // private actionUrlDel: string;
   private loggedIn: boolean = false;
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
   authNavStatus$ = this._authNavStatusSource.asObservable();
@@ -30,6 +32,7 @@ export class UserService {
 
     this.actionUrlAuth = configuration.Server + 'api/auth/';
     this.actionUrlReg = configuration.Server + 'api/accounts/';
+    // this.actionUrlDel = configuration.Server + 'api/accounts/delete/';
     this.actionUrlChangePwd = configuration.Server + 'api/accounts/changepwd'
 
     this.headers = new HttpHeaders();
@@ -43,6 +46,10 @@ export class UserService {
 
   register(user: User): Observable<User> {
     return this.http.post<User>(this.actionUrlReg, user, { headers: this.headers });
+  }
+
+  delete(id: string): Observable<any> {
+    return this.http.delete<any>(this.actionUrlReg + id, { headers: this.headers });
   }
 
   login(credentials: Credentials) {
@@ -62,10 +69,14 @@ export class UserService {
     return this.http.post<ChangePassword>(this.actionUrlChangePwd, pwd, { headers: this.headers });
   }
 
-  getAll(): Observable<User[]>{
-    return this.http.get<User[]>(this.actionUrlReg, {headers: this.headers});
+  getAll(): Observable<User[]> {
+    return this.http.get<User[]>(this.actionUrlReg, { headers: this.headers });
   }
-  
+
+  getUser(id: string): Observable<UserWithRoles>{
+    return this.http.get<UserWithRoles>(this.actionUrlReg + id, {headers: this.headers});
+  }
+
   storeCurrentUser(credentials: Credentials) {
     localStorage.setItem(TOKEN_NAME, credentials.auth_token);
     localStorage.setItem(USER_ID, credentials.id);
@@ -119,7 +130,7 @@ export class UserService {
     this._authNavStatusSource.next(currentStatus)
   }
 
-  changeAuthNavUserName(currentUserName: string){
+  changeAuthNavUserName(currentUserName: string) {
     this._authNavUserName.next(currentUserName);
   }
 

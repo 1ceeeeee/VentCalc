@@ -37,7 +37,7 @@ namespace VentCalc.Controllers {
             if (identity == null) {
                 return BadRequest(("login_failure", "Не верное имя пользователя или пароль.", ModelState));
             }
-
+            
             // Serialize and return the response
             // var response = new {
             //     id = identity.Claims.Single(c => c.Type == "id").Value,
@@ -47,7 +47,7 @@ namespace VentCalc.Controllers {
 
             // var json = JsonConvert.SerializeObject(response, _serializerSettings);          
 
-            credentials.Auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity);
+            credentials.Auth_token = await _jwtFactory.GenerateEncodedToken(credentials.UserName, identity, _userManager);
             credentials.Expires_in = (int) _jwtOptions.ValidFor.TotalSeconds;
             credentials.Id = identity.Claims.Single(c => c.Type == "id").Value;            
 
