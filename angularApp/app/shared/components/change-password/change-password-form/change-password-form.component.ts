@@ -1,5 +1,4 @@
 import { ChangePassword } from './../../../../models/changePassword';
-import { Credentials } from './../../../../models/credentials';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../../../core/services/user.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -10,8 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './change-password-form.component.html'
 })
 export class ChangePasswordFormComponent implements OnInit {
-
-  credentials: Credentials = new Credentials();
+  
   isRequesting: boolean = false;
   errors: string[] = [];
 
@@ -58,7 +56,7 @@ export class ChangePasswordFormComponent implements OnInit {
         },
         (errors) => {
           console.log(errors);
-          this.errors = errors.error!.item2!; 
+          this.errors = errors.error!.item2!;
           this.isRequesting = false;
         },
         () => {
@@ -68,7 +66,10 @@ export class ChangePasswordFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.credentials = this.userService.getCurrentUser();
+    // if (this.credentials == null) {
+    //   this.credentials = this.userService.getCurrentUser();
+    // }
+
   }
 
 }

@@ -1,4 +1,12 @@
-<p>
-  personal-info-form works!
-</p>
-<change-password-form></change-password-form>
+<div row class="user-section">
+  <div *ngIf="isAdmin">
+    <h6>{{user.lastName}} {{user.firstName}} {{user.secondName}}</h6>
+
+    <p>{{user | json}}</p>
+    <p>{{userId}} {{currentUserId}}</p>
+  </div>
+  <div *ngIf="isRestrictedAccess">
+    <p>В доступе отказано</p>
+  </div>
+</div>
+<change-password-form *ngIf="userId == currentUserId"></change-password-form>

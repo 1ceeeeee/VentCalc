@@ -93,6 +93,7 @@ namespace VentCalc.Controllers {
             return new OkObjectResult("Password changed.");
 
         }
+        
 
         [HttpGet("test")]
         // [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles="Администратор")]
@@ -136,7 +137,7 @@ namespace VentCalc.Controllers {
                 res.IdentityId = selectedUser.IdentityId;
                 res.UserRoles = await _userManager.GetRolesAsync(selectedUser.Identity);
                 res.AllRoles = _roleManager.Roles.Select(x => x.Name).ToList();
-                res.FirsName = selectedUser.Identity.FirstName;
+                res.FirstName = selectedUser.Identity.FirstName;
                 res.SecondName = selectedUser.Identity.SecondName;
                 res.LastName = selectedUser.Identity.LastName;
             }

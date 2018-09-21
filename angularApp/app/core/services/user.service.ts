@@ -14,6 +14,7 @@ export const TOKEN_NAME: string = 'currentUser_auth_token';
 export const USER_ID: string = 'currentUser_id';
 export const USER_NAME: string = 'currentUser_name';
 
+
 @Injectable()
 export class UserService {
 
@@ -27,6 +28,7 @@ export class UserService {
   authNavStatus$ = this._authNavStatusSource.asObservable();
   private _authNavUserName = new BehaviorSubject<string>('');
   _authNavUserName$ = this._authNavUserName.asObservable();
+  // private user_roles: string = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
 
   constructor(private http: HttpClient, configuration: Configuration) {
 
@@ -89,7 +91,8 @@ export class UserService {
       "",
       localStorage.getItem(TOKEN_NAME)!,
       0,
-      localStorage.getItem(USER_ID)!
+      localStorage.getItem(USER_ID)!,
+      this.getUserRoles()!
     );
   }
 
@@ -115,6 +118,13 @@ export class UserService {
     return date;
   }
 
+  getTokenUserRoles(token: string): string[]{
+    var decoded: any = jwt_decode(token);
+    var roles = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+    if (decoded[roles] === undefined) return [];
+    return decoded[roles];
+  }
+
   isTokenExpired(token?: string | null): boolean {
     if (!token) token = this.getToken();
     if (!token) return true;
@@ -124,6 +134,12 @@ export class UserService {
       return false;
     }
     return !(date.valueOf() > new Date().valueOf());
+  }
+
+  getUserRoles(token?: string | null): string[] {
+    if (!token) token = this.getToken();
+    if (!token) return [];
+    return this.getTokenUserRoles(token);    
   }
 
   changeAuthNavStatus(currentStatus: boolean) {

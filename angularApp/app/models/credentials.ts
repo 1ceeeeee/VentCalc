@@ -4,6 +4,7 @@ export class Credentials {
         public password: string = "",
         public auth_token: string ="",
         public expires_in: number = 0,
-        public id: string = ""
+        public id: string = "",
+        public roles: string[] = []
     ) { }
 }
