@@ -2,8 +2,31 @@
   <div *ngIf="isAdmin">
     <h6>{{user.lastName}} {{user.firstName}} {{user.secondName}}</h6>
 
-    <p>{{user | json}}</p>
-    <p>{{userId}} {{currentUserId}}</p>
+    <!-- <p>{{user | json}}</p>
+    <p>{{userId}} {{currentUserId}}</p> -->
+
+    <div *ngFor="let role of user.allRoles">
+      <input 
+        type="checkbox" 
+        name="role" 
+        value="{{role}}"        
+        id="roleCheckBox"
+        [checked]="user.userRoles.indexOf(role) > -1"
+        (change)=onChange(role)> {{role}}
+    </div>
+
+    <div *ngIf="userId" class="row col-md-4 user-section">
+      <div class="form-group">
+        <button 
+          class="btn btn-primary"   
+          [disabled]="isRequesting"       
+          (click)="onSave()">
+          Применить
+        </button>
+        <spinner-form [isRunning]="isRequesting"></spinner-form>
+      </div>     
+    </div> 
+
   </div>
   <div *ngIf="isRestrictedAccess">
     <p>В доступе отказано</p>

@@ -145,6 +145,7 @@ namespace VentCalc.Controllers {
         }
 
         [HttpPost("editRoles")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
         public async Task<IActionResult> EditUserRoles([FromBody] PortalUserWithRolesResource userResource) {
             if (!ModelState.IsValid) {
                 return BadRequest(ModelState);

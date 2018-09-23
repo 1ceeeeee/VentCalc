@@ -22,6 +22,7 @@ export class UserService {
   private actionUrlAuth: string;
   private actionUrlReg: string;
   private actionUrlChangePwd: string;
+  private actionUrlEditUserRoles: string;
   // private actionUrlDel: string;
   private loggedIn: boolean = false;
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
@@ -36,6 +37,7 @@ export class UserService {
     this.actionUrlReg = configuration.Server + 'api/accounts/';
     // this.actionUrlDel = configuration.Server + 'api/accounts/delete/';
     this.actionUrlChangePwd = configuration.Server + 'api/accounts/changepwd'
+    this.actionUrlEditUserRoles = configuration.Server + 'api/accounts/editroles';
 
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
@@ -77,6 +79,11 @@ export class UserService {
 
   getUser(id: string): Observable<UserWithRoles>{
     return this.http.get<UserWithRoles>(this.actionUrlReg + id, {headers: this.headers});
+  }
+
+  editUserRoles(userWithRoles: UserWithRoles): Observable<UserWithRoles>{    
+    this.headers.append('Authorization', `Bearer ${this.getToken()}`);
+    return this.http.post<UserWithRoles>(this.actionUrlEditUserRoles, userWithRoles, {headers: this.headers})
   }
 
   storeCurrentUser(credentials: Credentials) {
