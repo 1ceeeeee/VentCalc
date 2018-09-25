@@ -48,7 +48,7 @@ export class PersonalInfoFormComponent implements OnInit {
 
   onSave() {
     this.isRequesting = true;
-    this.user.userRoles = this.selectedRoles;
+    // this.user.userRoles = this.selectedRoles;
     console.log(this.user);
     this.userService.editUserRoles(this.user)
       .subscribe(
@@ -71,7 +71,7 @@ export class PersonalInfoFormComponent implements OnInit {
     this.activatedRoute.queryParams.subscribe(
       (param: any) => {
         this.userId = param['userId'];
-        if (this.userId !== null) {
+        if (this.userId) {
           console.log('userId is not null');
           this.credentials = this.userService.getCurrentUser();
           if (this.credentials.roles !== null &&

@@ -1,3 +1,4 @@
+import { RoleGuardService } from './services/role-guard.service';
 import { AuthGuard } from './guards/auth.guard';
 import { RoomService } from './services/room.service';
 import { BuildingKindService } from './services/building-kind.service';
@@ -36,6 +37,7 @@ export class CoreModule {
                 AirExchangeCalculateService,
                 UserService,
                 AuthGuard,
+                RoleGuardService,
                 Configuration
             ]
         };

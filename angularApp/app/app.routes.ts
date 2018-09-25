@@ -1,3 +1,4 @@
+import { RoleGuardService as RoleGuard } from './core/services/role-guard.service';
 import { AuthGuard } from './core/guards/auth.guard';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -5,7 +6,7 @@ export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     {
         path: 'about', loadChildren: './about/about.module#AboutModule'
-    }, 
+    },
     {
         path: 'calculator', loadChildren: './calculator/calculator.module#CalculatorModule'
     },
@@ -16,13 +17,18 @@ export const routes: Routes = [
         path: 'registration', loadChildren: './registration/registration.module#RegistrationModule'
     },
     {
-        path: 'auth', loadChildren:'./auth/auth.module#AuthModule'
+        path: 'auth', loadChildren: './auth/auth.module#AuthModule'
     },
     {
-        path: 'personal-info', loadChildren:'./personal-info/personal-info.module#PersonalInfoModule', canActivate: [AuthGuard]
+        path: 'personal-info', loadChildren: './personal-info/personal-info.module#PersonalInfoModule', canActivate: [AuthGuard]
     },
     {
-        path: 'admin', loadChildren:'./admin/admin.module#AdminModule'
+        path: 'admin',
+        loadChildren: './admin/admin.module#AdminModule',
+        canActivate: [RoleGuard],
+        data: {
+            expectedRole: 'Администратор'
+        }
     }
 ];
 

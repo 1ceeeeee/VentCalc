@@ -82,8 +82,11 @@ export class UserService {
   }
 
   editUserRoles(userWithRoles: UserWithRoles): Observable<UserWithRoles>{    
-    this.headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.post<UserWithRoles>(this.actionUrlEditUserRoles, userWithRoles, {headers: this.headers})
+    let headers = this.headers;
+    console.log(this.getToken());
+    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
+    //this.headers.append('Authorization', `Bearer ${this.getToken()}`);
+    return this.http.post<UserWithRoles>(this.actionUrlEditUserRoles, userWithRoles, {headers: headers})
   }
 
   storeCurrentUser(credentials: Credentials) {
@@ -105,6 +108,20 @@ export class UserService {
 
   isLoggedIn() {
     return this.loggedIn;
+  }
+
+  isAdmin(expectedRole: string){
+    let token = this.getToken();   
+    if (this.isTokenExpired(token)) {      
+      return false;
+    }    
+    var roles = this.getUserRoles(token);
+
+    if(roles.indexOf(expectedRole) === -1){      
+      return false;
+    }
+
+    return true;
   }
 
   getToken(): string | null {
