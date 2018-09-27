@@ -4,7 +4,7 @@ import { ChangePassword } from './../../models/changePassword';
 import { Credentials } from './../../models/credentials';
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '../../../../node_modules/@angular/common/http';
-import { Configuration } from '../../app.constants';
+import { Configuration, ADMIN_ROLE } from '../../app.constants';
 import { Observable } from '../../../../node_modules/rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import * as jwt_decode from 'jwt-decode';
@@ -22,21 +22,26 @@ export class UserService {
   private actionUrlAuth: string;
   private actionUrlReg: string;
   private actionUrlChangePwd: string;
-  private actionUrlEditUserRoles: string;
-  // private actionUrlDel: string;
-  private loggedIn: boolean = false;
+  private actionUrlChangePwdHash: string;
+  private actionUrlEditUserRoles: string;  
+  private loggedIn: boolean = false;  
+
   private _authNavStatusSource = new BehaviorSubject<boolean>(false);
   authNavStatus$ = this._authNavStatusSource.asObservable();
+
   private _authNavUserName = new BehaviorSubject<string>('');
   _authNavUserName$ = this._authNavUserName.asObservable();
-  // private user_roles: string = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role';
+
+  private _authAdminNavStatusSource = new BehaviorSubject<boolean>(false);
+  authAdminNavStatus$ = this._authAdminNavStatusSource.asObservable();
+  
 
   constructor(private http: HttpClient, configuration: Configuration) {
 
     this.actionUrlAuth = configuration.Server + 'api/auth/';
-    this.actionUrlReg = configuration.Server + 'api/accounts/';
-    // this.actionUrlDel = configuration.Server + 'api/accounts/delete/';
-    this.actionUrlChangePwd = configuration.Server + 'api/accounts/changepwd'
+    this.actionUrlReg = configuration.Server + 'api/accounts/';    
+    this.actionUrlChangePwd = configuration.Server + 'api/accounts/changepwd';
+    this.actionUrlChangePwdHash = configuration.Server + 'api/accounts/changepwdhash';
     this.actionUrlEditUserRoles = configuration.Server + 'api/accounts/editroles';
 
     this.headers = new HttpHeaders();
@@ -45,6 +50,10 @@ export class UserService {
 
     this.loggedIn = !this.isTokenExpired();
     this._authNavStatusSource.next(this.loggedIn);
+
+    var t = this.isAdmin(ADMIN_ROLE);
+    console.log(t);
+    this._authAdminNavStatusSource.next(this.isAdmin(ADMIN_ROLE));    
     this._authNavUserName.next(this.getCurrentUser().userName);
   }
 
@@ -73,6 +82,12 @@ export class UserService {
     return this.http.post<ChangePassword>(this.actionUrlChangePwd, pwd, { headers: this.headers });
   }
 
+  changePasswordHash(pwd: ChangePassword): Observable<ChangePassword> {
+    let headers = this.headers;    
+    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
+    return this.http.post<ChangePassword>(this.actionUrlChangePwdHash, pwd, {headers: this.headers});
+  }
+
   getAll(): Observable<User[]> {
     return this.http.get<User[]>(this.actionUrlReg, { headers: this.headers });
   }
@@ -82,10 +97,8 @@ export class UserService {
   }
 
   editUserRoles(userWithRoles: UserWithRoles): Observable<UserWithRoles>{    
-    let headers = this.headers;
-    console.log(this.getToken());
-    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    //this.headers.append('Authorization', `Bearer ${this.getToken()}`);
+    let headers = this.headers;    
+    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);    
     return this.http.post<UserWithRoles>(this.actionUrlEditUserRoles, userWithRoles, {headers: headers})
   }
 
@@ -110,11 +123,11 @@ export class UserService {
     return this.loggedIn;
   }
 
-  isAdmin(expectedRole: string){
-    let token = this.getToken();   
-    if (this.isTokenExpired(token)) {      
+  isAdmin(expectedRole: string){    
+    if (this.isTokenExpired()) {      
       return false;
     }    
+    let token = this.getToken();   
     var roles = this.getUserRoles(token);
 
     if(roles.indexOf(expectedRole) === -1){      
@@ -172,6 +185,10 @@ export class UserService {
 
   changeAuthNavUserName(currentUserName: string) {
     this._authNavUserName.next(currentUserName);
+  }
+
+  changeAuthAdminNavStatus(currentStatus: boolean){
+    this._authAdminNavStatusSource.next(currentStatus);
   }
 
 }

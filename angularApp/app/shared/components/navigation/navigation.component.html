@@ -26,7 +26,8 @@
                 </li>
             </ul>   
             
-            <ul                 
+            <ul 
+                *ngIf="isAdmin"                
                 class="nav navbar-nav navbar-right">                
                 <li class="nav-item">
                         <a class="nav-link" [routerLink]="['/admin']" href="#">Админ</a>

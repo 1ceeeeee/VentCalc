@@ -10,6 +10,7 @@ import { UserService } from '../../../core/services/user.service';
 export class NavigationComponent implements OnInit { 
 
     isLoggedIn: boolean = false;
+    isAdmin: boolean = false;
     userName: string = "";    
 
     constructor(private userService: UserService){
@@ -22,7 +23,8 @@ export class NavigationComponent implements OnInit {
 
     ngOnInit(){        
         this.userService.authNavStatus$.subscribe(status => this.isLoggedIn = status); 
-        this.userService._authNavUserName$.subscribe(userName => this.userName = userName);        
+        this.userService._authNavUserName$.subscribe(userName => this.userName = userName);  
+        this.userService.authAdminNavStatus$.subscribe(adminStatus => this.isAdmin = adminStatus);      
     }
 
 }

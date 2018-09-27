@@ -15,7 +15,7 @@ import { SharedModule } from './shared/shared.module';
         CoreModule.forRoot(),
         HomeModule,
         SweetAlert2Module.forRoot({
-            buttonsStyling: false,
+            buttonsStyling: true,
             customClass: 'modal-content',
             confirmButtonClass: 'btn btn-primary',
             cancelButtonClass: 'btn'

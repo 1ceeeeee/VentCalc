@@ -1,9 +1,11 @@
 import { Injectable, isDevMode } from '@angular/core';
 
+export const ADMIN_ROLE: string = 'Администратор';
+
 @Injectable()
 export class Configuration {
 
-    public Server: string = "";
+    public Server: string = "";    
 
     constructor() {
         if(isDevMode())        

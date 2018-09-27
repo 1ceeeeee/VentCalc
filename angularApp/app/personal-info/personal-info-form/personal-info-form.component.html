@@ -1,35 +1,77 @@
-<div row class="user-section">
-  <div *ngIf="isAdmin">
-    <h6>{{user.lastName}} {{user.firstName}} {{user.secondName}}</h6>
+<form [formGroup]="form">
+  <div class="user-section">
+    <div *ngIf="isAdmin">
+      <div class="row user-section col-md-4">
+          <h6>{{user.lastName}} {{user.firstName}} {{user.secondName}}</h6>
+      </div>
+      
 
-    <!-- <p>{{user | json}}</p>
-    <p>{{userId}} {{currentUserId}}</p> -->
-
-    <div *ngFor="let role of user.allRoles">
-      <input 
-        type="checkbox" 
-        name="role" 
-        value="{{role}}"        
-        id="roleCheckBox"
-        [checked]="user.userRoles.indexOf(role) > -1"
-        (change)=onChange(role)> {{role}}
-    </div>
-
-    <div *ngIf="userId" class="row col-md-4 user-section">
-      <div class="form-group">
+      <!-- <p>{{user | json}}</p>
+      <p>{{userId}} {{currentUserId}}</p> -->
+      <div class="user-section col-md-4">
+        <div *ngFor="let role of user.allRoles; let i=index">
+          <input 
+            type="checkbox" 
+            name="role" 
+            value="{{role}}"        
+            id="roleCheckBox{{i}}"
+            [checked]="user.userRoles.indexOf(role) > -1"
+            (change)=onChange(role)> {{role}}
+        </div>
+      </div>
+      <div *ngIf="userId" class="row col-md-4 user-section">        
         <button 
           class="btn btn-primary"   
           [disabled]="isRequesting"       
           (click)="onSave()">
-          Применить
+          Сохранить изменения
         </button>
-        <spinner-form [isRunning]="isRequesting"></spinner-form>
-      </div>     
-    </div> 
+        <spinner-form [isRunning]="isRequesting"></spinner-form>            
+      </div> 
+      <swal
+        #confirmSwal
+        title="Сбросить пароль пользователю {{ user.lastName + ' ' + user.firstName + ' ' + user.secondName }}?"
+        text="Действие не обратимо"
+        type="question"
+        [showCancelButton]="true"
+        [focusCancel]="true"
+        (confirm)="onResetPwdClick()">
+      </swal>
+    
+      <!-- <label for="inputNewRepeatPassword">Новый пароль</label> -->
+      <div class="row user-section col-md-4">
+          <div 
+          *ngIf="newPassword.touched && newPassword.invalid" 
+          class="alert alert-danger alert-dismissible fade show user-section" 
+          role="alert">
+          <strong>Ошибка.</strong>Пароль должен быть длиной не менее 6 символов и иметь хотя бы один не повторяющийся.
+        </div>
+        <input
+        formControlName="newPassword"
+        type="password"
+        class="form-control" 
+        id="inputNewPassword" 
+        aria-describedby="newPasswordHelp" 
+        placeholder="Новый пароль">
+      </div>
+    
+      <div class="row user-section col-md-4">
+        <button              
+          type="button" 
+          class="btn btn-primary"  
+          [disabled]="!form.valid || isRequesting"             
+          (click)="confirmSwal.show()"
+          >
+          Сбросить пароль
+        </button> 
+      </div>
 
+    </div>
+
+    <div *ngIf="isRestrictedAccess" class="user-section col-md-4">
+      <p>В доступе отказано</p>
+    </div>
   </div>
-  <div *ngIf="isRestrictedAccess">
-    <p>В доступе отказано</p>
-  </div>
-</div>
-<change-password-form *ngIf="userId == currentUserId"></change-password-form>
+
+  <change-password-form *ngIf="userId == currentUserId"></change-password-form>
+</form>

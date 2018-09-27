@@ -14,7 +14,7 @@ using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
-    
+
     public class AccountsController : Controller {
 
         private readonly IMapper _mapper;
@@ -93,17 +93,43 @@ namespace VentCalc.Controllers {
             return new OkObjectResult("Password changed.");
 
         }
-        
+
+        [HttpPost("changepwdhash")]
+        // [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
+        public async Task<IActionResult> ChangePasswordHash([FromBody] ChangePasswordResource pwd) {
+
+            var user = await _userManager.FindByIdAsync(pwd.Id);
+
+            if (user == null) {
+                return BadRequest(("find_user_failure", "Не удалость найти пользователя.", ModelState));
+            }
+
+            var _passwordValidator =
+                HttpContext.RequestServices.GetService(typeof(IPasswordValidator<AppUser>)) as IPasswordValidator<AppUser>;
+            var _passwordHasher =
+                HttpContext.RequestServices.GetService(typeof(IPasswordHasher<AppUser>)) as IPasswordHasher<AppUser>;
+
+            IdentityResult result =
+                await _passwordValidator.ValidateAsync(_userManager, user, pwd.NewPassword);
+
+            if (result.Succeeded) {
+                user.PasswordHash = _passwordHasher.HashPassword(user, pwd.NewPassword);
+                await _userManager.UpdateAsync(user);
+                return new OkObjectResult("Password changed.");
+            } else {
+                if (result.Errors.Any())
+                    return BadRequest(("change_password_failure", result.Errors.ToArray()));
+            }
+
+            return new OkObjectResult("Password changed.");
+        }
 
         [HttpGet("test")]
-        // [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles="Администратор")]
-        // [Authorize(Roles="Администратор")]
         [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
         public JsonResult Test() {
-            
-            
+
             // var u = User.Identity.Name;
-            var user = HttpContext.Request.Headers;//["Authorization"];
+            var user = HttpContext.Request.Headers; //["Authorization"];
             return new JsonResult(user);
         }
 

@@ -3,6 +3,7 @@ import { Credentials } from './../../models/credentials';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ADMIN_ROLE } from '../../app.constants';
 
 @Component({
   selector: 'auth-form',
@@ -59,6 +60,7 @@ export class AuthFormComponent implements OnInit {
           this.isLoggedIn = true;
           this.userService.changeAuthNavStatus(true);
           this.userService.changeAuthNavUserName(this.userService.getCurrentUser().userName);
+          this.userService.changeAuthAdminNavStatus(this.userService.isAdmin(ADMIN_ROLE))
           this.isRequesting = false;          
         }
       );
