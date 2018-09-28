@@ -1,10 +1,12 @@
 import { ActivatedRoute } from '@angular/router';
 import { Credentials } from './../../models/credentials';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import { UserWithRoles } from '../../models/userWithRoles';
 import { ChangePassword } from '../../models/changePassword';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
+import { SweetAlertOptions } from 'sweetalert2';
 
 @Component({
   selector: 'personal-info-form',
@@ -12,6 +14,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class PersonalInfoFormComponent implements OnInit {
 
+  options: SweetAlertOptions = { }
+
+  @ViewChild('savedToast') private savedToast: SwalComponent = new SwalComponent(this.options);
+  
   credentials: Credentials = new Credentials();
   selectedUserCredentials: Credentials = new Credentials();
   user: UserWithRoles = new UserWithRoles();
@@ -84,7 +90,7 @@ export class PersonalInfoFormComponent implements OnInit {
     this.userService.changePasswordHash(pwd)
     .subscribe(
       () => {
-
+        this.savedToast.show();
       },
       (errors) => {
         console.log(errors);

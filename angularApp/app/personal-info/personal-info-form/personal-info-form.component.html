@@ -37,6 +37,14 @@
         [focusCancel]="true"
         (confirm)="onResetPwdClick()">
       </swal>
+      <swal #savedToast [options]="{
+        type: 'success',
+        title: 'Сохранено',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000
+      }"></swal>
     
       <!-- <label for="inputNewRepeatPassword">Новый пароль</label> -->
       <div class="row user-section col-md-4">

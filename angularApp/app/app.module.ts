@@ -18,7 +18,9 @@ import { SharedModule } from './shared/shared.module';
             buttonsStyling: true,
             customClass: 'modal-content',
             confirmButtonClass: 'btn btn-primary',
-            cancelButtonClass: 'btn'
+            cancelButtonClass: 'btn btn-danger',
+            confirmButtonText: 'Да',
+            cancelButtonText: 'Отмена'
         })
     ],
 
