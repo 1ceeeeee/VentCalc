@@ -6,6 +6,8 @@ import { AppRoutes } from './app.routes';
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
+import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
+
 
 @NgModule({
     imports: [
@@ -25,10 +27,15 @@ import { SharedModule } from './shared/shared.module';
     ],
 
     declarations: [
-        AppComponent        
+        AppComponent
     ],
 
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+
+    providers: [
+        { provide: APP_BASE_HREF, useValue: '', },
+        { provide: LocationStrategy, useClass: HashLocationStrategy }
+    ]
 })
 
 export class AppModule { }
