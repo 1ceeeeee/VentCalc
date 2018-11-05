@@ -15,16 +15,16 @@ using VentCalc.Repositories;
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
 
-    public class AccountsController : Controller {
+    public class AccountsController : BaseController {
 
-        private readonly IMapper _mapper;
-        private IUnitOfWork _unitOfWork;
+        // private readonly IMapper _mapper;
+        // private IUnitOfWork UnitOfWork;
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AccountsController(IUnitOfWork uow, IMapper mapper, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager) {
-            this._mapper = mapper;
-            this._unitOfWork = uow;
+        public AccountsController(IUnitOfWork uow, IMapper mapper, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager) : base(mapper, uow) {
+            // this._mapper = mapper;
+            // this.UnitOfWork = uow;
             this._userManager = userManager;
             this._roleManager = roleManager;
         }
@@ -35,16 +35,16 @@ namespace VentCalc.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userIdentity = _mapper.Map<PortalUserResource, AppUser>(portalUserResource);
+            var userIdentity = Mapper.Map<PortalUserResource, AppUser>(portalUserResource);
             var result = await _userManager.CreateAsync(userIdentity, portalUserResource.Password);
 
             if (!result.Succeeded) return new BadRequestObjectResult(result.Errors);
 
-            await _unitOfWork.Repository<PortalUser>().AddAsync(new PortalUser() {
+            await UnitOfWork.Repository<PortalUser>().AddAsync(new PortalUser() {
                 IdentityId = userIdentity.Id
             });
 
-            _unitOfWork.Commit();
+            UnitOfWork.Commit();
 
             return new OkObjectResult("Account created.");
         }
@@ -58,10 +58,10 @@ namespace VentCalc.Controllers {
             if (user == null)
                 return BadRequest(("user_delete_failure", "Пользователь с таким ID не найден"));
 
-            var pUsers = await _unitOfWork.Repository<PortalUser>().GetEnumerableAsync(x => x.IdentityId == id);
+            var pUsers = await UnitOfWork.Repository<PortalUser>().GetEnumerableAsync(x => x.IdentityId == id);
             var pUser = pUsers.SingleOrDefault();
             if (pUser != null) {
-                _unitOfWork.Repository<PortalUser>().Delete(pUser);
+                UnitOfWork.Repository<PortalUser>().Delete(pUser);
                 await _userManager.DeleteAsync(user);
             }
 
@@ -135,7 +135,7 @@ namespace VentCalc.Controllers {
 
         [HttpGet]
         public async Task<IEnumerable<PortalUserResource>> GetAll() {
-            var users = await _unitOfWork.Repository<PortalUser>().GetEnumerableIcludeMultipleAsync(x => x.Identity);
+            var users = await UnitOfWork.Repository<PortalUser>().GetEnumerableIcludeMultipleAsync(x => x.Identity);
 
             var portalUsers = new List<PortalUserResource>();
 
@@ -155,17 +155,15 @@ namespace VentCalc.Controllers {
 
         [HttpGet("{id}")]
         public async Task<PortalUserWithRolesResource> GetById(string id) {            
-            var user = await _unitOfWork.Repository<PortalUser>().GetSingleIcludeMultipleAsync(x => x.IdentityId == id, x => x.Identity); 
-            var t = user.Identity;           
-            var selectedUser = user;
+            var user = await UnitOfWork.Repository<PortalUser>().GetSingleIcludeMultipleAsync(x => x.IdentityId == id, x => x.Identity);          
             var res = new PortalUserWithRolesResource();
-            if (selectedUser != null) {
-                res.IdentityId = selectedUser.IdentityId;
-                res.UserRoles = await _userManager.GetRolesAsync(selectedUser.Identity);
+            if (user != null) {
+                res.IdentityId = user.IdentityId;
+                res.UserRoles = await _userManager.GetRolesAsync(user.Identity);
                 res.AllRoles = _roleManager.Roles.Select(x => x.Name).ToList();
-                res.FirstName = selectedUser.Identity.FirstName;
-                res.SecondName = selectedUser.Identity.SecondName;
-                res.LastName = selectedUser.Identity.LastName;
+                res.FirstName = user.Identity.FirstName;
+                res.SecondName = user.Identity.SecondName;
+                res.LastName = user.Identity.LastName;
             }
             return res;
         }
