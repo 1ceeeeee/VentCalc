@@ -124,14 +124,14 @@ namespace VentCalc.Controllers {
             return new OkObjectResult("Password changed.");
         }
 
-        [HttpGet("test")]
-        [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
-        public JsonResult Test() {
+        // [HttpGet("test")]
+        // [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser", Roles = "Администратор")]
+        // public JsonResult Test() {
 
-            // var u = User.Identity.Name;
-            var user = HttpContext.Request.Headers; //["Authorization"];
-            return new JsonResult(user);
-        }
+        //     // var u = User.Identity.Name;
+        //     var user = HttpContext.Request.Headers; //["Authorization"];
+        //     return new JsonResult(user);
+        // }
 
         [HttpGet]
         public async Task<IEnumerable<PortalUserResource>> GetAll() {
@@ -154,10 +154,10 @@ namespace VentCalc.Controllers {
         }
 
         [HttpGet("{id}")]
-        public async Task<PortalUserWithRolesResource> GetById(string id) {
-            //TODO: отрефакторить, привести к нормальному виду.
-            var user = await _unitOfWork.Repository<PortalUser>().GetEnumerableIcludeMultipleAsync(x => x.IdentityId == id, x => x.Identity);
-            var selectedUser = user.SingleOrDefault();
+        public async Task<PortalUserWithRolesResource> GetById(string id) {            
+            var user = await _unitOfWork.Repository<PortalUser>().GetSingleIcludeMultipleAsync(x => x.IdentityId == id, x => x.Identity); 
+            var t = user.Identity;           
+            var selectedUser = user;
             var res = new PortalUserWithRolesResource();
             if (selectedUser != null) {
                 res.IdentityId = selectedUser.IdentityId;

@@ -21,6 +21,7 @@ namespace VentCalc.Repositories {
 
         Task<IEnumerable<T>> GetEnumerableIcludeMultipleAsync(params Expression<Func<T, object>>[] includes);
         Task<IEnumerable<T>> GetEnumerableIcludeMultipleAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includes);
+        Task<T> GetSingleIcludeMultipleAsync(Expression<Func<T, bool>> predicate = null, params Expression<Func<T, object>>[] includes);
         Task AddAsync(T enitity, CancellationToken cancellationToken = default(CancellationToken));
 
     }

@@ -71,5 +71,17 @@ namespace VentCalc.Repositories {
             }
             return await query.ToListAsync().ConfigureAwait(false);
         }
+
+        public async Task<T> GetSingleIcludeMultipleAsync(Expression<System.Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) {
+            IQueryable<T> query = _dbSet;
+            if (includes != null) {
+                query = includes.Aggregate(query,
+                    (current, include) => current.Include(include));
+            }
+            if (predicate != null) {
+                return await query.Where(predicate).SingleOrDefaultAsync().ConfigureAwait(false);
+            }
+            return await query.SingleOrDefaultAsync().ConfigureAwait(false);
+        }
     }
 }
