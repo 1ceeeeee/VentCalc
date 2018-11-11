@@ -52,6 +52,17 @@ namespace VentCalc.Persistence
 
         public AirExchangeProjectResource ReadAirExchange(int id)
         {
+        
+            var rooms = context.Rooms.Where(r => r.ProjectId == id).ToList();
+
+            //Вычисление общей площади квартиры
+            var areaTotalAmount = rooms.Sum(r => (r.Area != null) ? r.Area : r.Length * r.Width);
+
+            //Вычисление общего объема квартиры
+            var volumeTotalAmount = rooms.Sum(r => (r.Area * r.Height != null) ? r.Area * r.Height : r.Length * r.Width * r.Height);
+
+            //Вычисление общего кол-ва людей
+            var peopleTotalAmount = rooms.Sum(r => (r.PeopleAmount != null) ? r.PeopleAmount : 0);
 
             var project = context.Projects
                 .Include(p => p.Rooms)
@@ -60,26 +71,86 @@ namespace VentCalc.Persistence
             
             var airExchangeRooms = new List<AirExchangeRoomResource>();
 
-            foreach (var item in project.Rooms)
+            foreach (var room in rooms)
             {
-                var area = (item.Area != null) ? item.Area : item.Length * item.Width;
-                var volume = area * item.Height;
+                var roomTypeValues = context.RoomTypeValues.Where(rtv => rtv.RoomTypeId == room.RoomTypeId).ToList();
+                int roomTypeValueId = 0;
+
+                //Инициализация ИД показателей типа помещения
+                if (roomTypeValues.Count == 1 ) 
+                {
+                    roomTypeValueId = roomTypeValues
+                        .Where(rtv => rtv.RoomTypeId == room.RoomTypeId)
+                        .SingleOrDefault().Id;
+                }
+                else 
+                {
+                    //TODO: Заменить логической обработкой
+                    switch (room.RoomTypeId)
+                    {
+                        case 8:
+                            roomTypeValueId = (peopleTotalAmount < 20) ? 5 : 6;
+                            break;
+                        case 9:
+                            roomTypeValueId = (peopleTotalAmount < 20) ? 7 : 8;
+                            break;
+                        case 15:
+                            roomTypeValueId = (peopleTotalAmount < 20) ? 14 : 15;
+                            break;
+                        case 20:
+                            roomTypeValueId = (peopleTotalAmount < 20) ? 20 : 21;
+                            break;
+                        default:
+                            break;
+                    }
+                }
                 
-                var roomTypeValue = roomTypeValueRepository.GetRoomTypeValue(project, item.RoomTypeId);
+                var roomTypeValue = roomTypeValues.Where(rtv => rtv.Id == roomTypeValueId).SingleOrDefault();
+ 
+                //«Приток» по формуле: «Приток по жилой площади 1 м2, м3/ч» * «Общая площадь помещения»
+                var inflowArea = roomTypeValue.InflowArea * areaTotalAmount;
+                //«Вытяжка» по формуле: «Вытяжка по жилой площади 1 м2, м3/ч» * «Общая площадь помещения»
+                var exhaustArea = roomTypeValue.ExhaustArea * areaTotalAmount;
+
+                //«Приток» по формуле: «Приток по людям на 1 человека, м3/ч» * «Общее кол-во людей»
+                var inflowPeople = roomTypeValue.InflowPeople * peopleTotalAmount;
+                //«Вытяжка» по формуле: «Вытяжка по людям на 1 человека, м3/ч» * «Общее кол-во людей»
+                var exhaustPeople = roomTypeValue.ExhaustPeople * peopleTotalAmount;
+
+                //«Приток» по формуле: «Приток по кратности 1/ч, крат» * «Общий объем»
+                var inflowMultiply = roomTypeValue.InflowMultiply * volumeTotalAmount;
+                //«Вытяжка» по формуле: «Вытяжка по кратности 1/ч, крат» * «Общий объем»
+                var exhaustMultiply = roomTypeValue.ExhaustMultiply * volumeTotalAmount;
+
+                //«Приток» по константе
+                var inflow = roomTypeValue.Inflow;
+                //«Вытяжка» по константе
+                var exhaust = roomTypeValue.Exhaust;
+
+                //"Приток". Максимальное значение
+                double?[] inflowArray = {inflowArea, inflowPeople, inflowMultiply, inflow};
+                var inflowMaxValue = inflowArray.Max();
+
+                //"Вытяжка". Максимальное значение
+                double?[] exhaustArray = {exhaustArea, exhaustPeople, exhaustMultiply, exhaust};
+                var exhaustMaxValue = exhaustArray.Max();
+
+                var area = (room.Area != null) ? room.Area : room.Length * room.Width;
+                var volume = area * room.Height;
 
                 airExchangeRooms.Add(new AirExchangeRoomResource() {
 
-                        Id = item.Id,
-                        RoomNumber = item.RoomNumber,
-                        RoomName = item.RoomName,
+                        Id = room.Id,
+                        RoomNumber = room.RoomNumber,
+                        RoomName = room.RoomName,
                         TempIn = roomTypeValue.TempIn,
                         Area = area,
                         Volume = volume,
-                        PeopleAmount = item.PeopleAmount,
-                        // Inflow = item.RoomType.Inflow,
-                        // Exhaust = item.RoomType.Exhaust,
-                        InflowCalc = GetRoomInflowCalc(roomTypeValue, volume, item.PeopleAmount),
-                        ExhaustCalc = GetRoomExhaustCalc(roomTypeValue, volume, item.PeopleAmount)
+                        PeopleAmount = room.PeopleAmount,
+                        InflowMultiply = roomTypeValue.InflowMultiply,
+                        ExhaustMultiply = roomTypeValue.ExhaustMultiply,
+                        InflowCalc = inflowMaxValue,
+                        ExhaustCalc = exhaustMaxValue
                     }
                 );
             }
@@ -95,53 +166,6 @@ namespace VentCalc.Persistence
             return airExchangeProject;
         }
 
-        public double? GetRoomInflowCalc (RoomTypeValue roomTypeValue, double? volume,int? peopleAmount)
-        {
-            double? inflowCalc = 0;
-
-            if (roomTypeValue.Inflow != null)
-            {
-                inflowCalc = roomTypeValue.Inflow;
-            }
-            else if (roomTypeValue.InflowArea != null )
-            {
-                //TODO: добавить рассчет по площади
-            }
-            else if (roomTypeValue.InflowMultiply != null )
-            {
-                inflowCalc = roomTypeValue.InflowMultiply * volume;
-            }
-            else if (roomTypeValue.InflowPeople != null )
-            {
-                inflowCalc = roomTypeValue.InflowPeople * peopleAmount;
-            }
-
-            return inflowCalc;
-        }
-
-       public double? GetRoomExhaustCalc (RoomTypeValue roomTypeValue, double? volume,int? peopleAmount)
-        {
-            double? exhaustCalc = 0;
-
-            if (roomTypeValue.Exhaust != null)
-            {
-                exhaustCalc = roomTypeValue.Exhaust;
-            }
-            else if (roomTypeValue.ExhaustArea != null )
-            {
-                //TODO: добавить рассчет по площади
-            }
-            else if (roomTypeValue.ExhaustMultiply != null )
-            {
-                exhaustCalc = roomTypeValue.ExhaustMultiply * volume;
-            }
-            else if (roomTypeValue.ExhaustPeople != null )
-            {
-                exhaustCalc = roomTypeValue.ExhaustPeople * peopleAmount;
-            }
-
-            return exhaustCalc;
-        }
 
     }
 }

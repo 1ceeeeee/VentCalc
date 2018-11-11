@@ -9,8 +9,8 @@ namespace VentCalc.Controllers.Resources
         public double? Area { get; set; }
         public double? Volume { get; set; }
         public int? PeopleAmount { get; set; }
-        public double Inflow { get; set; } 
-        public double Exhaust { get; set; } 
+        public double? InflowMultiply { get; set; } 
+        public double? ExhaustMultiply { get; set; } 
         public double? InflowCalc { get; set; } 
         public double? ExhaustCalc { get; set; } 
     }

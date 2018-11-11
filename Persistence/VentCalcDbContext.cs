@@ -26,7 +26,7 @@ namespace VentCalc.Persistence
         public DbSet<PortalUser> PortalUsers { get; set; }
         public DbSet<Rights> Rights { get; set; }
         public DbSet<AppUserRights> AppUserRights { get; set; }
-
+        public DbSet<RoomTypeValueCondition> RoomTypeValueConditions { get; set; }
         // protected override void OnModelCreating(ModelBuilder modelBuilder){
         //     modelBuilder.Entity<PortalUser>().HasOne(i => i.Identity);
         // }

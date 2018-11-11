@@ -1,0 +1,11 @@
+C:\Users\Сергей\Documents\Source\VentCalc\bin\Debug\netcoreapp2.0\VentCalc.deps.json
+C:\Users\Сергей\Documents\Source\VentCalc\bin\Debug\netcoreapp2.0\VentCalc.runtimeconfig.json
+C:\Users\Сергей\Documents\Source\VentCalc\bin\Debug\netcoreapp2.0\VentCalc.runtimeconfig.dev.json
+C:\Users\Сергей\Documents\Source\VentCalc\bin\Debug\netcoreapp2.0\VentCalc.dll
+C:\Users\Сергей\Documents\Source\VentCalc\bin\Debug\netcoreapp2.0\VentCalc.pdb
+C:\Users\Сергей\Documents\Source\VentCalc\obj\Debug\netcoreapp2.0\VentCalc.csprojAssemblyReference.cache
+C:\Users\Сергей\Documents\Source\VentCalc\obj\Debug\netcoreapp2.0\VentCalc.csproj.CoreCompileInputs.cache
+C:\Users\Сергей\Documents\Source\VentCalc\obj\Debug\netcoreapp2.0\VentCalc.AssemblyInfoInputs.cache
+C:\Users\Сергей\Documents\Source\VentCalc\obj\Debug\netcoreapp2.0\VentCalc.AssemblyInfo.cs
+C:\Users\Сергей\Documents\Source\VentCalc\obj\Debug\netcoreapp2.0\VentCalc.dll
+C:\Users\Сергей\Documents\Source\VentCalc\obj\Debug\netcoreapp2.0\VentCalc.pdb

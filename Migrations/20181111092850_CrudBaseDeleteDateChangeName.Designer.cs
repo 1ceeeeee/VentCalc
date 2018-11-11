@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VentCalc.Persistence;
 
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181111092850_CrudBaseDeleteDateChangeName")]
+    partial class CrudBaseDeleteDateChangeName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,9 +193,9 @@ namespace VentCalc.Migrations
 
                     b.Property<string>("AppUsersId");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -225,9 +227,9 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -253,9 +255,9 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -283,9 +285,9 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -311,9 +313,9 @@ namespace VentCalc.Migrations
                         .IsRequired()
                         .HasMaxLength(255);
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -341,9 +343,9 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -371,9 +373,9 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -401,9 +403,9 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -441,9 +443,9 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -467,9 +469,9 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -493,9 +495,9 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -521,9 +523,9 @@ namespace VentCalc.Migrations
 
                     b.Property<int>("CityId");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -579,9 +581,9 @@ namespace VentCalc.Migrations
 
                     b.Property<int>("BuildingTypeId");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -610,9 +612,9 @@ namespace VentCalc.Migrations
                     b.Property<string>("Comment")
                         .HasMaxLength(255);
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<int?>("CreateUserId");
+                    b.Property<int>("CreateUserId");
 
                     b.Property<DateTime?>("DeleteDate");
 
@@ -642,8 +644,6 @@ namespace VentCalc.Migrations
 
                     b.Property<int>("RoomTypeId");
 
-                    b.Property<int>("RoomTypeValueConditionId");
-
                     b.Property<double?>("TempIn");
 
                     b.Property<DateTime?>("UpdateDate");
@@ -655,32 +655,6 @@ namespace VentCalc.Migrations
                     b.HasIndex("RoomTypeId");
 
                     b.ToTable("RoomTypeValues");
-                });
-
-            modelBuilder.Entity("VentCalc.Models.RoomTypeValueCondition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime?>("CreateDate");
-
-                    b.Property<int?>("CreateUserId");
-
-                    b.Property<DateTime?>("DeleteDate");
-
-                    b.Property<int?>("DeleteUsertId");
-
-                    b.Property<string>("RoomTypeValueConditionName")
-                        .IsRequired()
-                        .HasMaxLength(1000);
-
-                    b.Property<DateTime?>("UpdateDate");
-
-                    b.Property<int?>("UpdateUserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoomTypeValueConditions");
                 });
 
             modelBuilder.Entity("VentCalc.Models.AppUser", b =>

@@ -5,6 +5,6 @@ namespace VentCalc.Persistence
 {
     public interface IRoomTypeValueRepository
     {
-        RoomTypeValue GetRoomTypeValue(Project project, int roomTypeId);
+      //  RoomTypeValue GetRoomTypeValue(Project project, int roomTypeId);
     }
 }

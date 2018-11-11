@@ -42,5 +42,8 @@ namespace VentCalc.Models
         [StringLength(255)]
         [Description("Примечание")]
         public string Comment { get; set; }
+        [Description("ИД дополнительного условия")]
+        public int RoomTypeValueConditionId { get; set; }
+        //public RoomTypeValueCondition RoomTypeValueCondition { get; set; } 
     }
 }
