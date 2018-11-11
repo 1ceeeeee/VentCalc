@@ -12,6 +12,8 @@ export class Room extends CrudBase {
     public floor: number = 0;
     public peopleAmount: number = 0;  
     public projectId: number = 0; 
+    public systemIn: string = "";
+    public systemOut: string = "";
     // constructor(    
     //     public id: number = 0,
     //     public cityId: number = 0,        

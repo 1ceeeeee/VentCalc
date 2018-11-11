@@ -18,6 +18,7 @@ import { CityService } from '../../core/services/city.service';
 import { RoomTypeService } from '../../core/services/room-type.service';
 import { ProjectService } from '../../core/services/project.service';
 import { Router } from '@angular/router';
+import { Credentials } from '../../models/credentials';
 
 
 @Component({
@@ -25,17 +26,20 @@ import { Router } from '@angular/router';
   templateUrl: './calculator-form.component.html'
 })
 export class CalculatorFormComponent implements OnInit {
+    
   cities: City[] = [];
   buildingTypes: BuildingType[] = [];
   calculatorForm: CalculatorForm = new CalculatorForm();
   buildingKinds: BuildingKind[] = [];
-  rooms: Room[] = [];
+  rooms: Room[] = [];  
   roomTypes: RoomType[] = [];
   buildTypeChecked: number = -1;
   project: Project = new Project();
   projectId: number = 0;
   initedIdRoom: number = 0;
   airExchangeProject: AirExchangeProject = new AirExchangeProject();
+  currentUser: Credentials = new Credentials();
+  errors: string[] = [];
 
   form = new FormGroup({
     city: new FormControl('', Validators.required),
@@ -49,7 +53,9 @@ export class CalculatorFormComponent implements OnInit {
       roomArea: new FormControl('', Validators.required),
       roomHeight: new FormControl('', Validators.required),
       roomFloor: new FormControl('', Validators.required),
-      roomPeopleAmount: new FormControl('', Validators.required)
+      roomPeopleAmount: new FormControl('', Validators.required),
+      systemIn: new FormControl(''),
+      systemOut: new FormControl('')
     })
   });
 
@@ -121,6 +127,14 @@ export class CalculatorFormComponent implements OnInit {
     return this.form.get('room.roomPeopleAmount')!;
   }
 
+  get systemIn() {
+    return this.form.get('room.systemIn')!;
+  }
+
+  get systemOut() {
+    return this.form.get('room.systemOut')!;
+  }
+
   // Возвращает выбранный ид географии объекта
   onCityChange(value: any) {
     this.calculatorForm.cityId = value;//this.city.value;
@@ -153,33 +167,48 @@ export class CalculatorFormComponent implements OnInit {
 
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
+    let cnt = 0;
+
+    this.errors = [];
+
+    if(!this.roomNumber.value){ 
+      cnt++;     
+      this.errors.push('Не указан номер помещения');
+    }
+
+    if(!this.roomName.value){
+      cnt++;
+      this.errors.push('Не выбрано помещение помещения');           
+    }
+
+    if(!this.roomArea.value){
+      cnt++;
+      this.errors.push('Не указана площадь помещения');           
+    }
+
+    if(!this.roomHeight.value){
+      cnt++;
+      this.errors.push('Не указана высота помещения');            
+    }
+
+    if(!this.roomFloor.value){
+      cnt++;
+      this.errors.push('Не указан этаж');            
+    }
+
+    if (cnt > 0) 
+      return;
+        
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
         .value)[0]
       .roomTypeName;
 
-
-
-    // var rm = new Room(
-    //   this.initedIdRoom,
-    //   this.calculatorForm.cityId,
-    //   this.calculatorForm.buildingTypeId,
-    //   this.form.get('room.roomName')!.value,
-    //   this.form.get('room.roomNumber')!.value,
-    //   roomTypeName,
-    //   this.form.get('room.roomLength')!.value,
-    //   this.form.get('room.roomWidth')!.value,
-    //   this.form.get('room.roomArea')!.value,
-    //   this.form.get('room.roomHeight')!.value,
-    //   this.form.get('room.roomFloor')!.value,
-    //   this.form.get('room.roomPeopleAmount')!.value,
-    //   0,
-    //   this.project.id);
     var rm = new Room();
     rm.id = this.initedIdRoom;
     rm.cityId = this.calculatorForm.cityId,
     rm.buildingTypeId = this.calculatorForm.buildingTypeId;
-    rm.roomTypeId = this.roomName.value; 
+    rm.roomTypeId = this.roomName.value;
     rm.roomNumber = this.roomNumber.value;
     rm.roomName = roomTypeName,
     rm.length = this.roomLength.value;
@@ -189,7 +218,9 @@ export class CalculatorFormComponent implements OnInit {
     rm.floor = this.roomFloor.value;
     rm.peopleAmount = this.roomPeopleAmount.value;
     rm.projectId = this.project.id;
-    rm.createUserId = this.userService.getCurrentUser()!.id;
+    rm.createUserId = this.currentUser.id;
+    rm.systemIn = this.systemIn.value;
+    rm.systemOut = this.systemOut.value;
 
     if (this.initedIdRoom == 0) {
       this.roomService.add(rm)
@@ -274,6 +305,10 @@ export class CalculatorFormComponent implements OnInit {
       .setValue(initedRoom.floor);
     this.form.get('room.roomPeopleAmount')!
       .setValue(initedRoom.peopleAmount);
+    this.form.get('room.systemIn')!
+      .setValue(initedRoom.systemIn);
+    this.form.get('room.systemOut')!
+      .setValue(initedRoom.systemOut);
   }
 
   onDeleteRoomClick(id: number) {
@@ -287,7 +322,6 @@ export class CalculatorFormComponent implements OnInit {
       );
   }
 
-  // Создает проект
   private createProject() {
     this.project.id = 0;
     this.project.projectName = "";
@@ -301,26 +335,6 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   private initCities() {
-
-    //this.dataService.getCities()
-    // .subscribe(
-    //   data => {
-    //     this.cities = data
-    //   },
-    //   () => {},
-    //   () => {console.log(this.cities)}
-    // )
-    // this.dataService.currentCities
-    //   .subscribe(
-    //     data => {
-    //       this.cities = data,
-    //         console.log(this.cities),
-    //         //console.log('from cash'),
-    //         console.log(this.cities.length)
-    //     },
-    //     () => { },
-    //     () => {console.log('from cash') }
-    //   )
     if (this.cities.length == 0) {
       // Возвращает все географии городов из бд
       this.cityService.getAll()
@@ -375,6 +389,7 @@ export class CalculatorFormComponent implements OnInit {
 
   ngOnInit() {
 
+    this.currentUser = this.userService.getCurrentUser();
     this.dataService.currentAirExchangeProject
       .subscribe(
         data => {

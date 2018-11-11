@@ -14,6 +14,7 @@
         </label>		
         <ngx-select 
           [formControl]="city"
+          size="small"
           optionValueField="id"
           optionTextField="cityName" 
           [allowClear]="true"                    
@@ -24,7 +25,7 @@
         <!-- <select 
           formControlName="city"
           id="inputCity" 
-          class="form-control"       
+          class="form-control form-control-sm"       
           (change)="onCityChange()">
           <option value="">Выберите город из списка ...</option>
           <option 
@@ -92,12 +93,12 @@
               {{ type.buildingTypeName }}
             </label>
           </div>
-          <div 
+          <!-- <div 
             *ngIf="buildType.touched && buildType.invalid" 
             class="alert alert-danger alert-dismissible fade show" 
             role="alert">
             <strong>Ошибка заполнения данных.</strong> Выберите вид здания.
-          </div>  
+          </div>   -->
         </div>      
     </div>  
   <!-- Типы зданий конец -->
@@ -107,7 +108,12 @@
     <div class="col-sm-5">
       <h2>Помещения</h2>
       <!-- Button trigger modal -->
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomAdd">
+      <button 
+        [disabled]="!city.value || !buildType.value"
+        type="button" 
+        class="btn btn-primary" 
+        data-toggle="modal" 
+        data-target="#roomAdd">
         Добавить
       </button>
       <!-- Modal -->
@@ -136,42 +142,38 @@
               </button>
             </div>
             <div formGroupName="room">
-              <div class="modal-body">
+              <div class="modal-body">  
+
+                  <div *ngIf="errors.length > 0"
+                    class="alert alert-danger">
+                    <div *ngFor="let error of errors">
+                        <strong>Ошибка заполнения данных.</strong>{{error}}
+                    </div>
+                  </div>
+
                 <div class="form-group">
                   <label for="inputRoomNumber">№ помещения</label>
                   <input 
                     formControlName="roomNumber"
-                    type="number" 
-                    min="0"
-                    class="form-control" 
-                    id="inputRoomNumber" 
-                    placeholder="0">
-                </div>
-              </div>
-              <div class="modal-body">        
+                    type="number"      
+                    min="0"            
+                    class="form-control form-control-sm" 
+                    id="inputRoomNumber">
+                </div>             
+                   
                 <div class="form-group">
                   <label for="roomSelect">Помещение</label>
                   <ngx-select 
                     [formControl]="roomName"
                     optionValueField="id"
+                    size="small"
                     optionTextField="roomTypeName" 
                     [allowClear]="true"                    
                     [items]="roomTypes"
                     placeholder="Выберите помещение из списка или напишите ...">
-                  </ngx-select>
-                  <!-- <select 
-                    formControlName="roomName"
-                    class="form-control" 
-                    id="roomSelect">
-                    <option value="">Выберите помещение из списка ...</option>
-                    <option
-                      *ngFor="let r of roomTypes"
-                      value="{{ r.id }}"> {{ r.roomTypeName }}
-                    </option>   
-                  </select> -->
-                </div>            
-              </div>
-              <div class="modal-body">
+                  </ngx-select>   
+                </div>           
+              
                 <div class="form-group">
                   <label for="inputSquare">Площадь, м2</label>
                   <input 
@@ -179,12 +181,10 @@
                     type="number" 
                     step="10"
                     min="0"
-                    class="form-control" 
-                    id="inputSquare" 
-                    placeholder="0">
+                    class="form-control form-control-sm" 
+                    id="inputSquare">
                 </div>
-              </div>
-              <div class="modal-body">
+              
                 <div class="form-group">
                   <label for="inputSquare">Высота, м</label>
                   <input 
@@ -192,34 +192,50 @@
                     type="number" 
                     step="10"
                     min="0"
-                    class="form-control" 
-                    id="inputSquare" 
-                    placeholder="0">
+                    class="form-control form-control-sm" 
+                    id="inputSquare">
                 </div>
-              </div>
-              <div class="modal-body">
+              
                 <div class="form-group">
                   <label for="inputSquare">Этаж</label>
                   <input 
                     formControlName="roomFloor"
                     type="number"               
-                    class="form-control" 
-                    id="inputSquare" 
-                    placeholder="0">
+                    class="form-control form-control-sm" 
+                    id="inputSquare">
                 </div>
-              </div>
-              <div class="modal-body">
+              
                 <div class="form-group">
                   <label for="inputSquare">Кол-во людей</label>
                   <input 
                     formControlName="roomPeopleAmount"
                     type="number"    
                     min="0"           
-                    class="form-control" 
+                    class="form-control form-control-sm" 
                     id="inputSquare" 
                     placeholder="0">
                 </div>
+
+                <div class="form-group">
+                  <label for="inputSystemIn">Приточная система</label>
+                  <input 
+                    formControlName="systemIn"                     
+                    class="form-control form-control-sm" 
+                    type="text"
+                    id="inputSystemIn">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputSystemOut">Вытяжная система</label>
+                    <input 
+                      formControlName="systemOut"                     
+                      class="form-control form-control-sm" 
+                      type="text"
+                      id="inputSystemOut">
+                  </div>
+
               </div>
+
               <div class="modal-footer">
                 <button 
                   type="button" 
@@ -229,12 +245,14 @@
                 </button>
                 <button 
                   type="button" 
-                  data-dismiss="modal"
+                  id="btnSave"
+                  [attr.data-dismiss]="errors.length == 0 ? 'modal' : null"
                   (click)="onSaveRoomClick()"
                   class="btn btn-primary">                            
                   Сохранить
                 </button>
               </div>
+
             </div>
           </div>
         </div>
