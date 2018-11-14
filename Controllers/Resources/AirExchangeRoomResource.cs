@@ -13,5 +13,7 @@ namespace VentCalc.Controllers.Resources
         public double? ExhaustMultiply { get; set; } 
         public double? InflowCalc { get; set; } 
         public double? ExhaustCalc { get; set; } 
+        public string InflowSystem { get; set; }
+        public string ExhaustSystem { get; set; }
     }
 }
