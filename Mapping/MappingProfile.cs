@@ -13,6 +13,8 @@ namespace VentCalc.Mapping {
             CreateMap<BuildingType, BuildingTypeResource>();
             CreateMap<Room, RoomResource>();
             CreateMap<Project, ProjectResource>();
+            CreateMap<SaveProjectResource, Project>()
+                .ForMember(v => v.CreateUserId, opt => opt.Ignore());
             CreateMap<RoomTypeValue, RoomTypeValueResource>();
             CreateMap<RoomType, RoomTypeResource>();
             CreateMap<PortalUser, PortalUserResource>();
@@ -42,6 +44,10 @@ namespace VentCalc.Mapping {
                 .ForMember(v => v.Id, opt => opt.Ignore());
             CreateMap<PortalUserResource, AppUser>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
+            CreateMap<ProjectResource, Project>()
+                .ForMember(v => v.CreateUserId, opt => opt.Ignore());
+            CreateMap<SaveProjectResource, Project>()
+                .ForMember(v => v.CreateUserId, opt => opt.Ignore());
 
         }
     }

@@ -1,0 +1,117 @@
+<div class="space-top-3"></div>
+<form [formGroup]="form">
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectAdd">
+      Добавить
+    </button>
+    <!-- Modal -->
+    <div 
+      class="modal fade" 
+      id="projectAdd" 
+      tabindex="-1" 
+      role="dialog" 
+      aria-labelledby="projectAddTitle" 
+      aria-hidden="true">
+      <div 
+        class="modal-dialog modal-dialog-centered" 
+        role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" 
+              id="addprojectTitle">
+              Добавить проект
+            </h5>
+            <button 
+              type="button" 
+              class="close" 
+              data-dismiss="modal" 
+              aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          
+          <div class="modal-body">
+            <div class="form-group">                  
+              <input 
+                formControlName="projectName"
+                type="text"                     
+                class="form-control" 
+                id="inputName" 
+                placeholder="Укажите наименование проекта">
+            </div>
+          </div> 
+          <div class="modal-footer">
+            <button 
+              type="button" 
+              class="btn btn-secondary" 
+              data-dismiss="modal">
+              Отмена
+            </button>
+            <button 
+              type="button" 
+              data-dismiss="modal"
+              (click)="onSaveProject()"
+              class="btn btn-primary">                            
+              Сохранить
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="space-top-1"></div>
+    <div 
+        *ngIf="projects.length > 0">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">№</th>
+              <th scope="col">Наименование</th>
+              <th scope="col">Дата создания</th>       
+              <th scope="col"></th>          
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of projects; let i=index">
+              <td scope="row">{{ i + 1 }}</td>
+              <td class="width-30">{{ p.projectName }}</td>
+              <td>{{ p.createDate | date: 'dd.MM.yyyy' }}</td>        
+              <td>
+                <swal
+                  #deleteSwal
+                  title="Удалить проект {{ p.projectName }}?"
+                  text="Действие не обратимо"
+                  type="question"
+                  [showCancelButton]="true"
+                  [focusCancel]="true"
+                  (confirm)="onDeleteProject(p.id)">
+                </swal>
+                <button              
+                  type="button" 
+                  class="btn btn-primary btn-sm"              
+                  (click)="deleteSwal.show()"
+                  >
+                  Удалить
+                </button>             
+                <button 
+                  type="button" 
+                  class="btn btn-primary btn-sm"
+                  data-toggle="modal" data-target="#projectAdd"
+                  (click)="onEditProject(p.id)">
+                  Изменить
+                </button>  
+                <button 
+                  type="button" 
+                  class="btn btn-primary btn-sm"
+                  data-toggle="modal" data-target="#projectEdit"
+                  (click)="onOpenProject(p.id)">
+                  Открыть
+                </button>           
+              </td>         
+            </tr>        
+          </tbody>
+        </table>   
+      </div>
+</form>
+
+

@@ -17,7 +17,7 @@ import { BuildingTypeService } from '../../core/services/building-type.service';
 import { CityService } from '../../core/services/city.service';
 import { RoomTypeService } from '../../core/services/room-type.service';
 import { ProjectService } from '../../core/services/project.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Credentials } from '../../models/credentials';
 
 
@@ -26,12 +26,12 @@ import { Credentials } from '../../models/credentials';
   templateUrl: './calculator-form.component.html'
 })
 export class CalculatorFormComponent implements OnInit {
-    
+
   cities: City[] = [];
   buildingTypes: BuildingType[] = [];
   calculatorForm: CalculatorForm = new CalculatorForm();
   buildingKinds: BuildingKind[] = [];
-  rooms: Room[] = [];  
+  rooms: Room[] = [];
   roomTypes: RoomType[] = [];
   buildTypeChecked: number = -1;
   project: Project = new Project();
@@ -69,7 +69,8 @@ export class CalculatorFormComponent implements OnInit {
     public airExchangeService: AirExchangeCalculateService,
     private dataService: DataService,
     private userService: UserService,
-    public router: Router
+    public router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   // Возвращает значение контрола географии
@@ -171,34 +172,34 @@ export class CalculatorFormComponent implements OnInit {
 
     this.errors = [];
 
-    if(!this.roomNumber.value){ 
-      cnt++;     
+    if (!this.roomNumber.value) {
+      cnt++;
       this.errors.push('Не указан номер помещения');
     }
 
-    if(!this.roomName.value){
+    if (!this.roomName.value) {
       cnt++;
-      this.errors.push('Не выбрано помещение помещения');           
+      this.errors.push('Не выбрано помещение помещения');
     }
 
-    if(!this.roomArea.value){
+    if (!this.roomArea.value) {
       cnt++;
-      this.errors.push('Не указана площадь помещения');           
+      this.errors.push('Не указана площадь помещения');
     }
 
-    if(!this.roomHeight.value){
+    if (!this.roomHeight.value) {
       cnt++;
-      this.errors.push('Не указана высота помещения');            
+      this.errors.push('Не указана высота помещения');
     }
 
-    if(!this.roomFloor.value){
+    if (!this.roomFloor.value) {
       cnt++;
-      this.errors.push('Не указан этаж');            
+      this.errors.push('Не указан этаж');
     }
 
-    if (cnt > 0) 
+    if (cnt > 0)
       return;
-        
+
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
         .value)[0]
@@ -207,11 +208,11 @@ export class CalculatorFormComponent implements OnInit {
     var rm = new Room();
     rm.id = this.initedIdRoom;
     rm.cityId = this.calculatorForm.cityId,
-    rm.buildingTypeId = this.calculatorForm.buildingTypeId;
+      rm.buildingTypeId = this.calculatorForm.buildingTypeId;
     rm.roomTypeId = this.roomName.value;
     rm.roomNumber = this.roomNumber.value;
     rm.roomName = roomTypeName,
-    rm.length = this.roomLength.value;
+      rm.length = this.roomLength.value;
     rm.width = this.roomWidth.value;
     rm.area = this.roomArea.value;
     rm.height = this.roomHeight.value;
@@ -399,8 +400,27 @@ export class CalculatorFormComponent implements OnInit {
         () => { }
       );
 
-    // Создает проект
-    this.createProject();
+    this.activatedRoute.queryParams.subscribe(
+      (param: any) => {
+        this.projectId = param['projectId'];
+
+        if (this.projectId != null && this.projectId > 0) {
+          this.projectService.getById(this.projectId)
+            .subscribe(
+              (data) => {
+                this.project = data;
+                console.log(this.project);
+              },
+              (error) => {
+                console.log(error);
+              },
+              () => { });
+        }
+        else {          
+          this.createProject();
+        }
+      }
+    );
 
     this.initCities();
 

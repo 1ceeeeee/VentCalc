@@ -85,7 +85,7 @@ export class UserService {
   changePasswordHash(pwd: ChangePassword): Observable<ChangePassword> {
     let headers = this.headers;    
     headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.post<ChangePassword>(this.actionUrlChangePwdHash, pwd, {headers: this.headers});
+    return this.http.post<ChangePassword>(this.actionUrlChangePwdHash, pwd, {headers: headers});
   }
 
   getAll(): Observable<User[]> {

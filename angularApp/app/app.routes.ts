@@ -29,7 +29,10 @@ export const routes: Routes = [
         data: {
             expectedRole: 'Администратор'
         }
-    }
+    },
+    {
+        path: 'projects', loadChildren: './project/components/projects/projects.module#ProjectsModule', canActivate: [AuthGuard]
+    },
 ];
 
 export const AppRoutes = RouterModule.forRoot(routes);

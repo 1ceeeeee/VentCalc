@@ -57,7 +57,7 @@ namespace VentCalc.Auth {
                 audience: _jwtOptions.Audience,
                 claims: claims.ToArray(),
                 notBefore: _jwtOptions.NotBefore,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(5)), //_jwtOptions.Expiration,
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(600)), //_jwtOptions.Expiration,
                 signingCredentials : _jwtOptions.SigningCredentials);
 
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);

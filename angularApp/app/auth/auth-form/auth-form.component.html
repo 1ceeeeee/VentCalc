@@ -4,10 +4,27 @@
     <div class="row user-section">
         <div class="col-sm-5">
 
-          <div *ngIf="brandNew" class="alert alert-success" role="alert">
+          <div *ngIf="brandNew" class="space-top-1 alert alert-success" role="alert">
             <strong>Почти готово!</strong> Пожалуйста войдите в свой аккаунт
           </div>
-
+          <div 
+            *ngIf="userName.touched && userName.invalid" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Email введен неверно.
+          </div>
+          <div 
+            *ngIf="password.touched && password.invalid" 
+            class="space-top-1 alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <strong>Ошибка.</strong>Пароль должен быть длиной не менее 6 символов.
+          </div>
+          <div 
+            class="space-top-1 alert alert-danger alert-dismissible fade show" 
+            role="alert"
+            *ngIf="errors.length > 0">
+            {{errors}}
+          </div> 
             <h4>Войти</h4>
 
             <div class="form-group">
@@ -19,12 +36,7 @@
                   id="inputUserName"             
                   aria-describedby="userNameHelp" 
                   placeholder="Укажите ваш email, указанный при регистрации">
-                <div 
-                  *ngIf="userName.touched && userName.invalid" 
-                  class="alert alert-danger alert-dismissible fade show" 
-                  role="alert">
-                  <strong>Ошибка.</strong>Email введен неверно.
-                </div>
+
             </div>
   
             <div class="form-group">
@@ -37,12 +49,7 @@
                   aria-describedby="passwordHelp" 
                   placeholder="Укажите ваш пароль">
             </div>
-            <div 
-              *ngIf="password.touched && password.invalid" 
-              class="alert alert-danger alert-dismissible fade show" 
-              role="alert">
-              <strong>Ошибка.</strong>Пароль должен быть длиной не менее 6 символов и иметь хотя бы один не повторяющийся.
-            </div>
+
     
           
         </div>
@@ -60,16 +67,7 @@
         </div>     
       </div>
 
-      <div 
-        class="user-section alert alert-danger alert-dismissible fade show" 
-        role="alert"
-        *ngIf="errors.length > 0">
-        {{errors}}
-        <!-- <div 
-          *ngFor="let error of errors; let i=index">
-            {{errors[i].item2}}
-        </div>     -->
-      </div> 
+
 
 
 </form>
