@@ -55,26 +55,19 @@ namespace VentCalc.Persistence
         
             var rooms = context.Rooms.Where(r => r.ProjectId == id).ToList();
 
-            //Вычисление общей площади квартиры
-            var areaTotalAmount = rooms.Sum(r => (r.Area != null) ? r.Area : r.Length * r.Width);
-
-            //Вычисление общего объема квартиры
-            var volumeTotalAmount = rooms.Sum(r => (r.Area * r.Height != null) ? r.Area * r.Height : r.Length * r.Width * r.Height);
-
-            //Вычисление общего кол-ва людей
-            var peopleTotalAmount = rooms.Sum(r => (r.PeopleAmount != null) ? r.PeopleAmount : 0);
-
-            var project = context.Projects
-                .Include(p => p.Rooms)
-                .Where(p => p.Id == id)
-                .FirstOrDefault();
-            
             var airExchangeRooms = new List<AirExchangeRoomResource>();
 
             foreach (var room in rooms)
             {
                 var roomTypeValues = context.RoomTypeValues.Where(rtv => rtv.RoomTypeId == room.RoomTypeId).ToList();
                 int roomTypeValueId = 0;
+
+                //Площадь помещения
+                var roomArea =  (room.Area != null) ? room.Area : room.Length * room.Width;
+                //Объем помещения
+                var roomVolume = (room.Area * room.Height != null) ? room.Area * room.Height : room.Length * room.Width * room.Height;
+                //Кол-во людей в помещении
+                var roomPeopleAmount = (room.PeopleAmount != null) ? room.PeopleAmount : 0;
 
                 //Инициализация ИД показателей типа помещения
                 if (roomTypeValues.Count == 1 ) 
@@ -86,19 +79,23 @@ namespace VentCalc.Persistence
                 else 
                 {
                     //TODO: Заменить логической обработкой
+                    //TODO: Добавить "валидацию" по обязательному указанию площади и кол-ву людей для тех типов помещений,
+                    //которые их используют по условию, например "при общей площади квартиры на одного человека менее 20 м²"
+                    //Площадь на одного человека
+                    var roomPerPeopleArea = (roomArea != 0 && roomPeopleAmount != 0 ) ? roomArea/roomPeopleAmount : 0;
                     switch (room.RoomTypeId)
                     {
                         case 8:
-                            roomTypeValueId = (peopleTotalAmount < 20) ? 5 : 6;
+                            roomTypeValueId = (roomPerPeopleArea < 20) ? 5 : 6;
                             break;
                         case 9:
-                            roomTypeValueId = (peopleTotalAmount < 20) ? 7 : 8;
+                            roomTypeValueId = (roomPerPeopleArea < 20) ? 7 : 8;
                             break;
                         case 15:
-                            roomTypeValueId = (peopleTotalAmount < 20) ? 14 : 15;
+                            roomTypeValueId = (roomPerPeopleArea < 20) ? 14 : 15;
                             break;
                         case 20:
-                            roomTypeValueId = (peopleTotalAmount < 20) ? 20 : 21;
+                            roomTypeValueId = (roomPerPeopleArea < 20) ? 20 : 21;
                             break;
                         default:
                             break;
@@ -107,20 +104,20 @@ namespace VentCalc.Persistence
                 
                 var roomTypeValue = roomTypeValues.Where(rtv => rtv.Id == roomTypeValueId).SingleOrDefault();
  
-                //«Приток» по формуле: «Приток по жилой площади 1 м2, м3/ч» * «Общая площадь помещения»
-                var inflowArea = roomTypeValue.InflowArea * areaTotalAmount;
-                //«Вытяжка» по формуле: «Вытяжка по жилой площади 1 м2, м3/ч» * «Общая площадь помещения»
-                var exhaustArea = roomTypeValue.ExhaustArea * areaTotalAmount;
+                //«Приток» по формуле: «Приток по жилой площади 1 м2, м3/ч» * «Площадь помещения»
+                var inflowArea = roomTypeValue.InflowArea * roomArea;
+                //«Вытяжка» по формуле: «Вытяжка по жилой площади 1 м2, м3/ч» * «Площадь помещения»
+                var exhaustArea = roomTypeValue.ExhaustArea * roomArea;
 
-                //«Приток» по формуле: «Приток по людям на 1 человека, м3/ч» * «Общее кол-во людей»
-                var inflowPeople = roomTypeValue.InflowPeople * peopleTotalAmount;
-                //«Вытяжка» по формуле: «Вытяжка по людям на 1 человека, м3/ч» * «Общее кол-во людей»
-                var exhaustPeople = roomTypeValue.ExhaustPeople * peopleTotalAmount;
+                //«Приток» по формуле: «Приток по кратности 1/ч, крат» * «Объем помещения»
+                var inflowMultiply = roomTypeValue.InflowMultiply * roomVolume;
+                //«Вытяжка» по формуле: «Вытяжка по кратности 1/ч, крат» * «Объем помещения»
+                var exhaustMultiply = roomTypeValue.ExhaustMultiply * roomVolume;
 
-                //«Приток» по формуле: «Приток по кратности 1/ч, крат» * «Общий объем»
-                var inflowMultiply = roomTypeValue.InflowMultiply * volumeTotalAmount;
-                //«Вытяжка» по формуле: «Вытяжка по кратности 1/ч, крат» * «Общий объем»
-                var exhaustMultiply = roomTypeValue.ExhaustMultiply * volumeTotalAmount;
+                //«Приток» по формуле: «Приток по людям на 1 человека, м3/ч» * «Кол-во людей в помещении»
+                var inflowPeople = roomTypeValue.InflowPeople * roomPeopleAmount;
+                //«Вытяжка» по формуле: «Вытяжка по людям на 1 человека, м3/ч» * «Кол-во людей в помещении»
+                var exhaustPeople = roomTypeValue.ExhaustPeople * roomPeopleAmount;
 
                 //«Приток» по константе
                 var inflow = roomTypeValue.Inflow;
@@ -128,15 +125,24 @@ namespace VentCalc.Persistence
                 var exhaust = roomTypeValue.Exhaust;
 
                 //"Приток". Максимальное значение
-                double?[] inflowArray = {inflowArea, inflowPeople, inflowMultiply, inflow};
+                double?[] inflowArray = 
+                {
+                    inflowArea, 
+                    inflowPeople, 
+                    inflowMultiply, 
+                    inflow
+                };
                 var inflowMaxValue = inflowArray.Max();
 
                 //"Вытяжка". Максимальное значение
-                double?[] exhaustArray = {exhaustArea, exhaustPeople, exhaustMultiply, exhaust};
+                double?[] exhaustArray = 
+                {
+                    exhaustArea, 
+                    exhaustPeople, 
+                    exhaustMultiply, 
+                    exhaust
+                };
                 var exhaustMaxValue = exhaustArray.Max();
-
-                var area = (room.Area != null) ? room.Area : room.Length * room.Width;
-                var volume = area * room.Height;
 
                 airExchangeRooms.Add(new AirExchangeRoomResource() {
 
@@ -144,8 +150,8 @@ namespace VentCalc.Persistence
                         RoomNumber = room.RoomNumber,
                         RoomName = room.RoomName,
                         TempIn = roomTypeValue.TempIn,
-                        Area = area,
-                        Volume = volume,
+                        Area = roomArea,
+                        Volume = roomVolume,
                         PeopleAmount = room.PeopleAmount,
                         InflowMultiply = roomTypeValue.InflowMultiply,
                         ExhaustMultiply = roomTypeValue.ExhaustMultiply,
@@ -157,7 +163,7 @@ namespace VentCalc.Persistence
 
             var airExchangeProject = new AirExchangeProjectResource()
             {
-                Id = project.Id,
+                Id = id,
                 InflowTotal = airExchangeRooms.Sum(x => x.InflowCalc),
                 ExhaustTotal = airExchangeRooms.Sum(x => x.ExhaustCalc),
                 AirExchangeRooms = airExchangeRooms
