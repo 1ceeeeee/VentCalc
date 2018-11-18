@@ -14,7 +14,7 @@ namespace VentCalc.Models
         [Required]
         [Description("ИД типа здания")]
         public int BuildingTypeId { get; set; }
-        public BuildingType BuildingType { get; set; }        
+        public virtual BuildingType BuildingType { get; set; }        
         [Required]
         [StringLength(255)]
         [Description("Тип помещения")]
