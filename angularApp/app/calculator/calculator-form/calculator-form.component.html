@@ -172,7 +172,21 @@
                     [items]="roomTypes"
                     placeholder="Выберите помещение из списка или напишите ...">
                   </ngx-select>   
-                </div>           
+                </div>  
+                
+                <div class="form-group">
+                  <label for="buldingTypeSelect">Тип здания</label>
+                  <ngx-select 
+                    [formControl]="city"
+                    size="small"
+                    optionValueField="id"
+                    optionTextField="buildTypeName" 
+                    [allowClear]="true"                    
+                    [items]="buildingKinds"
+                    placeholder="Выберите город из списка или напишите ..."
+                    (select)="onBuldingChange($event)">
+                  </ngx-select>
+                </div>
               
                 <div class="form-group">
                   <label for="inputSquare">Площадь, м2</label>

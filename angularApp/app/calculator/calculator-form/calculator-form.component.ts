@@ -155,6 +155,9 @@ export class CalculatorFormComponent implements OnInit {
     return false;
   }
 
+  onBuldingChange(value: any){
+    console.log('this.calculatorForm.buildKindId');
+  }
   // Возвращает выбранный из UI ид типа здания
   buildingKindSelect(id: number) {
     this.calculatorForm.buildKindId = id;
