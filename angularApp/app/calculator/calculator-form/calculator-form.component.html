@@ -2,9 +2,24 @@
 <p>{{ calculatorForm | json}}</p> -->
 
 <form [formGroup]="form">
-  <!-- География начало -->
-  <div class="row city-section">
+  <div class="space-top-3"></div>
+  <div class="row">
     <div class="col-sm-5">
+        <div class="form-group">
+            <label for="inputProjectName"><h2>Проект</h2></label>
+            <input 
+              formControlName="projectName"
+              type="text"                          
+              class="form-control form-control-sm" 
+              id="inputProjectName">
+        </div> 
+    </div>
+
+  </div>
+  <!-- География начало -->
+  <div class="space-top-1"></div>
+  <div class="row">
+    <div class="col-sm-5">      
       <div class="form-group">
         <label for="geography" 
           data-toggle="tooltip"   
@@ -22,18 +37,6 @@
           placeholder="Выберите город из списка или напишите ..."
           (select)="onCityChange($event)">
         </ngx-select>
-        <!-- <select 
-          formControlName="city"
-          id="inputCity" 
-          class="form-control form-control-sm"       
-          (change)="onCityChange()">
-          <option value="">Выберите город из списка ...</option>
-          <option 
-            *ngFor="let c of cities" 
-            value="{{ c.id }}"> {{ c.cityName}}
-          </option>
-        </select> -->
-        <!-- <div  class="alert alert-danger">Выберите город</div> -->
         <!-- Предупреждение в случае ошибки заполнения данных -->
         <div *ngIf="city.touched && city.invalid" 
           class="alert alert-danger alert-dismissible fade show" 
@@ -42,12 +45,12 @@
         </div>
       </div>      
     </div>
-    <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+
   </div>
   <!-- География конец -->
 
   <!-- Виды зданий  начало -->
-  <div class="row buldingKind-section">
+  <!-- <div class="row buldingKind-section">
     <div class="col-sm-5">
       <div class="form-group">        
         <h2>Здания</h2> 
@@ -69,11 +72,11 @@
           </div> 
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- Виды зданий конец -->
 
   <!-- Типы зданий начало -->  
-    <div class="row buldingType-section" *ngIf="selectedBuildingKind !== 0">      
+    <!-- <div class="row buldingType-section" *ngIf="selectedBuildingKind !== 0">      
         <div class="col-sm-5">
           <div 
             class="form-check"
@@ -93,27 +96,35 @@
               {{ type.buildingTypeName }}
             </label>
           </div>
-          <!-- <div 
-            *ngIf="buildType.touched && buildType.invalid" 
+        </div>      
+    </div>   -->
+  <!-- Типы зданий конец -->
+  <div class="row">
+    <div class="col-sm-5">
+        <div *ngIf="errors.length > 0" 
             class="alert alert-danger alert-dismissible fade show" 
             role="alert">
-            <strong>Ошибка заполнения данных.</strong> Выберите вид здания.
-          </div>   -->
-        </div>      
-    </div>  
-  <!-- Типы зданий конец -->
-  
+            <div *ngFor="let error of errors">
+              <strong>Ошибка заполнения.</strong>{{error}}
+            </div>
+        </div>
+      </div>
+  </div>
+
+
   <!-- Добавить помещение начало -->
   <div class="row rooms-section">    
     <div class="col-sm-5">
       <h2>Помещения</h2>
       <!-- Button trigger modal -->
-      <button 
-        [disabled]="!city.value || !buildType.value"
+      <!-- [disabled]="!city.value" -->
+      <!-- (click)="validateCity()" -->
+      <button         
         type="button" 
         class="btn btn-primary" 
-        data-toggle="modal" 
-        data-target="#roomAdd">
+        data-toggle="modal"   
+        (click)="onRoomAdd()"      
+        data-target="errors.length > 0 ? '' : #roomAdd">
         Добавить
       </button>
       <!-- Modal -->
@@ -167,13 +178,13 @@
                     [formControl]="roomName"
                     optionValueField="id"
                     size="small"
-                    optionTextField="roomTypeName" 
+                    optionTextField="roomTypeBuildingTypeName" 
                     [allowClear]="true"                    
                     [items]="roomTypes"
                     placeholder="Выберите помещение из списка или напишите ...">
                   </ngx-select>   
-                </div>           
-              
+                </div>                
+
                 <div class="form-group">
                   <label for="inputSquare">Площадь, м2</label>
                   <input 

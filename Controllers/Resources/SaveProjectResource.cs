@@ -7,6 +7,7 @@ namespace VentCalc.Controllers.Resources {
         public string ProjectName { get; set; }
         public ICollection<RoomResource> Rooms { get; set; }
         public string CreateUserId { get; set; }
+        public int CityId { get; set; }
         public SaveProjectResource() {
             Rooms = new Collection<RoomResource>();
         }

@@ -43,6 +43,7 @@ export class CalculatorFormComponent implements OnInit {
 
   form = new FormGroup({
     city: new FormControl('', Validators.required),
+    projectName: new FormControl('', Validators.required),
     buildingType: new FormControl('', Validators.required),
     buildingKind: new FormControl('', Validators.required),
     room: new FormGroup({
@@ -73,6 +74,9 @@ export class CalculatorFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
 
+  get projectName(){
+    return this.form.get('projectName')!;
+  }
   // Возвращает значение контрола географии
   get city() {
     return this.form.get('city')!;
@@ -137,7 +141,7 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Возвращает выбранный ид географии объекта
-  onCityChange(value: any) {
+  onCityChange(value: any) {    
     this.calculatorForm.cityId = value;//this.city.value;
     console.log(this.calculatorForm.cityId);
   }
@@ -155,6 +159,9 @@ export class CalculatorFormComponent implements OnInit {
     return false;
   }
 
+  onBuldingChange(){
+    console.log('this.calculatorForm.buildKindId');
+  }
   // Возвращает выбранный из UI ид типа здания
   buildingKindSelect(id: number) {
     this.calculatorForm.buildKindId = id;
@@ -208,11 +215,11 @@ export class CalculatorFormComponent implements OnInit {
     var rm = new Room();
     rm.id = this.initedIdRoom;
     rm.cityId = this.calculatorForm.cityId,
-      rm.buildingTypeId = this.calculatorForm.buildingTypeId;
+    rm.buildingTypeId = this.calculatorForm.buildingTypeId;
     rm.roomTypeId = this.roomName.value;
     rm.roomNumber = this.roomNumber.value;
     rm.roomName = roomTypeName,
-      rm.length = this.roomLength.value;
+    rm.length = this.roomLength.value;
     rm.width = this.roomWidth.value;
     rm.area = this.roomArea.value;
     rm.height = this.roomHeight.value;
@@ -221,7 +228,8 @@ export class CalculatorFormComponent implements OnInit {
     rm.projectId = this.project.id;
     rm.createUserId = this.currentUser.id;
     rm.systemIn = this.systemIn.value;
-    rm.systemOut = this.systemOut.value;
+    rm.systemOut = this.systemOut.value;  
+
 
     if (this.initedIdRoom == 0) {
       this.roomService.add(rm)
@@ -323,16 +331,49 @@ export class CalculatorFormComponent implements OnInit {
       );
   }
 
-  private createProject() {
-    this.project.id = 0;
-    this.project.projectName = "";
+  // private createProject() {
+  //   this.project.id = 0;
+  //   this.project.projectName = "";
 
-    this.projectService.Add(this.project)
-      .subscribe(
-        data => this.project = data,
-        () => { },
-        () => { }
-      )
+  //   this.projectService.Add(this.project)
+  //     .subscribe(
+  //       data => this.project = data,
+  //       () => { },
+  //       () => { }
+  //     )
+  // }
+
+  onRoomAdd(){
+    console.log(this.city.value);
+    this.errors = [];
+    let cnt = 0;
+    if(!this.city.value){
+      cnt++;
+      this.errors.push("Не выбран город.");      
+    }
+    if(!this.projectName.value){
+      cnt++;
+      this.errors.push("Не указано наименование проекта.");      
+    }
+
+    if(cnt > 0)
+      return;  
+    
+    if(this.project.id == 0){
+      let projectToAdd = new Project();
+      projectToAdd.projectName = this.projectName.value;
+      projectToAdd.cityId = this.city.value;
+      projectToAdd.createUserId = this.currentUser.id;
+      console.log(projectToAdd);
+      this.projectService.Add(projectToAdd)
+        .subscribe(
+          (data) => {
+            this.project = data;
+          }
+        )
+    }
+    console.log(this.errors.length);
+    return;
   }
 
   private initCities() {
@@ -390,7 +431,8 @@ export class CalculatorFormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.currentUser = this.userService.getCurrentUser();
+    this.currentUser = this.userService.getCurrentUser();    
+
     this.dataService.currentAirExchangeProject
       .subscribe(
         data => {
@@ -408,17 +450,26 @@ export class CalculatorFormComponent implements OnInit {
           this.projectService.getById(this.projectId)
             .subscribe(
               (data) => {
-                this.project = data;
-                console.log(this.project);
+                this.project = data;                
               },
               (error) => {
                 console.log(error);
               },
-              () => { });
+              () => {                 
+                if(this.project && this.project.id > 0){
+                  console.log(this.project);
+                  this.rooms = this.project.rooms;
+                  this.form.get('projectName')!
+                    .setValue(this.project.projectName);
+                  this.form.get('city')!
+                    .setValue(this.project.cityId);
+                }
+              });          
+          
         }
-        else {          
-          this.createProject();
-        }
+        // else {          
+        //   this.createProject();
+        // }
       }
     );
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VentCalc.Persistence;
 
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181120060522_MoveCityFromRoomToProject")]
+    partial class MoveCityFromRoomToProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -531,16 +533,12 @@ namespace VentCalc.Migrations
 
                     b.Property<int?>("DeleteUsertId");
 
-                    b.Property<double?>("ExhaustCalc");
-
                     b.Property<string>("ExhaustSystem")
                         .HasMaxLength(255);
 
                     b.Property<int?>("Floor");
 
                     b.Property<double?>("Height");
-
-                    b.Property<double?>("InflowCalc");
 
                     b.Property<string>("InflowSystem")
                         .HasMaxLength(255);
@@ -563,7 +561,7 @@ namespace VentCalc.Migrations
 
                     b.Property<int?>("UpdateUserId");
 
-                    b.Property<double?>("Volume");
+                    b.Property<int?>("UserId");
 
                     b.Property<double?>("Width");
 
@@ -811,6 +809,14 @@ namespace VentCalc.Migrations
                 });
 
             modelBuilder.Entity("VentCalc.Models.Project", b =>
+                {
+                    b.HasOne("VentCalc.Models.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("VentCalc.Models.Room", b =>
                 {
                     b.HasOne("VentCalc.Models.Project", "Project")
                         .WithMany("Rooms")

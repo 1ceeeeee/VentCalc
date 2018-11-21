@@ -45,7 +45,7 @@ namespace VentCalc.Repositories {
             if (existing != null) _dbSet.Remove(existing); // TODO: переделать с физического удаления на статус
         }
 
-        public async Task<T> GetByIdAsync(int id) => await _dbSet.FindAsync(id);        
+        public async Task<T> GetByIdAsync(int id) => await _dbSet.FindAsync(id);
         public async Task<IEnumerable<T>> GetEnumerableAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default(CancellationToken)) {
             IQueryable<T> query = _dbSet;
             return await query.Where(predicate).ToListAsync(cancellationToken).ConfigureAwait(false);
@@ -80,6 +80,15 @@ namespace VentCalc.Repositories {
             }
             if (predicate != null) {
                 return await query.Where(predicate).SingleOrDefaultAsync().ConfigureAwait(false);
+            }
+            return await query.SingleOrDefaultAsync().ConfigureAwait(false);
+        }
+
+        public async Task<T> GetSingleIcludeMultipleAsync(params Expression<Func<T, object>>[] includes) {
+            IQueryable<T> query = _dbSet;
+            if (includes != null) {
+                query = includes.Aggregate(query,
+                    (current, include) => current.Include(include));
             }
             return await query.SingleOrDefaultAsync().ConfigureAwait(false);
         }
