@@ -1,6 +1,10 @@
 <div class="space-top-3"></div>
 <form [formGroup]="form">
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectAdd">
+  <button 
+    type="button" 
+    class="btn btn-primary" 
+    data-toggle="modal" 
+    (click)="onEditProject(0)">
       Добавить
     </button>
     <!-- Modal -->

@@ -3,6 +3,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Configuration } from '../../app.constants';
 import { Observable } from 'rxjs/Observable';
 import { RoomType } from '../../models/roomType';
+import { TOKEN_NAME } from './user.service';
 
 @Injectable()
 export class RoomTypeService {
@@ -19,7 +20,13 @@ export class RoomTypeService {
   }
 
   getAll(): Observable<RoomType[]> {    
+    let headers = this.headers;
+    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
     return this.http.get<RoomType[]>(this.actionUrl, { headers: this.headers });
+  }
+  
+  getToken(): string | null {
+    return localStorage.getItem(TOKEN_NAME);
   }
 
 }

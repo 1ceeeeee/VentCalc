@@ -93,13 +93,17 @@ export class ProjectsFormComponent implements OnInit {
       )
   }
 
-  onEditProject(id: number) {
-    this.selectedProject = this.projects.filter(x => x.id == id)[0];
-    if (!this.selectedProject)
-      return;
-    this.form.get('projectName')!
-      .setValue(this.selectedProject.projectName);
+  onEditProject(id: number){
+    this.router.navigate(['/calculator'], { queryParams: { projectId: id } });
   }
+
+  // onEditProject(id: number) {
+  //   this.selectedProject = this.projects.filter(x => x.id == id)[0];
+  //   if (!this.selectedProject)
+  //     return;
+  //   this.form.get('projectName')!
+  //     .setValue(this.selectedProject.projectName);
+  // }
 
   onOpenProject(id: number){
     this.router.navigate(['/calculator'], { queryParams: { projectId: id } });

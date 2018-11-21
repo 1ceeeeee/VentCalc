@@ -28,7 +28,7 @@ namespace VentCalc.Controllers {
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ReadSingle(int id) {
-            var project = await UnitOfWork.Repository<Project>().GetByIdAsync(id);
+            var project = await UnitOfWork.Repository<Project>().GetSingleIcludeMultipleAsync(x => x.Id == id,x => x.Rooms);
 
             if (project == null)
                 return NotFound();
@@ -45,7 +45,7 @@ namespace VentCalc.Controllers {
             if(userId == 0)
                 return null;
 
-            var projects = await UnitOfWork.Repository<Project>().GetEnumerableAsync(x => x.CreateUserId == userId);
+            var projects = await UnitOfWork.Repository<Project>().GetEnumerableIcludeMultipleAsync(x => x.CreateUserId == userId, x => x.Rooms);
 
             return Mapper.Map<List<Project>, List<ProjectResource>>(projects.ToList());
 

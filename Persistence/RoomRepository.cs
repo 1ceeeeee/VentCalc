@@ -7,54 +7,54 @@ using VentCalc.Persistence;
 
 namespace VentCalc.Persistence
 {
-    public class RoomRepository : IRoomRepository
-    {
-        private readonly VentCalcDbContext context;
-        public RoomRepository(VentCalcDbContext context)
-        {
-            this.context = context;
-        }
+    // public class RoomRepository : IRoomRepository
+    // {
+    //     private readonly VentCalcDbContext context;
+    //     public RoomRepository(VentCalcDbContext context)
+    //     {
+    //         this.context = context;
+    //     }
 
-        public async Task<List<Room>> ReadAll() 
-        {
-            return await context.Rooms.ToListAsync();
-        }        
+    //     public async Task<List<Room>> ReadAll() 
+    //     {
+    //         return await context.Rooms.ToListAsync();
+    //     }        
 
-        public async Task<List<Room>> ReadAll(int projectId) 
-        {
-            return await context.Rooms
-                .Where(r => r.ProjectId == projectId)
-                .ToListAsync();
-        }             
+    //     public async Task<List<Room>> ReadAll(int projectId) 
+    //     {
+    //         return await context.Rooms
+    //             .Where(r => r.ProjectId == projectId)
+    //             .ToListAsync();
+    //     }             
 
-        public async Task<Room> ReadSingle(int id)
-        {
-            return await context.Rooms
-                .Include(r => r.City)
-                // .Include(r => r.BuildingType)
-                .Include(r => r.RoomType)
-                .SingleOrDefaultAsync(r => r.Id == id);
-        }        
+    //     // public async Task<Room> ReadSingle(int id)
+    //     // {
+    //     //     return await context.Rooms
+    //     //         .Include(r => r.City)
+    //     //         // .Include(r => r.BuildingType)
+    //     //         .Include(r => r.RoomType)
+    //     //         .SingleOrDefaultAsync(r => r.Id == id);
+    //     // }        
 
-        public async Task<Room> Create(Room room)
-        {   
-            context.Rooms.Add(room);
-            context.SaveChanges();
-            return await context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
-        }
+    //     public async Task<Room> Create(Room room)
+    //     {   
+    //         context.Rooms.Add(room);
+    //         context.SaveChanges();
+    //         return await context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
+    //     }
 
-        public async Task<Room> Update(Room room)
-        {
-            context.Rooms.Update(room);
-            context.SaveChanges();
-            return await context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
-        }
+    //     public async Task<Room> Update(Room room)
+    //     {
+    //         context.Rooms.Update(room);
+    //         context.SaveChanges();
+    //         return await context.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
+    //     }
 
-        public void Delete(int id)
-        {
-            var room = context.Rooms.FirstOrDefault(r => r.Id == id);
-            context.Rooms.Remove(room);
-            context.SaveChanges();
-        }
-    }
+    //     public void Delete(int id)
+    //     {
+    //         var room = context.Rooms.FirstOrDefault(r => r.Id == id);
+    //         context.Rooms.Remove(room);
+    //         context.SaveChanges();
+    //     }
+    // }
 }

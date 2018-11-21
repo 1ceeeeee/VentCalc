@@ -5,20 +5,19 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using VentCalc.Persistence;
 
-namespace VentCalc.Models
-{
+namespace VentCalc.Models {
     [Table("Projects")]
     [Description("Проекты")]
-    public class Project : CrudBase
-    {
+    public class Project : CrudBase {
         [Required]
         [StringLength(255)]
         [Description("Проект")]
-        public string ProjectName { get; set; }        
-        public ICollection<Room> Rooms { get; set; }
-        public Project()
-        {
-            Rooms = new Collection<Room>(); 
+        public string ProjectName { get; set; }
+        public virtual ICollection<Room> Rooms { get; set; }
+        public int CityId { get; set; }
+        public virtual City City { get; set; }
+        public Project() {
+            Rooms = new Collection<Room>();
         }
     }
 }

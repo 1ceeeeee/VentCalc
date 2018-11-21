@@ -10,11 +10,7 @@ namespace VentCalc.Models
     [Table("Rooms")]
     [Description("Помещения")]
     public class Room : CrudBase
-    {
-        [Required]
-        [Description("ИД города")]
-        public int CityId { get; set; }
-        public City City { get; set; }
+    {     
         // [Required]
         // [Description("ИД типа здания")]
         // public int BuildingTypeId { get; set; }
