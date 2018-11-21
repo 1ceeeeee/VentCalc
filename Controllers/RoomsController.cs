@@ -13,17 +13,13 @@ using VentCalc.Repositories;
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
     public class RoomsController : BaseController {
-        // private readonly IMapper mapper;
-        // private IUnitOfWork UnitOfWork;
+
         public RoomsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
-            // this.mapper = mapper;
-            // this.UnitOfWork = uow;
         }
 
         [HttpGet]
         public async Task<IEnumerable<RoomResource>> ReadAll() {
             var rooms = await UnitOfWork.Repository<Room>().GetEnumerableAsync();
-
             return Mapper.Map<List<Room>, List<RoomResource>>(rooms.ToList());
         }
 

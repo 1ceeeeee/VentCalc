@@ -18,10 +18,13 @@ namespace VentCalc.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<RoomTypeResource>> GetAll()
+        public async Task<IEnumerable<RoomTypeResource>> ReadAll()
         {
             var roomTypes = 
-                await UnitOfWork.Repository<RoomType>().GetEnumerableIcludeMultipleAsync(x => x.DeleteUsertId == null, x => x.BuildingType);
+                await UnitOfWork.Repository<RoomType>().GetEnumerableIcludeMultipleAsync(
+                    x => x.DeleteUsertId == null, 
+                    x => x.BuildingType
+                );
             
             var roomTypeResources = new List<RoomTypeResource>();
             foreach (var roomType in roomTypes)

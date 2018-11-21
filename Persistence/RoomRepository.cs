@@ -30,7 +30,6 @@ namespace VentCalc.Persistence
         public async Task<Room> ReadSingle(int id)
         {
             return await context.Rooms
-                .Include(r => r.City)
                 // .Include(r => r.BuildingType)
                 .Include(r => r.RoomType)
                 .SingleOrDefaultAsync(r => r.Id == id);
