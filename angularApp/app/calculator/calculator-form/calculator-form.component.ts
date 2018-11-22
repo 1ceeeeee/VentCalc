@@ -40,6 +40,7 @@ export class CalculatorFormComponent implements OnInit {
   airExchangeProject: AirExchangeProject = new AirExchangeProject();
   currentUser: Credentials = new Credentials();
   errors: string[] = [];
+  roomErrors: string[] = [];
 
   form = new FormGroup({
     city: new FormControl('', Validators.required),
@@ -74,7 +75,7 @@ export class CalculatorFormComponent implements OnInit {
     private activatedRoute: ActivatedRoute
   ) { }
 
-  get projectName(){
+  get projectName() {
     return this.form.get('projectName')!;
   }
   // Возвращает значение контрола географии
@@ -141,7 +142,7 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   // Возвращает выбранный ид географии объекта
-  onCityChange(value: any) {    
+  onCityChange(value: any) {
     this.calculatorForm.cityId = value;//this.city.value;
     console.log(this.calculatorForm.cityId);
   }
@@ -159,7 +160,7 @@ export class CalculatorFormComponent implements OnInit {
     return false;
   }
 
-  onBuldingChange(){
+  onBuldingChange() {
     console.log('this.calculatorForm.buildKindId');
   }
   // Возвращает выбранный из UI ид типа здания
@@ -175,37 +176,14 @@ export class CalculatorFormComponent implements OnInit {
 
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
-    let cnt = 0;
-
-    this.errors = [];
-
-    if (!this.roomNumber.value) {
-      cnt++;
-      this.errors.push('Не указан номер помещения');
-    }
-
-    if (!this.roomName.value) {
-      cnt++;
-      this.errors.push('Не выбрано помещение помещения');
-    }
-
-    if (!this.roomArea.value) {
-      cnt++;
-      this.errors.push('Не указана площадь помещения');
-    }
-
-    if (!this.roomHeight.value) {
-      cnt++;
-      this.errors.push('Не указана высота помещения');
-    }
-
-    if (!this.roomFloor.value) {
-      cnt++;
-      this.errors.push('Не указан этаж');
-    }
-
-    if (cnt > 0)
+    this.roomErrors = [];
+    if(this.checkRoomForErrors().length > 0){
+      console.log('inside checkRoomForErrors');
+      this.roomErrors = this.checkRoomForErrors();      
       return;
+    }   
+
+    this.createProject();
 
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
@@ -214,12 +192,12 @@ export class CalculatorFormComponent implements OnInit {
 
     var rm = new Room();
     rm.id = this.initedIdRoom;
-    rm.cityId = this.calculatorForm.cityId,
-    rm.buildingTypeId = this.calculatorForm.buildingTypeId;
+    rm.cityId = this.city.value,
+      rm.buildingTypeId = this.buildType.value;
     rm.roomTypeId = this.roomName.value;
     rm.roomNumber = this.roomNumber.value;
     rm.roomName = roomTypeName,
-    rm.length = this.roomLength.value;
+      rm.length = this.roomLength.value;
     rm.width = this.roomWidth.value;
     rm.area = this.roomArea.value;
     rm.height = this.roomHeight.value;
@@ -228,8 +206,7 @@ export class CalculatorFormComponent implements OnInit {
     rm.projectId = this.project.id;
     rm.createUserId = this.currentUser.id;
     rm.systemIn = this.systemIn.value;
-    rm.systemOut = this.systemOut.value;  
-
+    rm.systemOut = this.systemOut.value;
 
     if (this.initedIdRoom == 0) {
       this.roomService.add(rm)
@@ -251,7 +228,6 @@ export class CalculatorFormComponent implements OnInit {
           () => { },
           () => {
             console.log("Обновлено помещения с ид: " + this.initedIdRoom);
-
           }
         )
     }
@@ -331,35 +307,8 @@ export class CalculatorFormComponent implements OnInit {
       );
   }
 
-  // private createProject() {
-  //   this.project.id = 0;
-  //   this.project.projectName = "";
-
-  //   this.projectService.Add(this.project)
-  //     .subscribe(
-  //       data => this.project = data,
-  //       () => { },
-  //       () => { }
-  //     )
-  // }
-
-  onRoomAdd(){
-    console.log(this.city.value);
-    this.errors = [];
-    let cnt = 0;
-    if(!this.city.value){
-      cnt++;
-      this.errors.push("Не выбран город.");      
-    }
-    if(!this.projectName.value){
-      cnt++;
-      this.errors.push("Не указано наименование проекта.");      
-    }
-
-    if(cnt > 0)
-      return;  
-    
-    if(this.project.id == 0){
+  private createProject() {
+    if (this.project.id == 0) {
       let projectToAdd = new Project();
       projectToAdd.projectName = this.projectName.value;
       projectToAdd.cityId = this.city.value;
@@ -372,6 +321,24 @@ export class CalculatorFormComponent implements OnInit {
           }
         )
     }
+  }
+
+  onRoomAdd() {
+    console.log(this.city.value);
+    this.errors = [];
+    let cnt = 0;
+    if (!this.city.value) {
+      cnt++;
+      this.errors.push("Не выбран город.");
+    }
+    if (!this.projectName.value) {
+      cnt++;
+      this.errors.push("Не указано наименование проекта.");
+    }
+
+    if (cnt > 0)
+      return;
+
     console.log(this.errors.length);
     return;
   }
@@ -391,6 +358,31 @@ export class CalculatorFormComponent implements OnInit {
         );
     }
 
+  }
+
+  private checkRoomForErrors(): string[] {    
+    let ers = [];
+    if (!this.roomNumber.value) {      
+      ers.push('Не указан номер помещения');
+    }
+
+    if (!this.roomName.value) {      
+      ers.push('Не выбрано помещение помещения');
+    }
+
+    if (!this.roomArea.value) {      
+      ers.push('Не указана площадь помещения');
+    }
+
+    if (!this.roomHeight.value) {      
+      ers.push('Не указана высота помещения');
+    }
+
+    if (!this.roomFloor.value) {      
+      ers.push('Не указан этаж');
+    }
+
+    return ers;    
   }
 
   /* Полезный код если надо будет объединять ячейки в икселе вручную */
@@ -431,7 +423,7 @@ export class CalculatorFormComponent implements OnInit {
 
   ngOnInit() {
 
-    this.currentUser = this.userService.getCurrentUser();    
+    this.currentUser = this.userService.getCurrentUser();
 
     this.dataService.currentAirExchangeProject
       .subscribe(
@@ -450,13 +442,13 @@ export class CalculatorFormComponent implements OnInit {
           this.projectService.getById(this.projectId)
             .subscribe(
               (data) => {
-                this.project = data;                
+                this.project = data;
               },
               (error) => {
                 console.log(error);
               },
-              () => {                 
-                if(this.project && this.project.id > 0){
+              () => {
+                if (this.project && this.project.id > 0) {
                   console.log(this.project);
                   this.rooms = this.project.rooms;
                   this.form.get('projectName')!
@@ -464,8 +456,8 @@ export class CalculatorFormComponent implements OnInit {
                   this.form.get('city')!
                     .setValue(this.project.cityId);
                 }
-              });          
-          
+              });
+
         }
         // else {          
         //   this.createProject();
