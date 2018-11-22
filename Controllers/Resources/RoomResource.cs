@@ -2,8 +2,9 @@ using VentCalc.Models;
 
 namespace VentCalc.Controllers.Resources
 {
-    public class RoomResource
+    public class RoomResource 
     {
+        public int Id { get; set; }
         public int RoomTypeId { get; set; }
         public int ProjectId { get; set; }
         public int? RoomNumber { get; set; }
