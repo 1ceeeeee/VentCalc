@@ -15,10 +15,14 @@ namespace VentCalc.Controllers {
         public RoomTypesController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) { }
 
         [HttpGet]
-        public async Task<IEnumerable<RoomTypeResource>> GetAll() {
-            var roomTypes =
-                await UnitOfWork.Repository<RoomType>().GetEnumerableIcludeMultipleAsync(x => x.DeleteUsertId == null, x => x.BuildingType);
-
+        public async Task<IEnumerable<RoomTypeResource>> ReadAll()
+        {
+            var roomTypes = 
+                await UnitOfWork.Repository<RoomType>().GetEnumerableIcludeMultipleAsync(
+                    x => x.DeleteUsertId == null, 
+                    x => x.BuildingType
+                );
+            
             var roomTypeResources = new List<RoomTypeResource>();
             foreach (var roomType in roomTypes) {
                 roomTypeResources.Add(new RoomTypeResource() {

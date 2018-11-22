@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VentCalc.Persistence;
 
 namespace VentCalc.Migrations
 {
     [DbContext(typeof(VentCalcDbContext))]
-    partial class VentCalcDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181121173359_RoomsEdit")]
+    partial class RoomsEdit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -441,8 +443,6 @@ namespace VentCalc.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CityId");
-
                     b.Property<DateTime?>("CreateDate");
 
                     b.Property<int?>("CreateUserId");
@@ -460,8 +460,6 @@ namespace VentCalc.Migrations
                     b.Property<int?>("UpdateUserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.ToTable("Projects");
                 });
@@ -810,7 +808,7 @@ namespace VentCalc.Migrations
                         .HasForeignKey("IdentityId");
                 });
 
-            modelBuilder.Entity("VentCalc.Models.Project", b =>
+            modelBuilder.Entity("VentCalc.Models.Room", b =>
                 {
                     b.HasOne("VentCalc.Models.Project", "Project")
                         .WithMany("Rooms")

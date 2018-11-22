@@ -18,7 +18,7 @@ namespace VentCalc.Models
         [Required]
         [Description("ИД назначения здания")]
         public int BuildingPurposeId { get; set; }
-        public BuildingPurpose BuildingPurpose { get; set; }
+        public virtual BuildingPurpose BuildingPurpose { get; set; }
         public ICollection<RoomType> RoomTypes { get; set; }
         public BuildingType()
         {
