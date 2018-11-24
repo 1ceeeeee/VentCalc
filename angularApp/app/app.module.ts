@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { AppComponent } from './app.component';
@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { SharedModule } from './shared/shared.module';
 import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { GlobalErrorHandler } from './core/errorhandler/globalErrorHandler';
 
 
 @NgModule({
@@ -34,7 +35,14 @@ import { APP_BASE_HREF, LocationStrategy, HashLocationStrategy } from '@angular/
 
     providers: [
         { provide: APP_BASE_HREF, useValue: '', },
-        { provide: LocationStrategy, useClass: HashLocationStrategy }
+        {
+            provide: LocationStrategy,
+            useClass: HashLocationStrategy
+        },
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandler
+        }
     ]
 })
 

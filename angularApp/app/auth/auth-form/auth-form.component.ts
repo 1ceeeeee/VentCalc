@@ -57,11 +57,13 @@ export class AuthFormComponent implements OnInit {
           this.isRequesting = false;         
         },
         () => {
+          
           this.isLoggedIn = true;
           this.userService.changeAuthNavStatus(true);
           this.userService.changeAuthNavUserName(this.userService.getCurrentUser().userName);
           this.userService.changeAuthAdminNavStatus(this.userService.isAdmin(ADMIN_ROLE))
           this.isRequesting = false;          
+          
         }
       );
   }

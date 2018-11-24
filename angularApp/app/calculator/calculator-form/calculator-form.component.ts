@@ -216,9 +216,6 @@ export class CalculatorFormComponent implements OnInit {
           () => {
             console.log(rm);
             this.getAllRooms(this.project.id);
-          },
-          (error) => {
-            console.log(error);
           }
         );
     } else {
@@ -375,9 +372,6 @@ export class CalculatorFormComponent implements OnInit {
     this.projectService.update(this.project)
       .subscribe(
         () => {          
-        },
-        (error) => {
-          console.log(error);
         }
       )
 
@@ -442,8 +436,7 @@ export class CalculatorFormComponent implements OnInit {
               (data) => {
                 this.project = data;
               },
-              (error) => {
-                console.log(error);
+              () => {                
               },
               () => {
                 if (this.project && this.project.id > 0) {
