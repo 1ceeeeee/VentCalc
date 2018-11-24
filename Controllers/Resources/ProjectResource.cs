@@ -10,10 +10,6 @@ namespace VentCalc.Controllers.Resources
         public string ProjectName { get; set; }    
         public int? CityId { get; set; }   
         public DateTime? CreateDate { get; set; } 
-        public ICollection<RoomResource> Rooms { get; set; }
-        public ProjectResource()
-        {
-            Rooms = new Collection<RoomResource>(); 
-        }
+        public string CreateUserId { get; set; }
     }
 }
