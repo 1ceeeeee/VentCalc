@@ -177,13 +177,15 @@ export class CalculatorFormComponent implements OnInit {
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
     this.roomErrors = [];
-    if(this.checkRoomForErrors().length > 0){
+    if (this.checkRoomForErrors().length > 0) {
       console.log('inside checkRoomForErrors');
-      this.roomErrors = this.checkRoomForErrors();      
+      this.roomErrors = this.checkRoomForErrors();
       return;
-    }   
+    }
 
-    this.createProject();
+    if(this.project.id == 0){
+      this.createProject();
+    }
 
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
@@ -308,39 +310,17 @@ export class CalculatorFormComponent implements OnInit {
   }
 
   private createProject() {
-    if (this.project.id == 0) {
-      let projectToAdd = new Project();
-      projectToAdd.projectName = this.projectName.value;
-      projectToAdd.cityId = this.city.value;
-      projectToAdd.createUserId = this.currentUser.id;
-      console.log(projectToAdd);
-      this.projectService.Add(projectToAdd)
-        .subscribe(
-          (data) => {
-            this.project = data;
-          }
-        )
-    }
-  }
-
-  onRoomAdd() {
-    console.log(this.city.value);
-    this.errors = [];
-    let cnt = 0;
-    if (!this.city.value) {
-      cnt++;
-      this.errors.push("Не выбран город.");
-    }
-    if (!this.projectName.value) {
-      cnt++;
-      this.errors.push("Не указано наименование проекта.");
-    }
-
-    if (cnt > 0)
-      return;
-
-    console.log(this.errors.length);
-    return;
+    let projectToAdd = new Project();
+    projectToAdd.projectName = this.projectName.value;
+    projectToAdd.cityId = this.city.value;
+    projectToAdd.createUserId = this.currentUser.id;
+    console.log(projectToAdd);
+    this.projectService.Add(projectToAdd)
+      .subscribe(
+        (data) => {
+          this.project = data;
+        }
+      )
   }
 
   private initCities() {
@@ -360,29 +340,47 @@ export class CalculatorFormComponent implements OnInit {
 
   }
 
-  private checkRoomForErrors(): string[] {    
+  private checkRoomForErrors(): string[] {
     let ers = [];
-    if (!this.roomNumber.value) {      
+    if (!this.roomNumber.value) {
       ers.push('Не указан номер помещения');
     }
 
-    if (!this.roomName.value) {      
+    if (!this.roomName.value) {
       ers.push('Не выбрано помещение помещения');
     }
 
-    if (!this.roomArea.value) {      
+    if (!this.roomArea.value) {
       ers.push('Не указана площадь помещения');
     }
 
-    if (!this.roomHeight.value) {      
+    if (!this.roomHeight.value) {
       ers.push('Не указана высота помещения');
     }
 
-    if (!this.roomFloor.value) {      
+    if (!this.roomFloor.value) {
       ers.push('Не указан этаж');
     }
 
-    return ers;    
+    return ers;
+  }
+
+  onSaveProject() {
+    if (this.project.id == 0) {
+      this.createProject();   
+      return;   
+    }
+    this.project.projectName = this.projectName.value;
+    this.project.cityId = this.city.value;
+    this.projectService.update(this.project)
+      .subscribe(
+        () => {          
+        },
+        (error) => {
+          console.log(error);
+        }
+      )
+
   }
 
   /* Полезный код если надо будет объединять ячейки в икселе вручную */
@@ -459,9 +457,7 @@ export class CalculatorFormComponent implements OnInit {
               });
 
         }
-        // else {          
-        //   this.createProject();
-        // }
+
       }
     );
 

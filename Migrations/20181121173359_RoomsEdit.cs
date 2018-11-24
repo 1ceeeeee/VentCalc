@@ -18,50 +18,50 @@ namespace VentCalc.Migrations
             //     name: "CityId",
             //     table: "Rooms");
 
-            // migrationBuilder.DropColumn(
-            //     name: "UserId",
-            //     table: "Rooms");
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Rooms");
 
-            // migrationBuilder.AddColumn<double>(
-            //     name: "ExhaustCalc",
-            //     table: "Rooms",
-            //     nullable: true);
+            migrationBuilder.AddColumn<double>(
+                name: "ExhaustCalc",
+                table: "Rooms",
+                nullable: true);
 
-            // migrationBuilder.AddColumn<double>(
-            //     name: "InflowCalc",
-            //     table: "Rooms",
-            //     nullable: true);
+            migrationBuilder.AddColumn<double>(
+                name: "InflowCalc",
+                table: "Rooms",
+                nullable: true);
 
-            // migrationBuilder.AddColumn<double>(
-            //     name: "Volume",
-            //     table: "Rooms",
-            //     nullable: true);
+            migrationBuilder.AddColumn<double>(
+                name: "Volume",
+                table: "Rooms",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // migrationBuilder.DropColumn(
-            //     name: "ExhaustCalc",
-            //     table: "Rooms");
+            migrationBuilder.DropColumn(
+                name: "ExhaustCalc",
+                table: "Rooms");
 
-            // migrationBuilder.DropColumn(
-            //     name: "InflowCalc",
-            //     table: "Rooms");
+            migrationBuilder.DropColumn(
+                name: "InflowCalc",
+                table: "Rooms");
 
-            // migrationBuilder.DropColumn(
-            //     name: "Volume",
-            //     table: "Rooms");
+            migrationBuilder.DropColumn(
+                name: "Volume",
+                table: "Rooms");
 
-            // migrationBuilder.AddColumn<int>(
-            //     name: "CityId",
-            //     table: "Rooms",
-            //     nullable: false,
-            //     defaultValue: 0);
+            migrationBuilder.AddColumn<int>(
+                name: "CityId",
+                table: "Rooms",
+                nullable: false,
+                defaultValue: 0);
 
-            // migrationBuilder.AddColumn<int>(
-            //     name: "UserId",
-            //     table: "Rooms",
-            //     nullable: true);
+            migrationBuilder.AddColumn<int>(
+                name: "UserId",
+                table: "Rooms",
+                nullable: true);
 
             // migrationBuilder.CreateIndex(
             //     name: "IX_Rooms_CityId",
