@@ -15,20 +15,18 @@ namespace VentCalc.Controllers {
     [Route("api/[controller]")]
     public class ProjectsController : BaseController {
         private readonly IProjectRepository repository;
-        public ProjectsController(IMapper mapper, IUnitOfWork uow, IProjectRepository repository) : base(mapper, uow) {
-            this.repository = repository;
+        public ProjectsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
         }
 
         [HttpGet]
         public async Task<IEnumerable<ProjectResource>> ReadAll() {
-            var projects = await repository.ReadAll();
-
-            return Mapper.Map<List<Project>, List<ProjectResource>>(projects);
+            var projects = await UnitOfWork.Repository<Project>().GetEnumerableAsync();
+            return Mapper.Map<List<Project>, List<ProjectResource>>(projects.ToList());
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ReadSingle(int id) {
-            var project = await UnitOfWork.Repository<Project>().GetSingleIcludeMultipleAsync(x => x.Id == id,x => x.Rooms);
+            var project = await UnitOfWork.Repository<Project>().GetSingleIcludeMultipleAsync(x => x.Id == id);
 
             if (project == null)
                 return NotFound();
@@ -70,8 +68,8 @@ namespace VentCalc.Controllers {
             return Ok(projectResource);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] SaveProjectResource saveProjectResource) {
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] SaveProjectResource saveProjectResource) {
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

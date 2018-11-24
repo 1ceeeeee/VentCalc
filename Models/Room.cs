@@ -11,10 +11,6 @@ namespace VentCalc.Models
     [Description("Помещения")]
     public class Room : CrudBase
     {     
-        // [Required]
-        // [Description("ИД типа здания")]
-        // public int BuildingTypeId { get; set; }
-        // public BuildingType BuildingType { get; set; }
         [Required]
         [Description("ИД типа помещения")]
         public int RoomTypeId { get; set; }
