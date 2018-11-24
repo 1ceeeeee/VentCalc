@@ -11,9 +11,11 @@ export class ProjectService {
 
   private headers: HttpHeaders;
   private actionUrl: string;
+  private updateUrl: string;
 
   constructor(private http: HttpClient, configuration: Configuration) {
     this.actionUrl = configuration.Server + 'api/projects/';
+    this.updateUrl = configuration.Server + 'api/projects/updateproject';
 
     this.headers = new HttpHeaders();
     this.headers = this.headers.set('Content-Type', 'application/json');
@@ -47,7 +49,7 @@ export class ProjectService {
   update(project: Project): Observable<Project> {
     let headers = this.headers;
     headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.put<Project>(this.actionUrl, project, { headers: headers });
+    return this.http.put<Project>(this.updateUrl, project, { headers: headers });
   }
 
   getToken(): string | null {

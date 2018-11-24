@@ -68,19 +68,20 @@ namespace VentCalc.Controllers {
             return Ok(projectResource);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] SaveProjectResource saveProjectResource) {
+        [HttpPut("UpdateProject")]
+        public async Task<IActionResult> Update([FromBody] SaveProjectResource saveProjectResource) {
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var project = await repository.ReadSingle(saveProjectResource.Id);
+            var project = await UnitOfWork.Repository<Project>().GetByIdAsync(saveProjectResource.Id);
 
             if (project == null)
                 return NotFound();
 
             Mapper.Map<SaveProjectResource, Project>(saveProjectResource, project);
-            project = await repository.Update(project);
+            project.UpdateDate = DateTime.Now;
+            project.UpdateUserId = await GetCurrentUserIdAsync(saveProjectResource.CreateUserId);
 
             UnitOfWork.Commit();
 

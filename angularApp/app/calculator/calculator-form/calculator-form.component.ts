@@ -21,6 +21,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Credentials } from '../../models/credentials';
 
 
+
 @Component({
   selector: 'app-calculator-form',
   templateUrl: './calculator-form.component.html'
@@ -177,13 +178,12 @@ export class CalculatorFormComponent implements OnInit {
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
     this.roomErrors = [];
-    if (this.checkRoomForErrors().length > 0) {
-      console.log('inside checkRoomForErrors');
+    if (this.checkRoomForErrors().length > 0) {      
       this.roomErrors = this.checkRoomForErrors();
       return;
     }
 
-    if(this.project.id == 0){
+    if (this.project.id == 0) {
       this.createProject();
     }
 
@@ -364,14 +364,16 @@ export class CalculatorFormComponent implements OnInit {
 
   onSaveProject() {
     if (this.project.id == 0) {
-      this.createProject();   
-      return;   
+      this.createProject();
+      return;
     }
     this.project.projectName = this.projectName.value;
     this.project.cityId = this.city.value;
+    this.project.createUserId = this.currentUser.id;
     this.projectService.update(this.project)
       .subscribe(
-        () => {          
+        () => {
+          console.log('saving');
         }
       )
 
@@ -436,12 +438,15 @@ export class CalculatorFormComponent implements OnInit {
               (data) => {
                 this.project = data;
               },
-              () => {                
+              () => {
               },
               () => {
                 if (this.project && this.project.id > 0) {
                   console.log(this.project);
-                  this.rooms = this.project.rooms;
+                  this.roomService.getAllByIdProject(this.project.id)
+                    .subscribe(
+                      rooms => { this.rooms = rooms; }
+                    );                  
                   this.form.get('projectName')!
                     .setValue(this.project.projectName);
                   this.form.get('city')!
