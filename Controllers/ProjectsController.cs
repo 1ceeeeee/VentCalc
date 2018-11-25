@@ -14,7 +14,7 @@ using VentCalc.Repositories;
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
     public class ProjectsController : BaseController {
-        private readonly IProjectRepository repository;
+        // private readonly IProjectRepository repository;
         public ProjectsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
         }
 

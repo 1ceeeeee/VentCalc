@@ -10,5 +10,7 @@ export class AirExchangeRoom {
         public inflow: number = 0,
         public exhaust: number = 0,
         public inflowCalc: number = 0,
-        public exhaustCalc: number = 0) { }
+        public exhaustCalc: number = 0,
+        public inflowSystem: string = "",
+        public exhaustSystem: string = "") { }
 }

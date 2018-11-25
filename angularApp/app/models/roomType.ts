@@ -3,6 +3,7 @@ export class RoomType {
         public id: number = 0,
         public roomTypeName: string = "",
         public roomTypeBuildingTypeName: string = "",
+        public buildingTypeId: number = 0,
         public tempIn: number = 0,
         public humidityFrom: number = 0,
         public humidityTo: number = 0,

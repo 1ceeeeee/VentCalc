@@ -22,7 +22,7 @@ export class RoomTypeService {
   getAll(): Observable<RoomType[]> {    
     let headers = this.headers;
     headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.get<RoomType[]>(this.actionUrl, { headers: this.headers });
+    return this.http.get<RoomType[]>(this.actionUrl, { headers: headers });
   }
   
   getToken(): string | null {

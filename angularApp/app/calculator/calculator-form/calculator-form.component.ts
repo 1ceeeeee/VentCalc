@@ -57,8 +57,8 @@ export class CalculatorFormComponent implements OnInit {
       roomHeight: new FormControl('', Validators.required),
       roomFloor: new FormControl('', Validators.required),
       roomPeopleAmount: new FormControl('', Validators.required),
-      systemIn: new FormControl(''),
-      systemOut: new FormControl('')
+      inflowSystem: new FormControl(''),
+      exhaustSystem: new FormControl('')
     })
   });
 
@@ -134,12 +134,12 @@ export class CalculatorFormComponent implements OnInit {
     return this.form.get('room.roomPeopleAmount')!;
   }
 
-  get systemIn() {
-    return this.form.get('room.systemIn')!;
+  get inflowSystem() {
+    return this.form.get('room.inflowSystem')!;
   }
 
-  get systemOut() {
-    return this.form.get('room.systemOut')!;
+  get exhaustSystem() {
+    return this.form.get('room.exhaustSystem')!;
   }
 
   // Возвращает выбранный ид географии объекта
@@ -178,7 +178,7 @@ export class CalculatorFormComponent implements OnInit {
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
     this.roomErrors = [];
-    if (this.checkRoomForErrors().length > 0) {      
+    if (this.checkRoomForErrors().length > 0) {
       this.roomErrors = this.checkRoomForErrors();
       return;
     }
@@ -189,17 +189,16 @@ export class CalculatorFormComponent implements OnInit {
 
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
-        .value)[0]
-      .roomTypeName;
-
+        .value)[0];
+    console.log(this.buildType.value);
     var rm = new Room();
     rm.id = this.initedIdRoom;
-    rm.cityId = this.city.value,
-      rm.buildingTypeId = this.buildType.value;
+    rm.cityId = this.city.value;
+    rm.buildingTypeId = roomTypeName.buildingTypeId;
     rm.roomTypeId = this.roomName.value;
     rm.roomNumber = this.roomNumber.value;
-    rm.roomName = roomTypeName,
-      rm.length = this.roomLength.value;
+    rm.roomName = roomTypeName.roomTypeName;
+    rm.length = this.roomLength.value;
     rm.width = this.roomWidth.value;
     rm.area = this.roomArea.value;
     rm.height = this.roomHeight.value;
@@ -207,8 +206,8 @@ export class CalculatorFormComponent implements OnInit {
     rm.peopleAmount = this.roomPeopleAmount.value;
     rm.projectId = this.project.id;
     rm.createUserId = this.currentUser.id;
-    rm.systemIn = this.systemIn.value;
-    rm.systemOut = this.systemOut.value;
+    rm.inflowSystem = this.inflowSystem.value;
+    rm.exhaustSystem = this.exhaustSystem.value;
 
     if (this.initedIdRoom == 0) {
       this.roomService.add(rm)
@@ -289,10 +288,10 @@ export class CalculatorFormComponent implements OnInit {
       .setValue(initedRoom.floor);
     this.form.get('room.roomPeopleAmount')!
       .setValue(initedRoom.peopleAmount);
-    this.form.get('room.systemIn')!
-      .setValue(initedRoom.systemIn);
-    this.form.get('room.systemOut')!
-      .setValue(initedRoom.systemOut);
+    this.form.get('room.inflowSystem')!
+      .setValue(initedRoom.inflowSystem);
+    this.form.get('room.exhaustSystem')!
+      .setValue(initedRoom.exhaustSystem);
   }
 
   onDeleteRoomClick(id: number) {
@@ -445,8 +444,8 @@ export class CalculatorFormComponent implements OnInit {
                   console.log(this.project);
                   this.roomService.getAllByIdProject(this.project.id)
                     .subscribe(
-                      rooms => { this.rooms = rooms; }
-                    );                  
+                      rooms => { this.rooms = rooms; console.log(this.rooms) }
+                    );
                   this.form.get('projectName')!
                     .setValue(this.project.projectName);
                   this.form.get('city')!
