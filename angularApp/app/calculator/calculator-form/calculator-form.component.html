@@ -29,6 +29,18 @@
   <div class="space-top-3"></div>
   <div class="row">
     <div class="col-sm-5">
+        <div *ngIf="errors.length > 0" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <div *ngFor="let error of errors">
+              <strong>Ошибка заполнения.</strong>{{error}}
+            </div>
+        </div>
+      </div>
+  </div>
+  <div class="space-top-1"></div>
+  <div class="row">
+    <div class="col-sm-5">
         <div class="form-group">
             <label for="inputProjectName"><h2>Проект</h2></label>
             <input 
@@ -62,11 +74,11 @@
           (select)="onCityChange($event)">
         </ngx-select>
         <!-- Предупреждение в случае ошибки заполнения данных -->
-        <div *ngIf="city.touched && city.invalid" 
+        <!-- <div *ngIf="city.touched && city.invalid" 
           class="alert alert-danger alert-dismissible fade show" 
           role="alert">
           <strong>Ошибка заполнения данных.</strong> Выберите город.
-        </div>
+        </div> -->
       </div>      
     </div>
 
@@ -125,10 +137,10 @@
   <!-- Типы зданий конец -->
   <div class="row">
     <div class="col-sm-5">
-        <div *ngIf="errors.length > 0" 
+        <div *ngIf="cityErrors.length > 0" 
             class="alert alert-danger alert-dismissible fade show" 
             role="alert">
-            <div *ngFor="let error of errors">
+            <div *ngFor="let error of cityErrors">
               <strong>Ошибка заполнения.</strong>{{error}}
             </div>
         </div>

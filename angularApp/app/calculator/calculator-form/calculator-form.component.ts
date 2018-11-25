@@ -42,6 +42,7 @@ export class CalculatorFormComponent implements OnInit {
   currentUser: Credentials = new Credentials();
   errors: string[] = [];
   roomErrors: string[] = [];
+  cityErrors: string[] = [];
 
   form = new FormGroup({
     city: new FormControl('', Validators.required),
@@ -144,7 +145,10 @@ export class CalculatorFormComponent implements OnInit {
 
   // Возвращает выбранный ид географии объекта
   onCityChange(value: any) {
-    this.calculatorForm.cityId = value;//this.city.value;
+    this.calculatorForm.cityId = value;//this.city.value;       
+    if(value){
+      this.cityErrors = [];
+    }
     console.log(this.calculatorForm.cityId);
   }
 
@@ -178,19 +182,78 @@ export class CalculatorFormComponent implements OnInit {
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
     this.roomErrors = [];
+    let rm = new Room();
     if (this.checkRoomForErrors().length > 0) {
       this.roomErrors = this.checkRoomForErrors();
       return;
     }
-
     if (this.project.id == 0) {
-      this.createProject();
-    }
+      let projectToAdd = new Project();
+      projectToAdd.projectName = this.projectName.value;
+      projectToAdd.cityId = this.city.value;
+      projectToAdd.createUserId = this.currentUser.id;
 
+      this.projectService.Add(projectToAdd)
+        .subscribe(
+          data => {
+            this.project = data;            
+            console.log('after project create: ' + this.project);
+            rm = this.getNewRoom();
+            this.roomService.add(rm)
+              .subscribe(
+                () => {                  
+                  this.getAllRooms(this.project.id);
+                  this.сhangeQueryParams();
+                }
+              );
+          },
+          () => { },
+          () => {
+
+          }
+        )
+    }
+    else {     
+      rm = this.getNewRoom();
+
+      if (this.initedIdRoom == 0) {
+        console.log(this.project);
+        this.roomService.add(rm)
+          .subscribe(
+            () => {
+              console.log(rm);
+              this.getAllRooms(this.project.id);
+            }
+          );
+      } else {
+        this.roomService.update(this.initedIdRoom, rm)
+          .subscribe(
+            () => {
+              this.getAllRooms(this.project.id);
+            },
+            () => { },
+            () => {
+              console.log("Обновлено помещения с ид: " + this.initedIdRoom);
+            }
+          )
+      }
+    }
+  }
+
+  public сhangeQueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        ...this.activatedRoute.snapshot.queryParams,
+        projectId: this.project.id,
+      }
+    });  
+  }
+  
+  private getNewRoom(): Room {
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
         .value)[0];
-    console.log(this.buildType.value);
     var rm = new Room();
     rm.id = this.initedIdRoom;
     rm.cityId = this.city.value;
@@ -209,30 +272,17 @@ export class CalculatorFormComponent implements OnInit {
     rm.inflowSystem = this.inflowSystem.value;
     rm.exhaustSystem = this.exhaustSystem.value;
 
-    if (this.initedIdRoom == 0) {
-      this.roomService.add(rm)
-        .subscribe(
-          () => {
-            console.log(rm);
-            this.getAllRooms(this.project.id);
-          }
-        );
-    } else {
-      this.roomService.update(this.initedIdRoom, rm)
-        .subscribe(
-          () => {
-            this.getAllRooms(this.project.id);
-          },
-          () => { },
-          () => {
-            console.log("Обновлено помещения с ид: " + this.initedIdRoom);
-          }
-        )
-    }
+    return rm;
   }
-
   // Делает рассчет проекта
   onCalculateProjectClick() {
+    this.cityErrors = [];
+    console.log(this.project);
+    if(!this.project.cityId || this.project.cityId == 0){
+      this.cityErrors.push('В разделе география не выбран город.');
+      return;
+    }
+    // TODO обновить проект
     this.airExchangeService.Get(this.project.id)
       .subscribe(
         data => {
@@ -372,7 +422,7 @@ export class CalculatorFormComponent implements OnInit {
     this.projectService.update(this.project)
       .subscribe(
         () => {
-          console.log('saving');
+          console.log('saving: ' +  JSON.stringify(this.project));
         }
       )
 

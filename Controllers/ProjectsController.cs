@@ -13,8 +13,7 @@ using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
-    public class ProjectsController : BaseController {
-        // private readonly IProjectRepository repository;
+    public class ProjectsController : BaseController {        
         public ProjectsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
         }
 
@@ -113,7 +112,7 @@ namespace VentCalc.Controllers {
             if (project == null)
                 return NotFound();
 
-            var airExchangeProject = CalculcateAirExchange(project.Id);//repository.ReadAirExchange(id);
+            var airExchangeProject = CalculcateAirExchange(project.Id);
 
             return Ok(airExchangeProject);
         }
@@ -125,7 +124,7 @@ namespace VentCalc.Controllers {
             var airExchangeRooms = new List<AirExchangeRoomResource>();
 
             foreach (var room in rooms) {
-                var roomTypeValues = UnitOfWork.Repository<RoomTypeValue>().GetEnumerable(x => x.RoomTypeId == room.RoomTypeId).ToList(); //context.RoomTypeValues.Where(rtv => rtv.RoomTypeId == room.RoomTypeId).ToList();
+                var roomTypeValues = UnitOfWork.Repository<RoomTypeValue>().GetEnumerable(x => x.RoomTypeId == room.RoomTypeId).ToList();
                 int roomTypeValueId = 0;
 
                 //Площадь помещения
