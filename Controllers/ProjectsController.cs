@@ -216,7 +216,9 @@ namespace VentCalc.Controllers {
                         InflowMultiply = roomTypeValue.InflowMultiply,
                         ExhaustMultiply = roomTypeValue.ExhaustMultiply,
                         InflowCalc = inflowMaxValue,
-                        ExhaustCalc = exhaustMaxValue
+                        ExhaustCalc = exhaustMaxValue,
+                        ExhaustSystem = room.ExhaustSystem,
+                        InflowSystem = room.InflowSystem
                 });
             }
 
