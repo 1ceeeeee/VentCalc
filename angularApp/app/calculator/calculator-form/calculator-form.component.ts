@@ -1,5 +1,5 @@
 import { UserService } from './../../core/services/user.service';
-import { DataService } from './../../core/services/data.service';
+//import { DataService } from './../../core/services/data.service';
 import { AirExchangeProject } from './../../models/airExchangeProject';
 import { AirExchangeCalculateService } from './../../core/services/air-exchange-calculate.service';
 import { Project } from './../../models/project';
@@ -71,7 +71,7 @@ export class CalculatorFormComponent implements OnInit {
     public roomTypeService: RoomTypeService,
     public projectService: ProjectService,
     public airExchangeService: AirExchangeCalculateService,
-    private dataService: DataService,
+    //private dataService: DataService,
     private userService: UserService,
     public router: Router,
     private activatedRoute: ActivatedRoute
@@ -146,7 +146,7 @@ export class CalculatorFormComponent implements OnInit {
   // Возвращает выбранный ид географии объекта
   onCityChange(value: any) {
     this.calculatorForm.cityId = value;//this.city.value;       
-    if(value){
+    if (value) {
       this.cityErrors = [];
     }
     console.log(this.calculatorForm.cityId);
@@ -182,6 +182,7 @@ export class CalculatorFormComponent implements OnInit {
   // Добавляет помещение к общему списку помещений
   onSaveRoomClick() {
     this.roomErrors = [];
+    this.errors = [];
     let rm = new Room();
     if (this.checkRoomForErrors().length > 0) {
       this.roomErrors = this.checkRoomForErrors();
@@ -196,12 +197,12 @@ export class CalculatorFormComponent implements OnInit {
       this.projectService.Add(projectToAdd)
         .subscribe(
           data => {
-            this.project = data;            
+            this.project = data;
             console.log('after project create: ' + this.project);
             rm = this.getNewRoom();
             this.roomService.add(rm)
               .subscribe(
-                () => {                  
+                () => {
                   this.getAllRooms(this.project.id);
                   this.сhangeQueryParams();
                 }
@@ -213,7 +214,7 @@ export class CalculatorFormComponent implements OnInit {
           }
         )
     }
-    else {     
+    else {
       rm = this.getNewRoom();
 
       if (this.initedIdRoom == 0) {
@@ -247,9 +248,9 @@ export class CalculatorFormComponent implements OnInit {
         ...this.activatedRoute.snapshot.queryParams,
         projectId: this.project.id,
       }
-    });  
+    });
   }
-  
+
   private getNewRoom(): Room {
     var roomTypeName = this.roomTypes
       .filter(rt => rt.id == this.form.get('room.roomName')!
@@ -277,24 +278,65 @@ export class CalculatorFormComponent implements OnInit {
   // Делает рассчет проекта
   onCalculateProjectClick() {
     this.cityErrors = [];
-    console.log(this.project);
-    if(!this.project.cityId || this.project.cityId == 0){
+    this.fillProjectAdditionalInfo();
+
+    if (!this.project.cityId || this.project.cityId == 0) {
       this.cityErrors.push('В разделе география не выбран город.');
       return;
     }
-    // TODO обновить проект
-    this.airExchangeService.Get(this.project.id)
-      .subscribe(
-        data => {
-          this.airExchangeProject = data,
-            this.dataService.changeAirExchangeProject(this.airExchangeProject)
-        },
-        () => { },
-        () => {
-          console.log(this.airExchangeProject);
-        }
-      );
+    if (!this.rooms || this.rooms.length === 0) {
+      console.log(this.project);
+      this.cityErrors.push('Нет добавленых помещений.');
+      return;
+    }
+    if (this.project.id == 0) {
+      this.projectService.Add(this.project)
+        .subscribe(
+          (data) => {
+            this.project = data;
+            this.сhangeQueryParams();
+            this.airExchangeService.Get(this.project.id)
+              .subscribe(
+                data => {
+                  this.airExchangeProject = data;
+                },
+                () => { },
+                () => { }
+              );
+          }
+        )
+    } else {
+
+      this.projectService.update(this.project)    
+        .subscribe(
+          () => {
+            this.airExchangeService.Get(this.project.id)
+              .subscribe(
+                data => {
+                  this.airExchangeProject = data
+                  //this.dataService.changeAirExchangeProject(this.airExchangeProject)
+                },
+                () => { },
+                () => {
+                  console.log(this.airExchangeProject);
+                }
+              );
+          }
+        );
+    }
+    // this.airExchangeService.Get(this.project.id)
+    //   .subscribe(
+    //     data => {
+    //       this.airExchangeProject = data,
+    //         this.dataService.changeAirExchangeProject(this.airExchangeProject)
+    //     },
+    //     () => { },
+    //     () => {
+    //       console.log(this.airExchangeProject);
+    //     }
+    //   );
   }
+
 
   // Возвращает все помещения из БД
   private getAllRooms(id: number) {
@@ -355,6 +397,7 @@ export class CalculatorFormComponent implements OnInit {
       );
   }
 
+  //TODO подумать может можно использовать this.project
   private createProject() {
     let projectToAdd = new Project();
     projectToAdd.projectName = this.projectName.value;
@@ -416,16 +459,20 @@ export class CalculatorFormComponent implements OnInit {
       this.createProject();
       return;
     }
-    this.project.projectName = this.projectName.value;
-    this.project.cityId = this.city.value;
-    this.project.createUserId = this.currentUser.id;
+    this.fillProjectAdditionalInfo();
     this.projectService.update(this.project)
       .subscribe(
         () => {
-          console.log('saving: ' +  JSON.stringify(this.project));
+          console.log('saving: ' + JSON.stringify(this.project));
         }
       )
 
+  }
+
+  private fillProjectAdditionalInfo() {
+    this.project.projectName = this.projectName.value;
+    this.project.cityId = this.city.value;
+    this.project.createUserId = this.currentUser.id;
   }
 
   /* Полезный код если надо будет объединять ячейки в икселе вручную */
@@ -468,14 +515,22 @@ export class CalculatorFormComponent implements OnInit {
 
     this.currentUser = this.userService.getCurrentUser();
 
-    this.dataService.currentAirExchangeProject
-      .subscribe(
-        data => {
-          this.airExchangeProject = data
-        },
-        () => { },
-        () => { }
-      );
+    // if (this.project.id > 0) {
+    //   this.airExchangeService.Get(this.project.id)
+    //     .subscribe(
+    //       proj => { this.airExchangeProject = proj; console.log('curAirEchangeProj: ' + this.airExchangeProject) }
+    //     );
+    // }
+
+
+    // this.dataService.currentAirExchangeProject
+    //   .subscribe(
+    //     data => {
+    //       this.airExchangeProject = data
+    //     },
+    //     () => { },
+    //     () => { }
+    //   );
 
     this.activatedRoute.queryParams.subscribe(
       (param: any) => {
@@ -500,11 +555,14 @@ export class CalculatorFormComponent implements OnInit {
                     .setValue(this.project.projectName);
                   this.form.get('city')!
                     .setValue(this.project.cityId);
+
+                  this.airExchangeService.Get(this.project.id)
+                    .subscribe(
+                      proj => { this.airExchangeProject = proj; console.log('curAirEchangeProj: ' + this.airExchangeProject) }
+                    );
                 }
               });
-
         }
-
       }
     );
 

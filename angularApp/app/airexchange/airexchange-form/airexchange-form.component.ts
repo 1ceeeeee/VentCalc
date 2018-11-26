@@ -1,7 +1,7 @@
 import { AirExchangeProject } from './../../models/airExchangeProject';
-import { DataService } from './../../core/services/data.service';
+//import { DataService } from './../../core/services/data.service';
 import * as XLSX from 'xlsx';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'airexchange-form',
@@ -9,10 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AirexchangeFormComponent implements OnInit {
 
-  airExchangeProject: AirExchangeProject = new AirExchangeProject();
+  //airExchangeProject: AirExchangeProject = new AirExchangeProject();
+@Input() 
+airExchangeProject: AirExchangeProject = new AirExchangeProject();
 
   constructor(
-    private dataService: DataService
+    //private dataService: DataService
   ) { }
 
   exportFile() {
@@ -22,14 +24,20 @@ export class AirexchangeFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dataService.currentAirExchangeProject
-      .subscribe(
-        data => {
-          this.airExchangeProject = data
-        },
-        () => { },
-        () => { }
-      )
+    // this.dataService.currentAirExchangeProject
+    //   .subscribe(
+    //     data => {
+    //       this.airExchangeProject = data
+    //     },
+    //     () => { },
+    //     () => { }
+    //   )
+  }
+
+  ngOnChanges(){
+    // if(changes['airExchangeProject']){
+    //   this.airExchangeProject = this.airExchangeProject;
+    // }
   }
 
 }
