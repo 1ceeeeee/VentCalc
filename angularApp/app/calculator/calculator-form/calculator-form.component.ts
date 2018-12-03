@@ -241,6 +241,14 @@ export class CalculatorFormComponent implements OnInit {
     }
   }
 
+  onDeleteProject() {
+    if (this.project.id == 0)
+      return;
+
+    this.projectService.delete(this.project.id)
+      .subscribe(() => { this.router.navigate(['/projects']) })
+  }
+
   public сhangeQueryParams() {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
@@ -286,7 +294,7 @@ export class CalculatorFormComponent implements OnInit {
     }
     if (!this.rooms || this.rooms.length === 0) {
       console.log(this.project);
-      this.cityErrors.push('Нет добавленых помещений.');
+      this.errors.push('Нет добавленых помещений.');
       return;
     }
     if (this.project.id == 0) {
@@ -306,8 +314,7 @@ export class CalculatorFormComponent implements OnInit {
           }
         )
     } else {
-
-      this.projectService.update(this.project)    
+      this.projectService.update(this.project)
         .subscribe(
           () => {
             this.airExchangeService.Get(this.project.id)

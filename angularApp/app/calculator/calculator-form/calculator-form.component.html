@@ -18,11 +18,20 @@
           Рассчитать
         </button>        
       
-        <button 
+        <button *ngIf="project.id > 0"
           class="btn btn-danger margin-right-2"
-          (click)="onCalculateProjectClick()">
+          (click)="deleteSwal.show()">
           Удалить
         </button> 
+        <swal
+          #deleteSwal
+          title="Удалить проект {{ project?.projectName }}?"
+          text="Действие не обратимо"
+          type="question"
+          [showCancelButton]="true"
+          [focusCancel]="true"
+          (confirm)="onDeleteProject()">
+        </swal>
       </div>
     </div>
 
@@ -38,6 +47,20 @@
         </div>
       </div>
   </div>
+
+  <div class="space-top-1"></div>
+  <div class="row">
+    <div class="col-sm-5">
+        <div *ngIf="cityErrors.length > 0" 
+            class="alert alert-danger alert-dismissible fade show" 
+            role="alert">
+            <div *ngFor="let error of cityErrors">
+              <strong>Ошибка заполнения.</strong>{{error}}
+            </div>
+        </div>        
+      </div>
+  </div>
+
   <div class="space-top-1"></div>
   <div class="row">
     <div class="col-sm-5">
@@ -135,17 +158,7 @@
         </div>      
     </div>   -->
   <!-- Типы зданий конец -->
-  <div class="row">
-    <div class="col-sm-5">
-        <div *ngIf="cityErrors.length > 0" 
-            class="alert alert-danger alert-dismissible fade show" 
-            role="alert">
-            <div *ngFor="let error of cityErrors">
-              <strong>Ошибка заполнения.</strong>{{error}}
-            </div>
-        </div>
-      </div>
-  </div>
+
 
 
   <!-- Добавить помещение начало -->

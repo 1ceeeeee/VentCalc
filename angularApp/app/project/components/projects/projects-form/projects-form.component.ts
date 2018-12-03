@@ -76,8 +76,6 @@ export class ProjectsFormComponent implements OnInit {
         },
         () => { }
       )
-
-
   }
 
   onDeleteProject(id: number) {

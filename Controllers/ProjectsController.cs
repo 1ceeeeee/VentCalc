@@ -96,7 +96,8 @@ namespace VentCalc.Controllers {
 
             if (project == null)
                 return NotFound();
-
+            
+            project.Rooms = null;
             UnitOfWork.Repository<Project>().Delete(project);
 
             UnitOfWork.Commit();
