@@ -1,4 +1,3 @@
-using System;
 
 namespace VentCalc.Controllers.Resources {
     public abstract class BaseM {

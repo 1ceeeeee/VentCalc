@@ -4,11 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
-using VentCalc.Persistence;
 using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
