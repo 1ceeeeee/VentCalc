@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -83,8 +84,7 @@ namespace Angular2WebpackVisualStudio {
             });
 
             // api user claim policy
-            services.AddAuthorization(options =>
-            {
+            services.AddAuthorization(options => {
                 options.AddPolicy("ApiUser", policy => policy.RequireClaim("rol", "api_access"));
             });
             // var tokenValidationParameters = new TokenValidationParameters {
@@ -126,8 +126,6 @@ namespace Angular2WebpackVisualStudio {
             //     options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
             // });
 
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -151,8 +149,16 @@ namespace Angular2WebpackVisualStudio {
 
             app.UseCors("AllowAllOrigins");
 
+            // app.UseForwardedHeaders(new ForwardedHeadersOptions {
+            //     ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+            // });
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
 
             app.UseAuthentication();
             app.UseMvc(routes => {
