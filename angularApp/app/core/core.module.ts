@@ -1,3 +1,4 @@
+import { HeatingService } from './services/heating.service';
 import { RoleGuardService } from './services/role-guard.service';
 import { AuthGuard } from './guards/auth.guard';
 import { RoomService } from './services/room.service';
@@ -38,6 +39,7 @@ export class CoreModule {
                 UserService,
                 AuthGuard,
                 RoleGuardService,
+                HeatingService,
                 Configuration
             ]
         };

@@ -1,3 +1,4 @@
+import { HeatingFormComponent } from './../heating/heating-form/heating-form.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -22,6 +23,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         NavigationComponent,
         CustomFooterComponent,
         AirexchangeFormComponent,
+        HeatingFormComponent,
         SpinnerFormComponent,
         ChangePasswordFormComponent
     ],
@@ -30,6 +32,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         NavigationComponent,
         CustomFooterComponent,
         AirexchangeFormComponent,
+        HeatingFormComponent,
         SpinnerFormComponent,
         ChangePasswordFormComponent
     ]
