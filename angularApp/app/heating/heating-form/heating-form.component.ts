@@ -13,7 +13,7 @@ export class HeatingFormComponent implements OnInit {
   airExchangeProject: AirExchangeProject = new AirExchangeProject();
 
   projectId: number = 0;
-  heating: Heating = new Heating();
+  heating: Heating[] = [];
 
   constructor(private heatingService: HeatingService) { }
 
@@ -28,7 +28,8 @@ export class HeatingFormComponent implements OnInit {
       data => { 
         this.heating = data;
         console.log(this.heating);
-      }
+      },
+      error => { console.log(error)}
 
     )
   }
