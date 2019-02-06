@@ -1,9 +1,10 @@
+import { BaseService } from './base.service';
 import { UserWithRoles } from './../../models/userWithRoles';
 import { User } from './../../models/user';
 import { ChangePassword } from './../../models/changePassword';
 import { Credentials } from './../../models/credentials';
 import { Injectable } from '@angular/core';
-import { HttpHeaders, HttpClient } from '../../../../node_modules/@angular/common/http';
+import { HttpClient } from '../../../../node_modules/@angular/common/http';
 import { Configuration, ADMIN_ROLE } from '../../app.constants';
 import { Observable } from '../../../../node_modules/rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -16,9 +17,8 @@ export const USER_NAME: string = 'currentUser_name';
 
 
 @Injectable()
-export class UserService {
+export class UserService extends BaseService {
 
-  private headers: HttpHeaders;
   private actionUrlAuth: string;
   private actionUrlReg: string;
   private actionUrlChangePwd: string;
@@ -37,22 +37,16 @@ export class UserService {
   
 
   constructor(private http: HttpClient, configuration: Configuration) {
-
+    super();
     this.actionUrlAuth = configuration.Server + 'api/auth/';
     this.actionUrlReg = configuration.Server + 'api/accounts/';    
     this.actionUrlChangePwd = configuration.Server + 'api/accounts/changepwd';
     this.actionUrlChangePwdHash = configuration.Server + 'api/accounts/changepwdhash';
-    this.actionUrlEditUserRoles = configuration.Server + 'api/accounts/editroles';
-
-    this.headers = new HttpHeaders();
-    this.headers = this.headers.set('Content-Type', 'application/json');
-    this.headers = this.headers.set('Accept', 'application/json');
+    this.actionUrlEditUserRoles = configuration.Server + 'api/accounts/editroles';    
 
     this.loggedIn = !this.isTokenExpired();
     this._authNavStatusSource.next(this.loggedIn);
-
-    var t = this.isAdmin(ADMIN_ROLE);
-    console.log(t);
+    
     this._authAdminNavStatusSource.next(this.isAdmin(ADMIN_ROLE));    
     this._authNavUserName.next(this.getCurrentUser().userName);
   }
@@ -82,10 +76,8 @@ export class UserService {
     return this.http.post<ChangePassword>(this.actionUrlChangePwd, pwd, { headers: this.headers });
   }
 
-  changePasswordHash(pwd: ChangePassword): Observable<ChangePassword> {
-    let headers = this.headers;    
-    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.post<ChangePassword>(this.actionUrlChangePwdHash, pwd, {headers: headers});
+  changePasswordHash(pwd: ChangePassword): Observable<ChangePassword> {    
+    return this.http.post<ChangePassword>(this.actionUrlChangePwdHash, pwd, {headers: this.authHeaders});
   }
 
   getAll(): Observable<User[]> {
@@ -96,10 +88,8 @@ export class UserService {
     return this.http.get<UserWithRoles>(this.actionUrlReg + id, {headers: this.headers});
   }
 
-  editUserRoles(userWithRoles: UserWithRoles): Observable<UserWithRoles>{    
-    let headers = this.headers;    
-    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);    
-    return this.http.post<UserWithRoles>(this.actionUrlEditUserRoles, userWithRoles, {headers: headers})
+  editUserRoles(userWithRoles: UserWithRoles): Observable<UserWithRoles>{         
+    return this.http.post<UserWithRoles>(this.actionUrlEditUserRoles, userWithRoles, {headers: this.authHeaders})
   }
 
   storeCurrentUser(credentials: Credentials) {
@@ -135,10 +125,6 @@ export class UserService {
     }
 
     return true;
-  }
-
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_NAME);
   }
 
   setToken(token: string): void {

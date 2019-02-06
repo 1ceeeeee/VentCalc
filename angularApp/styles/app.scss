@@ -103,3 +103,9 @@ table {
 .margin-right-05 {
     margin-right: .5rem;
 }
+
+.scrollable-width {
+    width: 30%;
+    overflow-x: auto;
+    white-space: nowrap;
+}

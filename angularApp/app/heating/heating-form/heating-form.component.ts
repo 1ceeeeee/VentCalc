@@ -17,6 +17,10 @@ export class HeatingFormComponent implements OnInit {
 
   constructor(private heatingService: HeatingService) { }
 
+  edit(){
+    
+  }
+
   ngOnInit() {
   }
 

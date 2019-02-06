@@ -37,7 +37,7 @@
 
   <div class="space-top-3"></div>
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-md-12">
         <div *ngIf="errors.length > 0" 
             class="alert alert-danger alert-dismissible fade show" 
             role="alert">
@@ -50,7 +50,7 @@
 
   <div class="space-top-1"></div>
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-md-12">
         <div *ngIf="cityErrors.length > 0" 
             class="alert alert-danger alert-dismissible fade show" 
             role="alert">
@@ -63,7 +63,7 @@
 
   <div class="space-top-1"></div>
   <div class="row">
-    <div class="col-sm-5">
+    <div class="col-md-12">
         <div class="form-group">
             <label for="inputProjectName"><h2>Проект</h2></label>
             <input 
@@ -78,7 +78,7 @@
   <!-- География начало -->
   <div class="space-top-1"></div>
   <div class="row">
-    <div class="col-sm-5">      
+    <div class="col-md-12">      
       <div class="form-group">
         <label for="geography" 
           data-toggle="tooltip"   
@@ -162,8 +162,9 @@
 
 
   <!-- Добавить помещение начало -->
-  <div class="row rooms-section">    
-    <div class="col-sm-5">
+  <div class="space-top-1"></div>
+  <div class="row">    
+    <div class="col-md-12">
       <h2>Помещения</h2>
       <!-- Button trigger modal -->
       <!-- [disabled]="!city.value" -->
@@ -322,8 +323,11 @@
   <!-- Добавить помещение конец -->
 
   <!-- Таблица помещений начало -->
-  <div class="row roomsTable-section" 
-    *ngIf="rooms.length > 0">
+  <div class="space-top-1"></div>
+  <div *ngIf="rooms.length > 0">
+    <div class="row">
+
+    </div>
     <div class="col-md-12">
         <table class="table">
             <thead class="thead-light">
@@ -383,14 +387,19 @@
   </div>
   <!-- Таблица помещений конец -->
 
-  <div class="airexchange-section"
+  <div class="space-top-3"
     *ngIf="airExchangeProject.airExchangeRooms.length > 0">
-    <airexchange-form [airExchangeProject]="airExchangeProject"></airexchange-form>
+    <div class="row">
+        <airexchange-form [airExchangeProject]="airExchangeProject"></airexchange-form>
+    </div>
+    
   </div>  
-
-  <div class="space-top-1"></div>
-  <div class="row">
-    <heating-form [airExchangeProject]="airExchangeProject"></heating-form>
-  </div>
   
+  <div *ngIf="airExchangeProject.airExchangeRooms.length > 0">
+      <div class="space-top-1"></div>    
+      <div class="row">
+          <heating-form [airExchangeProject]="airExchangeProject"></heating-form>      
+      </div>  
+      
+  </div>  
 </form>

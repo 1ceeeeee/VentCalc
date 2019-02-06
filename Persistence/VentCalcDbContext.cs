@@ -4,7 +4,7 @@ using VentCalc.Models;
 
 namespace VentCalc.Persistence
 {
-    public class VentCalcDbContext : IdentityDbContext
+    public class VentCalcDbContext : DbContext
     {
         public VentCalcDbContext(DbContextOptions<VentCalcDbContext> options)
             : base(options)
@@ -28,6 +28,7 @@ namespace VentCalc.Persistence
         public DbSet<AppUserRights> AppUserRights { get; set; }
         public DbSet<RoomTypeValueCondition> RoomTypeValueConditions { get; set; }
         public DbSet<HeatingVentilationSystem> HeatingVentilationSystems { get; set; }
+        public DbSet<User> Users { get; set; }
         // protected override void OnModelCreating(ModelBuilder modelBuilder){
         //     modelBuilder.Entity<PortalUser>().HasOne(i => i.Identity);
         // }

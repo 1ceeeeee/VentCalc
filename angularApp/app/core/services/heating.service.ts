@@ -1,38 +1,26 @@
 import { Heating } from './../../models/heating';
 import { Injectable } from '@angular/core';
-import { TOKEN_NAME } from './user.service';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Configuration } from '../../app.constants';
 import { Observable } from 'rxjs/Observable';
+import { BaseService } from './base.service';
 
 @Injectable()
-export class HeatingService {
+export class HeatingService extends BaseService {
 
-  private headers: HttpHeaders;
   private actionUrl: string;
   
-  constructor(private http: HttpClient, configuration: Configuration) { 
-    this.actionUrl = configuration.Server + 'api/heatingVentilationSystems/';
-
-    this.headers = new HttpHeaders();
-    this.headers = this.headers.set('Content-Type', 'application/json');
-    this.headers = this.headers.set('Accept', 'application/json');
+  constructor(private http: HttpClient, configuration: Configuration) {
+    super();
+    this.actionUrl = configuration.Server + 'api/heatingVentilationSystems/';    
   }
 
-  getById(id: number): Observable<Heating>{
-    let headers = this.headers;        
-    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.get<Heating>(this.actionUrl + id, {headers: headers});
+  getById(id: number): Observable<Heating>{    
+    return this.http.get<Heating>(this.actionUrl + id, {headers: this.authHeaders});
   }
 
-  getByProjectId(id: number): Observable<Heating[]>{
-    let headers = this.headers;        
-    headers = headers.append('Authorization', `Bearer ${this.getToken()}`);
-    return this.http.get<Heating[]>(this.actionUrl + 'getByProjectId/' + id, {headers: headers});
+  getByProjectId(id: number): Observable<Heating[]>{    
+    return this.http.get<Heating[]>(this.actionUrl + 'getByProjectId/' + id, {headers: this.authHeaders});
   }
-
-  getToken(): string | null {
-    return localStorage.getItem(TOKEN_NAME);
-  }
-
+  
 }

@@ -8,14 +8,15 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { AirexchangeFormComponent } from './../airexchange/airexchange-form/airexchange-form.component';
 import { SpinnerFormComponent } from './components/spinner/spinner-form/spinner-form.component';
 import { ChangePasswordFormComponent } from './components/change-password/change-password-form/change-password-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 
 @NgModule({
     imports: [
         CommonModule,
         RouterModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
         
     ],
 

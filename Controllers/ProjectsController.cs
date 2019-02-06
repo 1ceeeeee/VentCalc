@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
@@ -10,6 +11,7 @@ using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser")]
     public class ProjectsController : BaseController {        
         public ProjectsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
         }

@@ -34,54 +34,60 @@ namespace VentCalc.Controllers {
         [HttpGet]
         [Route("~/api/HeatingVentilationSystems/GetByProjectId/{id}")]
         public async Task<IEnumerable<HeatingVentilationSystemResource>> GetByProjectId(int id) {
-            // var mockSystems = new List<HeatingVentilationSystemResource>(){
-            //     new HeatingVentilationSystemResource {
-            //         AirCoolerAmount = 1,
-            //         AirCoolerColdConsumption = 2,
-            //         AirCoolerCoolingTempFrom = 3,
-            //         AirCoolerCoolingTempTo = 4,
-            //         AirCoolerResistance = 5,
-            //         AirCoolerTypeName = "Воздухоохладитель. Тип",
-            //         AirHeaterAmount = 6,
-            //         AirHeaterHeatingTempFrom = 7,
-            //         AirHeaterHeatingTempTo = 8,
-            //         AirHeaterPowerConsumption = 9,
-            //         AirHeaterResistanceAir = 10,
-            //         AirHeaterResistanceWater = 11,
-            //         AirHeaterTypeName = "Воздухонагреватель. Тип",
-            //         Comment = "Комментарий",
-            //         FanAirConsumption = 12,
-            //         FanHead = 13,
-            //         FanMotorPower = 14.5,
-            //         FanMotorSpeed = 15.0,
-            //         FanMotorTypeName = "Вентилятор. Электродвигатель. Тип",
-            //         FanSpeed = 16,
-            //         FanTypeName = "Вентилятор. Тип исполнения",
-            //         FilterAmount = 17,
-            //         FilterResistance = 18,
-            //         FilterTypeName = "Фильтр. Тип",
-            //         Id = 1,
-            //         InstallTypeName = "Тип установки",
-            //         ProjectId = 5173,
-            //         RecuperatorAirConsumptionHeated = 19,
-            //         RecuperatorAirConsumptionHeating = 20,
-            //         RecuperatorAmount = 21,
-            //         RecuperatorEfficiency = 22,
-            //         RecuperatorHeatingTempFrom = 23,
-            //         RecuperatorHeatingTempTo = 24,
-            //         RecuperatorPowerConsumption = 25,
-            //         RecuperatorResistanceHeated = 26,
-            //         RecuperatorResistanceHeating = 27,
-            //         RecuperatorTypeName = "Рекуператор. Тип",
-            //         RoomName = "Спальня",
-            //         SystemAmount = 28,
-            //         SystemName = "Система №1"
-            //     }
-            // };
-            // return mockSystems;
-            var heatingVentilationSystems = await UnitOfWork.Repository<HeatingVentilationSystem>().GetEnumerableAsync(x => x.ProjectId == id);    
+            var mockSystems = new List<HeatingVentilationSystemResource>() {
+                new HeatingVentilationSystemResource {
+                AirCoolerAmount = 1,
+                AirCoolerColdConsumption = 2,
+                AirCoolerCoolingTempFrom = 3,
+                AirCoolerCoolingTempTo = 4,
+                AirCoolerResistance = 5,
+                AirCoolerTypeName = "Воздухоохладитель. Тип",
+                AirHeaterAmount = 6,
+                AirHeaterHeatingTempFrom = 7,
+                AirHeaterHeatingTempTo = 8,
+                AirHeaterPowerConsumption = 9,
+                AirHeaterResistanceAir = 10,
+                AirHeaterResistanceWater = 11,
+                AirHeaterTypeName = "Воздухонагреватель. Тип",
+                Comment = "Комментарий",
+                FanAirConsumption = 12,
+                FanHead = 13,
+                FanMotorPower = 14.5,
+                FanMotorSpeed = 15.0,
+                FanMotorTypeName = "Вентилятор. Электродвигатель. Тип",
+                FanSpeed = 16,
+                FanTypeName = "Вентилятор. Тип исполнения",
+                FilterAmount = 17,
+                FilterResistance = 18,
+                FilterTypeName = "Фильтр. Тип",
+                Id = 1,
+                InstallTypeName = "Тип установки",
+                ProjectId = 5173,
+                RecuperatorAirConsumptionHeated = 19,
+                RecuperatorAirConsumptionHeating = 20,
+                RecuperatorAmount = 21,
+                RecuperatorEfficiency = 22,
+                RecuperatorHeatingTempFrom = 23,
+                RecuperatorHeatingTempTo = 24,
+                RecuperatorPowerConsumption = 25,
+                RecuperatorResistanceHeated = 26,
+                RecuperatorResistanceHeating = 27,
+                RecuperatorTypeName = "Рекуператор. Тип",
+                RoomName = "Спальня",
+                SystemAmount = 28,
+                SystemName = "Система №1"
+                }
+            };
+            return mockSystems;
+            var heatingVentilationSystems = await UnitOfWork.Repository<HeatingVentilationSystem>().GetEnumerableAsync(x => x.ProjectId == id);
             return Mapper.Map<List<HeatingVentilationSystem>, List<HeatingVentilationSystemResource>>(heatingVentilationSystems.ToList());
         }
+
+        // public async Task<IActionResult> Edit([FromBody] HeatingVentilationSystemResource hvresource) {
+        //     if (!ModelState.IsValid)
+        //         return BadRequest(ModelState);
+            
+        // }
 
         //        [HttpPost]
         //        public async Task<IActionResult> Create([FromBody] SaveProjectResource saveProjectResource) {

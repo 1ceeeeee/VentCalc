@@ -1,35 +1,29 @@
+import { BaseService } from './base.service';
 import { BuildingType } from './../../models/buildingType';
 import { Observable } from 'rxjs/Observable';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Configuration } from '../../app.constants';
 
 
 @Injectable()
-export class BuildingTypeService {
+export class BuildingTypeService extends BaseService {
 
-  private headers: HttpHeaders;
   private actionUrl: string;
   private actionUrlById: string;
 
   constructor(private http: HttpClient, configuration: Configuration) { 
+    super();
     this.actionUrl = configuration.Server + 'api/buildingtypes/';
-    this.actionUrlById = configuration.Server + 'api/buildingkinds/';
-
-    this.headers = new HttpHeaders();
-    this.headers = this.headers.set('Content-Type', 'application/json');
-    this.headers = this.headers.set('Accept', 'application/json'); 
-    
+    this.actionUrlById = configuration.Server + 'api/buildingkinds/';  
   }
 
-  getAll(): Observable<BuildingType[]>{
-    console.log(this.actionUrl); 
-    return this.http.get<BuildingType[]>(this.actionUrl, {headers: this.headers});
+  getAll(): Observable<BuildingType[]>{    
+    return this.http.get<BuildingType[]>(this.actionUrl, {headers: this.authHeaders});
   }
 
-  getByIdKind(id: number): Observable<BuildingType[]>{
-    this.actionUrlById 
-    return this.http.get<BuildingType[]>(this.actionUrlById + id + '/buildingtypes', { headers: this.headers });  
+  getByIdKind(id: number): Observable<BuildingType[]>{     
+    return this.http.get<BuildingType[]>(this.actionUrlById + id + '/buildingtypes', { headers: this.authHeaders });  
   }
 
 }

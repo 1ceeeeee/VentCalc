@@ -1,9 +1,9 @@
 using System;
 
 namespace VentCalc.Persistence {
-    public abstract class CrudBase : BaseEntity {   
+    public abstract class CrudBase : BaseEntity {
 
-        public int? CreateUserId { get; set; }    
+        public int? CreateUserId { get; set; }
 
         public int? UpdateUserId { get; set; }
 
@@ -14,5 +14,14 @@ namespace VentCalc.Persistence {
         public DateTime? UpdateDate { get; set; }
 
         public DateTime? DeleteDate { get; set; }
+
+        protected CrudBase(int createUserId) {
+            CreateUserId = createUserId;
+            CreateDate = DateTime.Now;
+        }
+
+        protected CrudBase() {
+            CreateDate = DateTime.Now;
+        }
     }
 }
