@@ -87,6 +87,7 @@ export class RegistrationFormComponent implements OnInit {
     );
 
     this.isRequesting = true;
+    console.log(usr);
     this.userService.register(usr)
       .subscribe(
         (result) => {

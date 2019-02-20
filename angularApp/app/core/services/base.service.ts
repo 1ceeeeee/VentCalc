@@ -16,7 +16,7 @@ export class BaseService {
     }
 
     getToken(): string | null {
-        console.log('BaseService');
+        console.log(localStorage.getItem(TOKEN_NAME));
         return localStorage.getItem(TOKEN_NAME);
     }
 }

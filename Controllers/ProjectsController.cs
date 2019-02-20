@@ -4,21 +4,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
 using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
-    [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser")]
-    public class ProjectsController : BaseController {        
-        public ProjectsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
-        }
+    [Route("api/[controller]")]    
+    public class ProjectsController : AuthorizeBaseController {
+        public ProjectsController(IMapper mapper, IUnitOfWork uow, IHttpContextAccessor httpContextAccessor) : base(mapper, uow, httpContextAccessor) { }
 
+        
         [HttpGet]
         public async Task<IEnumerable<ProjectResource>> ReadAll() {
-            var projects = await UnitOfWork.Repository<Project>().GetEnumerableAsync();
+            var projects = await UnitOfWork.Repository<Project>().GetEnumerableAsync(x => x.CreateUserId == CurrentUser.Id);
             return Mapper.Map<List<Project>, List<ProjectResource>>(projects.ToList());
         }
 
@@ -36,13 +36,9 @@ namespace VentCalc.Controllers {
 
         [HttpGet]
         [Route("~/api/Projects/GetAllByUserId/{createUserId}")]
-        public async Task<IEnumerable<ProjectResource>> GetAllByUserId(string createUserId){
-            var userId = await GetCurrentUserIdAsync(createUserId);
-            if(userId == 0)
-                return null;
-
-            var projects = await UnitOfWork.Repository<Project>().GetEnumerableIcludeMultipleAsync(x => x.CreateUserId == userId, x => x.Rooms);
-
+        public async Task<IEnumerable<ProjectResource>> GetAllByUserId(string createUserId) {
+            var projects = await UnitOfWork.Repository<Project>()
+                .GetEnumerableIcludeMultipleAsync(x => x.CreateUserId == CurrentUser.Id, x => x.Rooms);
             return Mapper.Map<List<Project>, List<ProjectResource>>(projects.ToList());
 
         }
@@ -52,11 +48,9 @@ namespace VentCalc.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userId = await GetCurrentUserIdAsync(saveProjectResource.CreateUserId);
-
             var project = Mapper.Map<SaveProjectResource, Project>(saveProjectResource);
-            project.CreateDate = DateTime.Now;
-            project.CreateUserId = userId;
+            project.CreateUserId = CurrentUser.Id;
+            project.CreateDate = DateTime.Today;
 
             await UnitOfWork.Repository<Project>().AddAsync(project);
             UnitOfWork.Commit();
@@ -79,7 +73,7 @@ namespace VentCalc.Controllers {
 
             Mapper.Map<SaveProjectResource, Project>(saveProjectResource, project);
             project.UpdateDate = DateTime.Now;
-            project.UpdateUserId = await GetCurrentUserIdAsync(saveProjectResource.CreateUserId);
+            project.UpdateUserId = CurrentUser.Id;
 
             UnitOfWork.Commit();
 
@@ -90,12 +84,12 @@ namespace VentCalc.Controllers {
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id) {
-            
+
             var project = await UnitOfWork.Repository<Project>().GetByIdAsync(id);
 
             if (project == null)
                 return NotFound();
-            
+
             project.Rooms = null;
             UnitOfWork.Repository<Project>().Delete(project);
 
@@ -117,7 +111,7 @@ namespace VentCalc.Controllers {
             return Ok(airExchangeProject);
         }
 
-        private AirExchangeProjectResource CalculcateAirExchange(int projectId) {            
+        private AirExchangeProjectResource CalculcateAirExchange(int projectId) {
 
             var rooms = UnitOfWork.Repository<Room>().GetEnumerable(x => x.ProjectId == projectId);
 

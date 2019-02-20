@@ -192,8 +192,7 @@ export class CalculatorFormComponent implements OnInit {
       let projectToAdd = new Project();
       projectToAdd.projectName = this.projectName.value;
       projectToAdd.cityId = this.city.value;
-      projectToAdd.createUserId = this.currentUser.id;
-
+      
       this.projectService.Add(projectToAdd)
         .subscribe(
           data => {
@@ -277,7 +276,7 @@ export class CalculatorFormComponent implements OnInit {
     rm.floor = this.roomFloor.value;
     rm.peopleAmount = this.roomPeopleAmount.value;
     rm.projectId = this.project.id;
-    rm.createUserId = this.currentUser.id;
+    
     rm.inflowSystem = this.inflowSystem.value;
     rm.exhaustSystem = this.exhaustSystem.value;
 
@@ -409,12 +408,13 @@ export class CalculatorFormComponent implements OnInit {
     let projectToAdd = new Project();
     projectToAdd.projectName = this.projectName.value;
     projectToAdd.cityId = this.city.value;
-    projectToAdd.createUserId = this.currentUser.id;
+    
     console.log(projectToAdd);
     this.projectService.Add(projectToAdd)
       .subscribe(
         (data) => {
           this.project = data;
+          this.сhangeQueryParams();
         }
       )
   }
@@ -443,7 +443,7 @@ export class CalculatorFormComponent implements OnInit {
     }
 
     if (!this.roomName.value) {
-      ers.push('Не выбрано помещение помещения');
+      ers.push('Не выбрано помещение');
     }
 
     if (!this.roomArea.value) {
@@ -479,7 +479,7 @@ export class CalculatorFormComponent implements OnInit {
   private fillProjectAdditionalInfo() {
     this.project.projectName = this.projectName.value;
     this.project.cityId = this.city.value;
-    this.project.createUserId = this.currentUser.id;
+    
   }
 
   /* Полезный код если надо будет объединять ячейки в икселе вручную */

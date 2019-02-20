@@ -17,34 +17,31 @@ namespace VentCalc.Controllers {
 
     public class AccountsController : BaseController {
 
-        // private readonly IMapper _mapper;
-        // private IUnitOfWork UnitOfWork;
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountsController(IUnitOfWork uow, IMapper mapper, UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager) : base(mapper, uow) {
-            // this._mapper = mapper;
-            // this.UnitOfWork = uow;
             this._userManager = userManager;
             this._roleManager = roleManager;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] PortalUserResource portalUserResource) {
+        public async Task<IActionResult> Create([FromBody] UserResource userResource) {
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var userIdentity = Mapper.Map<PortalUserResource, AppUser>(portalUserResource);
-            var result = await _userManager.CreateAsync(userIdentity, portalUserResource.Password);
+            if (string.IsNullOrEmpty(userResource.Password))
+                return BadRequest("Password is empty");
 
-            if (!result.Succeeded) return new BadRequestObjectResult(result.Errors);
-
-            await UnitOfWork.Repository<PortalUser>().AddAsync(new PortalUser() {
-                IdentityId = userIdentity.Id
-            });
-
-            UnitOfWork.Commit();
+            try {
+                var user = Mapper.Map<UserResource, User>(userResource);
+                user.SetPasswordHash(userResource.Password);
+                await UnitOfWork.Repository<User>().AddAsync(user);
+                UnitOfWork.Commit();
+            } catch (Exception e) {
+                return BadRequest($"User creation fails. error: {e.StackTrace}");
+            }
 
             return new OkObjectResult("Account created.");
         }
@@ -154,8 +151,8 @@ namespace VentCalc.Controllers {
         }
 
         [HttpGet("{id}")]
-        public async Task<PortalUserWithRolesResource> GetById(string id) {            
-            var user = await UnitOfWork.Repository<PortalUser>().GetSingleIcludeMultipleAsync(x => x.IdentityId == id, x => x.Identity);          
+        public async Task<PortalUserWithRolesResource> GetById(string id) {
+            var user = await UnitOfWork.Repository<PortalUser>().GetSingleIcludeMultipleAsync(x => x.IdentityId == id, x => x.Identity);
             var res = new PortalUserWithRolesResource();
             if (user != null) {
                 res.IdentityId = user.IdentityId;

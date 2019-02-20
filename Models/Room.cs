@@ -48,6 +48,16 @@ namespace VentCalc.Models
         [StringLength(255)]
         [Description("Вытяжная система")]
         public string ExhaustSystem { get; set; }
+
+        public Room(int createUserId): base(createUserId)
+        {
+            
+        }
+
+        public Room()
+        {
+            
+        }
     }
 
 }

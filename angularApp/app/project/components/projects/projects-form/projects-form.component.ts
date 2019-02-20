@@ -4,7 +4,7 @@ import { Credentials } from './../../../../models/credentials';
 import { UserService } from './../../../../core/services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'projects-form',
@@ -21,14 +21,15 @@ export class ProjectsFormComponent implements OnInit {
     projectName: new FormControl('', Validators.required)
   });
 
-  constructor(private userService: UserService, private projectService: ProjectService, public router: Router) { }
+  constructor(private userService: UserService, private projectService: ProjectService, 
+    public router: Router, private activatedRoute: ActivatedRoute) { }
 
   get projectName() {
     return this.form.get('projectName')!;
   }
 
-  getUserProjects() {
-    this.projectService.getAllByUserId(this.currentUser.id)
+  getAllProjects() {
+    this.projectService.getAll()
       .subscribe(
         (data) => {
           this.projects = data;
@@ -41,9 +42,19 @@ export class ProjectsFormComponent implements OnInit {
       )
   }
 
+  public сhangeQueryParams(projectId: number) {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        ...this.activatedRoute.snapshot.queryParams,
+        projectId: projectId,
+      }
+    });
+  }
+
   onSaveProject() {
     let project = new Project();
-    project.createUserId = this.currentUser.id;
+    //project.createUserId = this.currentUser.id;
     project.projectName = this.projectName.value!;
 
     if (this.selectedProject)
@@ -58,6 +69,7 @@ export class ProjectsFormComponent implements OnInit {
           (data) => {
             console.log('in add');
             this.projects.push(data);
+            this.сhangeQueryParams(data.id);
           },
           (error) => {
             this.error = error;
@@ -69,7 +81,7 @@ export class ProjectsFormComponent implements OnInit {
       .subscribe(
         () => {
           console.log('in update, projectName: ' + project.projectName);
-          this.getUserProjects();
+          this.getAllProjects();
         },
         (error) => {
           this.error = error;
@@ -83,7 +95,7 @@ export class ProjectsFormComponent implements OnInit {
     this.projectService.delete(id)
       .subscribe(
         () => {
-          this.getUserProjects();
+          this.getAllProjects();
         },
         (error) => {
           console.log(error);
@@ -109,7 +121,7 @@ export class ProjectsFormComponent implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
-    this.getUserProjects();
+    this.getAllProjects();
   }
 
 }

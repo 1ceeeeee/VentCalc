@@ -17,9 +17,12 @@ namespace VentCalc.Models {
         public int? CityId { get; set; }
         public virtual City City { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
-        public Project() 
-        {
+        public Project(int createUserId) : base(createUserId) {
             Rooms = new Collection<Room>();
         }
+
+        public Project() {
+            Rooms = new Collection<Room>();
+         }
     }
 }

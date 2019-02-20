@@ -18,6 +18,7 @@ namespace VentCalc.Mapping {
             CreateMap<RoomTypeValue, RoomTypeValueResource>();
             CreateMap<RoomType, RoomTypeResource>();
             CreateMap<PortalUser, PortalUserResource>();
+            CreateMap<User, UserResource>();
             CreateMap<AppUser, PortalUserResource>();
 
             CreateMap<PortalUser, PortalUserResource>()
@@ -38,12 +39,15 @@ namespace VentCalc.Mapping {
             // API Resource to Domain
             CreateMap<SaveRoomResource, Room>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
-            
+
             CreateMap<PortalUserResource, PortalUser>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
             CreateMap<PortalUserResource, AppUser>()
                 .ForMember(v => v.Id, opt => opt.Ignore());
-            
+
+            CreateMap<UserResource, User>()
+                .ForMember(v => v.Id, opt => opt.Ignore());
+
             CreateMap<ProjectResource, Project>()
                 .ForMember(v => v.CreateUserId, opt => opt.Ignore());
             CreateMap<SaveProjectResource, Project>()

@@ -9,7 +9,7 @@ namespace VentCalc.Persistence {
 
         public int? DeleteUsertId { get; set; }
 
-        public DateTime? CreateDate { get; set; } = DateTime.Now;
+        public DateTime? CreateDate { get; set; }
 
         public DateTime? UpdateDate { get; set; }
 

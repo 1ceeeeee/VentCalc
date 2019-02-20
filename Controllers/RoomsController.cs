@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -11,11 +14,11 @@ using VentCalc.Persistence;
 using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
-    [Route("api/[controller]")]
-    public class RoomsController : BaseController {
+    [Route("api/[controller]")]        
+    public class RoomsController : AuthorizeBaseController {
 
-        public RoomsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) {
-        }
+        public RoomsController(IMapper mapper, IUnitOfWork uow, IHttpContextAccessor httpContextAccessor) : base(mapper, uow, httpContextAccessor) {
+        }  
 
         [HttpGet]
         public async Task<IEnumerable<RoomResource>> ReadAll() {
@@ -48,7 +51,9 @@ namespace VentCalc.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var room = Mapper.Map<SaveRoomResource, Room>(saveRoomResource);
+            var room = new Room(CurrentUser.Id);
+            Mapper.Map<SaveRoomResource, Room>(saveRoomResource, room);  
+
             await UnitOfWork.Repository<Room>().AddAsync(room);
             UnitOfWork.Commit();
 

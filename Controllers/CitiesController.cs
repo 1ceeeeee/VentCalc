@@ -12,25 +12,14 @@ using VentCalc.Models;
 using VentCalc.Persistence;
 using VentCalc.Repositories;
 
-namespace VentCalc.Controllers {
-    // [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser")]
+namespace VentCalc.Controllers {    
     [Route("api/[controller]")]
-    public class CitiesController : Controller {
-        
-        private readonly IMapper Mapper;
-        private IUnitOfWork UnitOfWork;
-        public CitiesController(IUnitOfWork uow, IMapper mapper) {
-            this.Mapper = mapper;
-            this.UnitOfWork = uow;
-        }
+    public class CitiesController : BaseController {
+        public CitiesController(IUnitOfWork uow, IMapper mapper) : base(mapper, uow) { }
 
         [HttpGet]
-        public async Task<IEnumerable<CityResource>> GetAll()
-        {            
+        public async Task<IEnumerable<CityResource>> GetAll() {
             var cities = await UnitOfWork.Repository<City>().GetEnumerableAsync();
-
-            // var t = UnitOfWork.Repository<PortalUser>().GetEnumerable(x => x.IdentityId == "12312312312312").FirstOrDefault();
-
             return Mapper.Map<List<City>, List<CityResource>>(cities.ToList());
         }
 

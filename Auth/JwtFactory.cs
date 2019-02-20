@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using VentCalc.Models;
+using VentCalc.Repositories;
 
 namespace VentCalc.Auth {
     public class JwtFactory : IJwtFactory {
@@ -28,7 +29,7 @@ namespace VentCalc.Auth {
             });
         }
 
-        public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity, UserManager<AppUser> userManager) {
+        public async Task<string> GenerateEncodedToken(string userName, ClaimsIdentity identity, IUnitOfWork uow) {
             // var claims = new [] {
             //     new Claim(JwtRegisteredClaimNames.Sub, userName),
             //     new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
@@ -36,7 +37,7 @@ namespace VentCalc.Auth {
             //     identity.FindFirst("rol"),
             //     identity.FindFirst("id")
             // };
-            _userManager = userManager;
+            //_userManager = userManager;
             var claims = new List<Claim> {
                 new Claim(JwtRegisteredClaimNames.Sub, userName),
                 new Claim(JwtRegisteredClaimNames.Jti, await _jwtOptions.JtiGenerator()),
@@ -46,10 +47,10 @@ namespace VentCalc.Auth {
             };
 
             var userId = identity.Claims.Single(c => c.Type == "id").Value;
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await uow.Repository<User>().GetByIdAsync(Convert.ToInt32(userId)); //_userManager.FindByIdAsync(userId);
 
-            var roles = await _userManager.GetRolesAsync(user);
-            AddRolesToClaims(claims, roles);
+            // var roles = await _userManager.GetRolesAsync(user);
+            // AddRolesToClaims(claims, roles);
 
             // Create the JWT security token and encode it.
             var jwt = new JwtSecurityToken(
