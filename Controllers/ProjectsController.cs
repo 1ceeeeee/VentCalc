@@ -48,9 +48,8 @@ namespace VentCalc.Controllers {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var project = Mapper.Map<SaveProjectResource, Project>(saveProjectResource);
-            project.CreateUserId = CurrentUser.Id;
-            project.CreateDate = DateTime.Today;
+            var project = new Project(CurrentUser.Id);
+            Mapper.Map<SaveProjectResource, Project>(saveProjectResource, project);   
 
             await UnitOfWork.Repository<Project>().AddAsync(project);
             UnitOfWork.Commit();

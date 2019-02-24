@@ -1,8 +1,7 @@
 namespace VentCalc.Controllers.Resources
 {
-    public class SaveRoomResource
-    {
-        public int Id { get; set; }
+    public class SaveRoomResource : BaseM
+    {        
         public int? CityId { get; set; }
         public int BuildingTypeId { get; set; }
         public int RoomTypeId { get; set; }

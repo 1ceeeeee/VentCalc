@@ -83,10 +83,18 @@ namespace VentCalc.Controllers {
             return Mapper.Map<List<HeatingVentilationSystem>, List<HeatingVentilationSystemResource>>(heatingVentilationSystems.ToList());
         }
 
+        public async Task<IActionResult> Edit([FromBody] IList<HeatingVentilationSystemResource> heatingResource) {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            return null;
+            // var heatinInDb = await UnitOfWork.Repository<HeatingVentilationSystem>().Get
+        }
+
         // public async Task<IActionResult> Edit([FromBody] HeatingVentilationSystemResource hvresource) {
         //     if (!ModelState.IsValid)
         //         return BadRequest(ModelState);
-            
+
         // }
 
         //        [HttpPost]
