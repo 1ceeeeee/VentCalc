@@ -17,8 +17,14 @@ export class HeatingFormComponent implements OnInit {
 
   constructor(private heatingService: HeatingService) { }
 
-  edit(){
-    
+  edit(){    
+    this.heatingService.edit(this.heating)
+    .subscribe(
+      data => {        
+        console.log('data: ' + data);
+      }
+    )
+    console.log(JSON.stringify(this.heating));
   }
 
   ngOnInit() {

@@ -13,7 +13,7 @@ namespace VentCalc.Mapping {
             CreateMap<BuildingType, BuildingTypeResource>();
             CreateMap<Room, RoomResource>();
             CreateMap<Project, ProjectResource>();
-            CreateMap<HeatingVentilationSystemResource, HeatingVentilationSystemResource>();
+            CreateMap<HeatingVentilationSystem, HeatingVentilationSystemResource>();
 
             CreateMap<RoomTypeValue, RoomTypeValueResource>();
             CreateMap<RoomType, RoomTypeResource>();
@@ -55,6 +55,15 @@ namespace VentCalc.Mapping {
             CreateMap<SaveProjectResource, Project>()
                 .ForMember(v => v.CreateUserId, opt => opt.Ignore());
             CreateMap<SaveProjectResource, Project>()
+                .ForMember(v => v.CreateUserId, opt => opt.Ignore());
+
+            CreateMap<HeatingVentilationSystemResource, HeatingVentilationSystem>()
+                .ForMember(v => v.CreateUserId, opt => opt.Ignore());
+            CreateMap<HeatingVentilationSystemResource, HeatingVentilationSystem>()
+                .ForMember(v => v.Id, opt => opt.Ignore());
+            CreateMap<HeatingVentilationSystemResource, HeatingVentilationSystem>()
+                .ForMember(v => v.CreateUserId, opt => opt.Ignore());
+            CreateMap<HeatingVentilationSystemResource, HeatingVentilationSystem>()
                 .ForMember(v => v.CreateUserId, opt => opt.Ignore());
         }
     }

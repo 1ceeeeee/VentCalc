@@ -1,7 +1,7 @@
 import { CrudBase } from "./CrudBase";
 
 export class Heating extends CrudBase {
-    public rojectId: number = 0;
+    public projectId: number = 0;
     public systemName: string = "";
     public systemAmount: number = 0;
     public roomName: string = "";

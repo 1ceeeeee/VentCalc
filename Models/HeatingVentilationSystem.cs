@@ -9,6 +9,14 @@ namespace VentCalc.Models
     [Description("Характеристика отопительно-вентиляционных систем")]
     public class HeatingVentilationSystem : CrudBase
     {
+        public HeatingVentilationSystem()
+        {
+        }
+
+        public HeatingVentilationSystem(int createUserId) : base(createUserId)
+        {
+        }
+
         [Required]
         [Description("ИД проекта")]
         public int ProjectId { get; set; }

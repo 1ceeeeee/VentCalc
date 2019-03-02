@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VentCalc.Controllers.Resources;
 using VentCalc.Models;
@@ -10,8 +11,9 @@ using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
     [Route("api/[controller]")]
-    public class HeatingVentilationSystemsController : BaseController {
-        public HeatingVentilationSystemsController(IMapper mapper, IUnitOfWork uow) : base(mapper, uow) { }
+    public class HeatingVentilationSystemsController : AuthorizeBaseController {
+
+        public HeatingVentilationSystemsController(IMapper mapper, IUnitOfWork uow, IHttpContextAccessor httpContextAccessor) : base(mapper, uow, httpContextAccessor) { }
 
         [HttpGet]
         public async Task<IEnumerable<HeatingVentilationSystemResource>> ReadAll() {
@@ -62,7 +64,7 @@ namespace VentCalc.Controllers {
                 FilterTypeName = "Фильтр. Тип",
                 Id = 1,
                 InstallTypeName = "Тип установки",
-                ProjectId = 5173,
+                ProjectId = 7179,
                 RecuperatorAirConsumptionHeated = 19,
                 RecuperatorAirConsumptionHeating = 20,
                 RecuperatorAmount = 21,
@@ -83,12 +85,30 @@ namespace VentCalc.Controllers {
             return Mapper.Map<List<HeatingVentilationSystem>, List<HeatingVentilationSystemResource>>(heatingVentilationSystems.ToList());
         }
 
-        public async Task<IActionResult> Edit([FromBody] IList<HeatingVentilationSystemResource> heatingResource) {
+        public async Task<IActionResult> Edit([FromBody] IList<HeatingVentilationSystemResource> heatings) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            
-            return null;
-            // var heatinInDb = await UnitOfWork.Repository<HeatingVentilationSystem>().Get
+
+            foreach (var ht in heatings) {
+                var htInDb = await UnitOfWork.Repository<HeatingVentilationSystem>().GetByIdAsync(ht.Id);
+
+                // if(htInDb == null)
+                //     continue;
+
+                var heating = new HeatingVentilationSystem(CurrentUser.Id);
+                //heating.Id = 0;
+                Mapper.Map<HeatingVentilationSystemResource, HeatingVentilationSystem>(ht, heating);
+
+                await UnitOfWork.Repository<HeatingVentilationSystem>().AddAsync(heating);
+                UnitOfWork.Commit();
+
+                // Mapper.Map<HeatingVentilationSystemResource, HeatingVentilationSystem>(ht, htInDb);
+                // UnitOfWork.Repository<HeatingVentilationSystem>().MarkUpdated(htInDb);              
+            }
+
+            UnitOfWork.Commit();
+            return Ok("Таблица_2 сохранена");
+           
         }
 
         // public async Task<IActionResult> Edit([FromBody] HeatingVentilationSystemResource hvresource) {
