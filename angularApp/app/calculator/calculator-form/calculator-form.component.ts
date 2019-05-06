@@ -293,7 +293,7 @@ export class CalculatorFormComponent implements OnInit {
     }
     if (!this.rooms || this.rooms.length === 0) {
       console.log(this.project);
-      this.errors.push('Нет добавленых помещений.');
+      this.errors.push('Нет добавленных помещений.');
       return;
     }
     if (this.project.id == 0) {

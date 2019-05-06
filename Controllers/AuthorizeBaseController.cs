@@ -8,6 +8,7 @@ using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
     [Authorize(AuthenticationSchemes = "Bearer", Policy = "ApiUser")]
+    // [AllowAnonymous]
     public abstract class AuthorizeBaseController : BaseController {
         protected readonly User CurrentUser;
         protected readonly IHttpContextAccessor HttpContextAccessor;
@@ -20,7 +21,8 @@ namespace VentCalc.Controllers {
         }
 
         private User GetCurrentUser() {
-            var login = HttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var login = HttpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(string.IsNullOrWhiteSpace(login)) return null;
             return UnitOfWork.Repository<User>().GetEnumerable(x => x.Login == login).FirstOrDefault();
         }
     }

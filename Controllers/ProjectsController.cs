@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -11,11 +12,11 @@ using VentCalc.Models;
 using VentCalc.Repositories;
 
 namespace VentCalc.Controllers {
-    [Route("api/[controller]")]    
+
+    [Route("api/[controller]")]
     public class ProjectsController : AuthorizeBaseController {
         public ProjectsController(IMapper mapper, IUnitOfWork uow, IHttpContextAccessor httpContextAccessor) : base(mapper, uow, httpContextAccessor) { }
 
-        
         [HttpGet]
         public async Task<IEnumerable<ProjectResource>> ReadAll() {
             var projects = await UnitOfWork.Repository<Project>().GetEnumerableAsync(x => x.CreateUserId == CurrentUser.Id);
@@ -49,7 +50,7 @@ namespace VentCalc.Controllers {
                 return BadRequest(ModelState);
 
             var project = new Project(CurrentUser.Id);
-            Mapper.Map<SaveProjectResource, Project>(saveProjectResource, project);   
+            Mapper.Map<SaveProjectResource, Project>(saveProjectResource, project);
 
             await UnitOfWork.Repository<Project>().AddAsync(project);
             UnitOfWork.Commit();
@@ -197,7 +198,6 @@ namespace VentCalc.Controllers {
                 var exhaustMaxValue = exhaustArray.Max();
 
                 airExchangeRooms.Add(new AirExchangeRoomResource() {
-
                     Id = room.Id,
                         RoomNumber = room.RoomNumber,
                         RoomName = room.RoomName,
@@ -221,7 +221,65 @@ namespace VentCalc.Controllers {
                 AirExchangeRooms = airExchangeRooms
             };
 
+            ProcessGroupRoomsBy(x => x.InflowSystem, airExchangeRooms, projectId);
+            ProcessGroupRoomsBy(x => x.ExhaustSystem, airExchangeRooms, projectId);
+            // CalculateHeating(airExchangeRooms, projectId);
+            UnitOfWork.Commit();
+
             return airExchangeProject;
+        }
+
+        private void CalculateHeating(IList<AirExchangeRoomResource> rooms, int projectId) {
+            // var heating = new List<HeatingVentilationSystem>();
+            // heating.AddRange(ProcessGroupRoomsBy(x => x.InflowSystem, rooms, projectId));
+            // heating.AddRange(ProcessGroupRoomsBy(x => x.ExhaustSystem, rooms, projectId));
+
+            ProcessGroupRoomsBy(x => x.InflowSystem, rooms, projectId);
+            ProcessGroupRoomsBy(x => x.ExhaustSystem, rooms, projectId);
+
+        }
+
+        private List<HeatingVentilationSystem> ProcessGroupRoomsBy(Func<AirExchangeRoomResource, string> exp, IList<AirExchangeRoomResource> rooms, int projectId) {
+            List<HeatingVentilationSystem> heatings = new List<HeatingVentilationSystem>();
+            var groupedRooms = rooms.GroupBy(exp).ToList();
+            foreach (var items in groupedRooms) {
+                var t = items.Key;
+                HeatingVentilationSystem h = null;
+                var heatingInDb = UnitOfWork.Repository<HeatingVentilationSystem>()
+                    .GetEnumerable(x => x.SystemName.ToUpper().Contains(items.Key.ToUpper()) &&
+                        x.ProjectId == projectId)
+                    .FirstOrDefault();
+
+                if (heatingInDb == null) {
+                    HeatingVentilationSystem heating = new HeatingVentilationSystem(CurrentUser.Id);
+                    heating.SystemName = items.Key;
+                    heating.ProjectId = projectId;
+                    h = heating;
+                } else {
+                    h = heatingInDb;
+                }
+                FillHeating(h, items);
+
+                if (h.Id == 0) {
+                    UnitOfWork.Repository<HeatingVentilationSystem>().Add(h);
+                    heatings.Add(h);
+                }
+
+            }
+            return heatings;
+        }
+
+        private void FillHeating(HeatingVentilationSystem heating, IGrouping<string, AirExchangeRoomResource> roomsGroup) {
+            string roomNames = "";
+            double? fanAirConsuption = 0;
+
+            foreach (var item in roomsGroup) {
+                roomNames += item.RoomName + ", ";
+                fanAirConsuption += (item.InflowCalc + item.ExhaustCalc);
+            }
+            heating.FanAirConsumption = fanAirConsuption;
+            heating.AirCoolerCoolingTempFrom = roomsGroup.Select(x => x.TempIn)?.Min();
+            heating.RoomName = roomNames.TrimEnd(' ').TrimEnd(',');
         }
 
     }

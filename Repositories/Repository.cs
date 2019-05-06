@@ -37,6 +37,15 @@ namespace VentCalc.Repositories {
             return query.ToList();
         }
 
+          public T GetSingleIcludeMultiple(params Expression<Func<T, object>>[] includes) {
+            IQueryable<T> query = _dbSet;
+            if (includes != null) {
+                query = includes.Aggregate(query,
+                    (current, include) => current.Include(include));
+            }
+            return query.SingleOrDefault();
+        }
+
         public async Task<IEnumerable<T>> GetEnumerableAsync() => await _dbSet.ToListAsync();
         public Task AddAsync(T enitity) => AddAsync(enitity, cancellationToken : new CancellationToken());
         public Task AddAsync(T enitity, CancellationToken cancellationToken = default(CancellationToken)) => _dbSet.AddAsync(enitity, cancellationToken);

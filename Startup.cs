@@ -149,9 +149,9 @@ namespace Angular2WebpackVisualStudio {
 
             app.UseCors("AllowAllOrigins");
 
-            // app.UseForwardedHeaders(new ForwardedHeadersOptions {
-            //     ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
-            // });
+            app.UseForwardedHeaders(new ForwardedHeadersOptions {
+                ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+            });
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
